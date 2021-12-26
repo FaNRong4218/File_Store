@@ -2,8 +2,8 @@
 
 session_start();
 if (!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true) {
-    header("location: login.php");
-    exit;
+  header("location: login.php");
+  exit;
 }
 
 ?>
@@ -11,11 +11,12 @@ if (!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true) {
 <html lang="en">
 
 <head>
-  <meta charset="utf-8">
+<meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta http-equiv="x-ua-compatible" content="ie=edge">
 
-  <title>AdminLTE 3 | Starter</title>
+  <title>AdminLTE 3 | Type</title>
+
 
   <script src="js/jquery.min.js"></script>
   <link rel="stylesheet" href="plugins/fontawesome-free/css/all.min.css">
@@ -25,15 +26,17 @@ if (!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true) {
   <script src="https://kit.fontawesome.com/2f85583488.js" crossorigin="anonymous"></script>
   <script type="text/javascript" charset="utf8" src="/DataTables/datatables.js"></script>
 
+
   <link rel="stylesheet" type="text/css" href="http://cdn.datatables.net/1.10.12/css/jquery.dataTables.css">
   <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
   <script type="text/javascript" charset="utf8" src="http://cdn.datatables.net/1.10.12/js/jquery.dataTables.js"></script>
 
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-</head>
 
-<body class="hold-transition sidebar-mini">
+
+
+<body class="hold-transition sidebar-mini layout-fixed">
   <div class="wrapper">
 
     <!-- Navbar -->
@@ -96,7 +99,7 @@ if (!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true) {
             </li>
             <li class="nav-item">
               <a href="page_insurance.php" class="nav-link">
-              <i class="fas fa-building"></i>
+                <i class="fas fa-building"></i>
                 <p>
                   Insurance
                 </p>
@@ -105,7 +108,7 @@ if (!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true) {
             </li>
             <li class="nav-item">
               <a href="page_brand.php" class="nav-link">
-              <i class="fas fa-copyright"></i>
+                <i class="fas fa-copyright"></i>
                 <p>
                   Brand
                 </p>
@@ -147,39 +150,45 @@ if (!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true) {
           <?php
           if (mysqli_num_rows($result) > 0) {
           ?>
-            <table class="table table-bordered" id="Table">
-            <thead>
-              <tr class="info" >
-                <td>ID</td>
-                <td>User</td>
-                <td>Email</td>
-                <td>Name</td>
-                <td>Tel</td>
-                <td>Type</td>
-                <td>Action</td>
-              </tr>
-          </thead>
-          <tbody>
-              <?php
-             
-              while ($row = mysqli_fetch_array($result)) {
-              ?>
-                <tr class="info">
-                  <td><?php echo $row["id"]; ?></td>
-                  <td><?php echo $row["user"]; ?></td>
-                  <td><?php echo $row["name"]; ?></td>
-                  <td><?php echo $row["email"]; ?></td>
-                  <td><?php echo $row["tel"]; ?></td>
-                  <td><?php echo $row["type"]; ?></td>
-                  <td><a href="update_user.php?id=<?php echo $row["id"]; ?>" title='Update Record'>
-                      <i class="fas fa-pencil-alt"></i></a>
-                    <a href="delete_user.php?id=<?php echo $row["id"]; ?>" title='Delete Record'>
-                      <i class="fas fa-trash-alt"></i></a>
-                  </td>
+
+            <table id="Table" class="table table-striped">
+              <thead class="thead-dark">
+                <tr>
+                  <th hidden></th>
+                  <th>ลำดับ</th>
+                  <th>ผู้ใช้</th>
+                  <th>ชื่อผู้ใช้</th>
+                  <th>อีเมล</th>
+                  <th>เบอร์โทรศัพท์</th>
+                  <th>สถานะ</th>
+                  <th>ฟังก์ชัน</th>
                 </tr>
-              <?php
-              }
-              ?>
+              </thead>
+              <tbody>
+                <?php
+                $i = 1;
+                while ($row = mysqli_fetch_array($result)) {
+                ?>
+                  <tr>
+                    <td><?php echo $i ?></td>
+                    <td hidden><?php echo $row["id"]; ?></td>
+                    <td><?php echo $row["user"]; ?></td>
+                    <td><?php echo $row["name"]; ?></td>
+                    <td><?php echo $row["email"]; ?></td>
+                    <td><?php echo $row["tel"]; ?></td>
+                    <td><?php echo $row["type"]; ?></td>
+                    <td>
+                      <a href="update_user.php?id=<?php echo $row["id"]; ?>" title='Update Record'>
+                      <button type=button class="btn btn-dark btn-sm"><i class="far fa-edit"></i>
+                    </button></a>
+                      <a href="delete_user.php?id=<?php echo $row["id"]; ?>&submit=DEL" onclick="return confirm('ต้องการจะลบผู้ใช้งานนี้หรือไม่ ?')" title='ลบผู้ใช้งาน'>
+                      <button type=button class="btn btn-dark btn-sm"> <i class="fas fa-trash-alt"></i></button></a>
+                    </td>
+                  </tr>
+                <?php
+                  $i++;
+                }
+                ?>
               </tbody>
             </table>
 

@@ -64,7 +64,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $email = $_POST['email'];
         $type = $_POST['type'];
 
-        $sql = "INSERT INTO crop_user (user, pass, name, email, tel,type) VALUES (?, ?,'$name','$email','$tel','$type')";
+        $sql = "INSERT INTO user (user, pass, name, email, tel,type) VALUES (?, ?,'$name','$email','$tel','$type')";
 
         if ($stmt = mysqli_prepare($link, $sql)) {
 

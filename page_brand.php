@@ -1,5 +1,4 @@
 <?php
-
 session_start();
 if (!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true) {
   header("location: login.php");
@@ -15,7 +14,7 @@ if (!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true) {
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta http-equiv="x-ua-compatible" content="ie=edge">
 
-  <title>AdminLTE 3 | Starter</title>
+  <title>AdminLTE 3 | Brand</title>
 
   <script src="js/jquery.min.js"></script>
   <link rel="stylesheet" href="plugins/fontawesome-free/css/all.min.css">
@@ -31,9 +30,15 @@ if (!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true) {
 
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+  <style>
+    img {
+      border-radius: 50%;
+    }
+  </style>
 </head>
 
-<body class="hold-transition sidebar-mini">
+<body class="hold-transition sidebar-mini layout-fixed">
   <div class="wrapper">
 
     <!-- Navbar -->
@@ -96,7 +101,7 @@ if (!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true) {
             </li>
             <li class="nav-item">
               <a href="page_insurance.php" class="nav-link">
-              <i class="fas fa-building"></i>
+                <i class="fas fa-building"></i>
                 <p>
                   Insurance
                 </p>
@@ -105,7 +110,7 @@ if (!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true) {
             </li>
             <li class="nav-item">
               <a href="page_brand.php" class="nav-link">
-              <i class="fas fa-copyright"></i>
+                <i class="fas fa-copyright"></i>
                 <p>
                   Brand
                 </p>
@@ -139,8 +144,9 @@ if (!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true) {
     <div class="content-wrapper">
       <div style="margin-left:4%; padding-top :4%;">
         <div class="container my-6">
-          <a href="insert_brand.php" title='Insert Data'>เพิ่มข้อมูล
-            <i class="fas fa-plus-circle"></i></a> <br>
+        <a href="insert_brand.php" title='Insert Data'>
+            <button type=button class="btn btn-info">เพิ่มข้อมูล <i class="fas fa-plus-circle"></i></button><br><br>
+          </a>
 
           <?php
           include_once 'connect.php';
@@ -153,14 +159,15 @@ if (!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true) {
 
           if (mysqli_num_rows($result) > 0) {
           ?>
-            <table id="Table" class="display">
-              <thead>
+            
+            <table id="Table" class="table table-striped">
+                            <thead class="thead-dark">
                 <tr>
-                  <th>Logo</th>
-                  <th>Brand ID</th>
-                  <th>Brand Name</th>
-                  <th>Status</th>
-                  <th>Action</th>
+                  <th>รูป logo</th>
+                  <th>ลำดับ</th>
+                  <th>ชื่อยี่ห้อ</th>
+                  <th>สถานะ</th>
+                  <th>ฟังก์ชัน</th>
                 </tr>
               </thead>
               <tbody>
@@ -168,17 +175,25 @@ if (!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true) {
                 while ($row = mysqli_fetch_array($result)) {
                 ?>
                   <tr>
-                    <td><img src="img/brand_car/<?php echo $row["Car_Img"]; ?>" width="25%"></td>
+                    <td><img src="img/brand_car/<?php echo $row["Car_Img"]; ?>" width="80"></td>
                     <td><?php echo $row["Car_ID"]; ?></td>
                     <td><?php echo $row["Car_Name"]; ?></td>
                     <td> <?php if ($row["Car_Status"] == 'on') {
-                            echo '<button class="btn btn-success btn-lg" ></button> ';
-                          } else {
-                            echo '<button class="btn btn-danger btn-lg" ></button>';
-                          }
-                          ?></td>
-                    <td><a href="update_brand.php?Car_ID=<?php echo $row["Car_ID"]; ?>" title='Update Record'>
-                        <i class="fas fa-pencil-alt"></i></a>&nbsp;
+                          $color = "btn btn-success btn-sm";
+                          $text = "on";
+                        } else {
+                          $color = "btn btn-danger btn-sm";
+                          $text = "off";
+                        }
+                          ?>
+                      <a href="change_status.php?statusB=<?php echo $row["Car_Status"] ?>&idB=<?php echo $row["Car_ID"] ?>"title='เปลี่ยนสถานะ'>
+                        <button type=button class="<?php echo $color ?>"><?php echo $text ?></button></a>
+                    </td>
+                    <td>
+                      <a href="update_brand.php?Car_ID=<?php echo $row["Car_ID"]; ?>" title='แก้ไขข้อมูล'>
+                        <button type=button class="btn btn-dark btn-sm"> <i class="far fa-edit"></i>
+                        </button>
+                     </a>
                     </td>
                   </tr>
                 <?php

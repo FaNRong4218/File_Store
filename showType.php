@@ -1,3 +1,10 @@
+<?php
+session_start();
+if (!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true) {
+    header("location: login.php");
+    exit;
+}
+?>
 <?php  
  if(isset($_POST["Type_ID"]))  //รับค่า Type_ID
  {  

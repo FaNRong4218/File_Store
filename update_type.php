@@ -15,7 +15,7 @@ if (!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true) {
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta http-equiv="x-ua-compatible" content="ie=edge">
 
-    <title>AdminLTE 3 | Starter</title>
+    <title>AdminLTE 3 | Update Type</title>
 
     <script src="js/jquery.min.js"></script>
     <link rel="stylesheet" href="plugins/fontawesome-free/css/all.min.css">
@@ -32,7 +32,7 @@ if (!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true) {
     <script type="text/javascript" src="ckeditor/ckeditor.js"></script>
 </head>
 
-<body class="hold-transition sidebar-mini">
+<body class="hold-transition sidebar-mini layout-fixed">
     <div class="wrapper">
 
         <!-- Navbar -->
@@ -95,7 +95,7 @@ if (!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true) {
                         </li>
                         <li class="nav-item">
                             <a href="page_insurance.php" class="nav-link">
-                            <i class="fas fa-building"></i>
+                                <i class="fas fa-building"></i>
                                 <p>
                                     Insurance
                                 </p>
@@ -104,7 +104,7 @@ if (!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true) {
                         </li>
                         <li class="nav-item">
                             <a href="page_brand.php" class="nav-link">
-                            <i class="fas fa-copyright"></i>
+                                <i class="fas fa-copyright"></i>
                                 <p>
                                     Brand
                                 </p>
@@ -191,42 +191,42 @@ if (!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true) {
                                 <input type="radio" value="off" name="Status" required><label>Off</label>
                             </div>
                         </div>
-                </div>
-                <div class="form-row">
-                    <div class="form-group col-md-8">
-                        <label>รายละเอียดของประเภทประกัน</label><br>
-                        <textarea name="detail" id="detail" ><?php echo $detail_s ?></textarea>
 
-                        <script>
-                            CKEDITOR.replace('detail');
+                        <div class="form-row">
+                            <div class="form-group col-md-8">
+                                <label>รายละเอียดของประเภทประกัน</label><br>
+                                <textarea name="detail" id="detail"><?php echo $detail_s ?></textarea>
 
-                            function CKupdate() {
-                                for (instance in CKEDITOR.instances)
-                                    CKEDITOR.instances[instance].updateElement()
-                            }
-                        </script>
-                    </div>
+                                <script>
+                                    CKEDITOR.replace('detail');
+
+                                    function CKupdate() {
+                                        for (instance in CKEDITOR.instances)
+                                            CKEDITOR.instances[instance].updateElement()
+                                    }
+                                </script>
+                            </div>
+                        </div>
+                        <br>
+                        <div class="form-row">
+                            <div class="form-group col-md-4">
+                                <input type="submit" class="btn btn-primary" value="ยืนยัน"> &nbsp;&nbsp;
+                                <input type="reset" class="btn btn-default" value="ล้างข้อมูล" onclick="window.location.reload();"> &nbsp;&nbsp;
+                                <input type=button class="btn btn-danger" onclick="window.location='page_type.php'" value=ยกเลิก>
+                            </div>
+                        </div>
+                    </form>
                 </div>
-                <br>
-                <div class="form-row">
-                    <div class="form-group col-md-4">
-                        <input type="submit" class="btn btn-primary" value="ยืนยัน"> &nbsp;&nbsp;
-                        <input type="reset" class="btn btn-default" value="ล้างข้อมูล" onclick="window.location.reload();"> &nbsp;&nbsp;
-                        <input type=button class="btn btn-danger" onclick="window.location='page_type.php'" value=ยกเลิก>
-                    </div>
-                </div>
-                </form>
             </div>
+
         </div>
 
-    </div>
-
-    <!-- jQuery -->
-    <script src="plugins/jquery/jquery.min.js"></script>
-    <!-- Bootstrap 4 -->
-    <script src="plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
-    <!-- AdminLTE App -->
-    <script src="dist/js/adminlte.min.js"></script>
+        <!-- jQuery -->
+        <script src="plugins/jquery/jquery.min.js"></script>
+        <!-- Bootstrap 4 -->
+        <script src="plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
+        <!-- AdminLTE App -->
+        <script src="dist/js/adminlte.min.js"></script>
 </body>
 
 </html>

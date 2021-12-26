@@ -1,15 +1,22 @@
 <?php
-if(isset($_GET['file1'])){
-    $file1 = $_GET['file1'];
-    $No = $file1;
+
+session_start();
+if (!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true) {
+    header("location: login.php");
+    exit;
 }
-if(isset($_GET['file2'])){
-    $file2 = $_GET['file2'];
-    $No = $file2;
-}
-if(isset($_GET['file3'])){
-    $file3 = $_GET['file3'];
-    $No = $file3;
+?>
+<?php
+if(isset($_GET['id']) ){
+    $id = $_GET['id'];
+    require_once "connect.php";
+    $sql = "SELECT File_Name FROM file WHERE File_ID=$id";
+    $query = mysqli_query($link,$sql);
+    
+    foreach ($query as $value){
+        $No = $value["File_Name"];
+    }
+    
 }
 
     $download = 'myFile/'.$No;
@@ -38,16 +45,16 @@ if(isset($_GET['file3'])){
       case "txt": $ctype="text/plain"; break;
       default: $ctype="application/force-download";
     }
-        header("Pragma: public"); 
-        header("Expires: 0");
+        header("Pragma: public"); //ทำให้ brower สามารถลองรับไฟล์ได้โดยปรับเป็น public 
+        header("Expires: 0"); //ระยะเวลาหมดอายุ
         header("Cache-Control: must-revalidate, post-check=0, pre-check=0");
         header("Cache-Control: private",false); 
-        header("Content-Type: $ctype");
-        header("Content-Disposition: attachment; filename=\"".basename($download)."\";" );
-        header("Content-Transfer-Encoding: binary");
-        header('Content-Length '. filesize($download));
+        header("Content-Type: $ctype"); //ระบุชนิดของไฟล์
+        header("Content-Disposition: attachment; filename=\"".basename($download)."\";" ); //ตั้งชื่อไฟล์ตอนดาวน์โหลด
+        header("Content-Transfer-Encoding: binary"); //แปลงไฟล์เป็น Binary เพื่อสามารถอ่านไฟลืได้
+        header('Content-Length '. filesize($download)); //ระบุขนาดไฟล์
         ob_clean();
         flush();
-        readfile($download);
+        readfile($download); //อ่านไฟล์
         exit;
     }

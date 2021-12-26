@@ -13,7 +13,7 @@ if (!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true) {
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta http-equiv="x-ua-compatible" content="ie=edge">
 
-    <title>AdminLTE 3 | Starter</title>
+    <title>AdminLTE 3 | Insert Report</title>
 
     <script src="js/jquery.min.js"></script>
     <link rel="stylesheet" href="plugins/fontawesome-free/css/all.min.css">
@@ -28,9 +28,10 @@ if (!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true) {
     <script type="text/javascript" charset="utf8" src="http://cdn.datatables.net/1.10.12/js/jquery.dataTables.js"></script>
 
     <script type="text/javascript" src="ckeditor/ckeditor.js"></script>
+    <script src="dist/css/MyStyle.css"></script>
 </head>
 
-<body class="hold-transition sidebar-mini">
+<body class="hold-transition sidebar-mini layout-fixed">
     <div class="wrapper">
 
         <!-- Navbar -->
@@ -84,7 +85,7 @@ if (!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true) {
                         </li>
                         <li class="nav-item">
                             <a href="page_report.php" class="nav-link">
-                            <i class="fas fa-table"></i>
+                                <i class="fas fa-table"></i>
                                 <p>
                                     Report
                                 </p>
@@ -102,7 +103,7 @@ if (!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true) {
                         </li>
                         <li class="nav-item">
                             <a href="page_brand.php" class="nav-link">
-                            <i class="fas fa-copyright"></i>
+                                <i class="fas fa-copyright"></i>
                                 <p>
                                     Brand
                                 </p>
@@ -142,6 +143,7 @@ if (!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true) {
 
         $sql3 = "SELECT Car_ID,Car_Name FROM brand WHERE Car_Status= 'on';";
         $query3 = mysqli_query($link, $sql3);
+
         if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $Corp_ID = $_POST['Corp_ID'];
             $Type_ID = $_POST['Type_ID'];
@@ -152,48 +154,13 @@ if (!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true) {
             $date_ext = $_POST['date_ext'];
             $status = $_POST['status'];
 
-            //เปลี่ยนชื่อไฟล์ไฟล์ต่างๆ 
-            date_default_timezone_set('Asia/Bangkok');
-            $nameDate = date('Ymd'); //เก็บวันที่
-            // $numrand = (mt_rand()); //สุ่มเลข
-            $upload1 = $_FILES['file1'];
-            $upload2 = $_FILES['file2'];
-            $upload3 = $_FILES['file3'];
+            $sql1 = "INSERT INTO report (Corp_ID, Type_ID, Car_ID, Report_detail, Date_Start, Date_Now, Date_Ext, Report_Status ) 
+            VALUES ('$Corp_ID', '$Type_ID', '$Car_ID','$detail','$date_start','$date_now','$date_ext','$status' )";
+             
 
-            $path = "myFile/"; //สร้างไฟล์สำหรับเก็บไฟล์ใหม่
-            if ($upload1 != '') { //ไฟล์มีการอัพโหลด
-                $numrand1 = (mt_rand(0, 1000));
-                $type1 = strrchr($_FILES['file1']['name'], "."); //ตัดชื่อไฟล์เหลือแต่นามสกุล
-                $newname1 = $nameDate . $numrand1 . $type1; //ประกอบเป็นชื่อใหม่
-                $path_copy1 = $path . $newname1; //กำหนด path ในการเก็บ
-                move_uploaded_file($_FILES['file1']['tmp_name'], $path_copy1);
-            }
+             $insert = mysqli_query($link, $sql1);
 
-            if ($upload2 != '') { //ไฟล์มีการอัพโหลด
-                $numrand2 = (mt_rand(1001, 2000));
-                $type2 = strrchr($_FILES['file2']['name'], ".");
-                $newname2 = $nameDate . $numrand2 . $type2;
-                $path_copy2 = $path . $newname2;
-                move_uploaded_file($_FILES['file2']['tmp_name'], $path_copy2);
-            }
-
-            if ($upload3 != '') { //ไฟล์มีการอัพโหลด
-                $numrand3 = (mt_rand(2001, 3000));
-                $type3 = strrchr($_FILES['file3']['name'], "."); //ตัดชื่อไฟล์เหลือแต่นามสกุล
-                $newname3 = $nameDate . $numrand3 . $type3; //ประกอบเป็นชื่อใหม่ 
-                $path_copy3 = $path . $newname3; //กำหนด path ในการเก็บ
-                move_uploaded_file($_FILES['file3']['tmp_name'], $path_copy3);
-            }
-
-            $sql = "INSERT INTO report (Corp_ID, Type_ID, Car_ID, Report_detail, Date_Start, Date_Now, Date_Ext, Report_Status, File1, File2, File3 ) 
-          VALUES ('$Corp_ID', '$Type_ID', '$Car_ID','$detail','$date_start','$date_now','$date_ext','$status',
-                     '$newname1',' $newname2','$newname3')";
-
-            $stmt = mysqli_query($link, $sql);
-            mysqli_close($link);
-
-            if ($stmt) {
-
+              if ($insert){
                 echo "<script type='text/javascript'>";
                 echo "alert('เพิ่มข้อมูลสำเร็จ');";
                 echo "window.location = 'page_report.php';";
@@ -201,6 +168,41 @@ if (!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true) {
             } else {
                 echo "มีบางอย่างผิดพลาด!! กรุณาลองใหม่อีกครั้ง";
             }
+            mysqli_close($link);
+
+
+                
+            
+
+            // $upload2 = $_FILES['file2'];
+            // $upload3 = $_FILES['file3'];
+
+
+            // if ($upload1 != '') { //ไฟล์มีการอัพโหลด
+                // $numrand1 = (mt_rand(0, 1000));
+                // $type1 = strrchr($_FILES['file1']['name'], "."); //ตัดชื่อไฟล์เหลือแต่นามสกุล
+                // $newname1 = $nameDate . $numrand1 . $type1; //ประกอบเป็นชื่อใหม่
+                // $path_copy1 = $path . $newname1; //กำหนด path ในการเก็บ
+                // move_uploaded_file($_FILES['file1']['tmp_name'], $path_copy1);
+            // }
+
+            // if ($upload2 != '') { //ไฟล์มีการอัพโหลด
+            //     $numrand2 = (mt_rand(1001, 2000));
+            //     $type2 = strrchr($_FILES['file2']['name'], ".");
+            //     $newname2 = $nameDate . $numrand2 . $type2;
+            //     $path_copy2 = $path . $newname2;
+            //     move_uploaded_file($_FILES['file2']['tmp_name'], $path_copy2);
+            // }
+
+            // if ($upload3 != '') { //ไฟล์มีการอัพโหลด
+            //     $numrand3 = (mt_rand(2001, 3000));
+            //     $type3 = strrchr($_FILES['file3']['name'], "."); //ตัดชื่อไฟล์เหลือแต่นามสกุล
+            //     $newname3 = $nameDate . $numrand3 . $type3; //ประกอบเป็นชื่อใหม่ 
+            //     $path_copy3 = $path . $newname3; //กำหนด path ในการเก็บ
+            //     move_uploaded_file($_FILES['file3']['tmp_name'], $path_copy3);
+            // }
+
+           
         }
 
         ?>
@@ -213,7 +215,6 @@ if (!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true) {
                 <div class="container my-6">
                     <h2>เพิ่มข้อมูลรายงานประกัน</h2>
                     <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="post" enctype="multipart/form-data">
-
                         <div class="form-row">
                             <div class="form-group col-md-4">
                                 <label>บริษัทประกัน</label>
@@ -247,7 +248,7 @@ if (!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true) {
                         <div class="form-row">
                             <div class="form-group col-md-4">
                                 <label>วันที่สร้าง</label><br>
-                                <input name="date_start" type="date" value=<?php echo date('Y-m-d') ?> >
+                                <input name="date_start" type="date" value=<?php echo date('Y-m-d') ?>>
                             </div>
 
                             <div class="form-group col-md-4">
@@ -280,83 +281,10 @@ if (!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true) {
                                 </script>
                             </div>
                         </div>
-                        <div class="form-row">
-                            <div class="form-group col-md-8">
-                                <input name="btnCreate" type="button" value="เพิ่มไฟล์" onClick="JavaScript:fncCreateElement();">
-                                <input name="btnDelete" type="button" value="ลบไฟล์" onClick="JavaScript:fncDeleteElement();">
-                                <input name="hdnLine" id="hdnLine" type="hidden" value=0><br>
-                                <div class="card">
-                                    <div class="card-body"> ไฟล์ต่างๆ
-                                        <div id="mySpan" require></div>
-                                    </div>
-                                </div>
-                            </div>
-                            <script language="javascript">
-                                function fncCreateElement() {
-
-                                    var mySpan = document.getElementById('mySpan');
-                                    var myLine = document.getElementById('hdnLine');
-                                    myLine.value++;
-
-                                    if (myLine.value < 4) {
-                                        var myElement4 = document.createElement('br');
-                                        myElement4.setAttribute('name', "br" + myLine.value);
-                                        myElement4.setAttribute('id', "br" + myLine.value);
-                                        mySpan.appendChild(myElement4);
-
-
-                                        var myElement2 = document.createElement('input');
-                                        myElement2.setAttribute('type', "file");
-                                        myElement2.setAttribute('name', "file" + myLine.value);
-                                        myElement2.setAttribute('id', "fil" + myLine.value);
-                                        myElement2.setAttribute('required', 'true');
-                                        mySpan.appendChild(myElement2);
-
-                                        var myElement4 = document.createElement('br');
-                                        myElement4.setAttribute('name', "br" + myLine.value);
-                                        myElement4.setAttribute('id', "br" + myLine.value);
-                                        mySpan.appendChild(myElement4);
-
-                                    } else if (myLine.value > 3) {
-                                        alert("รับไฟล์สูงสุดได้ 3 ไฟล์ เท่านั้น");
-                                        myLine.value--;
-                                    }
-                                }
-
-                                function fncDeleteElement() {
-
-                                    var mySpan = document.getElementById('mySpan');
-                                    var myLine = document.getElementById('hdnLine');
-
-                                    if (myLine.value >= 1) {
-                                        var deleteBr = document.getElementById("br" + myLine.value);
-                                        mySpan.removeChild(deleteBr);
-                                        var deleteFile = document.getElementById("fil" + myLine.value);
-                                        mySpan.removeChild(deleteFile);
-                                        var deleteBr = document.getElementById("br" + myLine.value);
-                                        mySpan.removeChild(deleteBr);
-                                        myLine.value--;
-                                    }
-                                }
-
-                                function showPreview(ele) { //ฟังก์โชว์ภาพก่อน กด submit 
-                                    $('#imgAvatar').attr('src', ele.value);
-                                    if (ele.files && ele.files[0]) {
-
-                                        var reader = new FileReader();
-
-                                        reader.onload = function(e) {
-                                            $('#imgAvatar').attr('src', e.target.result);
-                                        }
-                                        reader.readAsDataURL(ele.files[0]);
-                                    }
-                                }
-                            </script>
-
-                        </div>
+                       
                 </div>
                 <div class="form-group">
-                    <input type="submit" class="btn btn-primary" value="ยืนยัน"> &nbsp;&nbsp;
+                    <input type="submit" class="btn btn-primary" value="ยืนยัน" > &nbsp;&nbsp;
                     <input type="reset" class="btn btn-default" value="ล้างข้อมูล" onclick="window.location.reload();"> &nbsp;&nbsp;
                     <input type=button class="btn btn-danger" onclick="window.location='page_report.php'" value=ยกเลิก>
                 </div>
@@ -377,3 +305,8 @@ if (!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true) {
 </body>
 
 </html>
+<script>
+    $(document).ready(function() {
+        $('#Table').DataTable();
+    });
+</script>

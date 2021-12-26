@@ -20,7 +20,7 @@ $query1 = mysqli_query($link, $sql1);
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta http-equiv="x-ua-compatible" content="ie=edge">
 
-    <title>AdminLTE 3 | Starter</title>
+    <title>AdminLTE 3 | Insert Type</title>
 
     <script src="js/jquery.min.js"></script>
     <link rel="stylesheet" href="plugins/fontawesome-free/css/all.min.css">
@@ -37,7 +37,7 @@ $query1 = mysqli_query($link, $sql1);
     <script type="text/javascript" src="ckeditor/ckeditor.js"></script>
 </head>
 
-<body class="hold-transition sidebar-mini">
+<body class="hold-transition sidebar-mini layout-fixed">
     <div class="wrapper">
 
         <!-- Navbar -->

@@ -12,31 +12,31 @@ if (count($_POST) > 0) {
         if ($_POST['id'] == $_SESSION["id"]) {
             Header("location: logout.php");
         } else{
-        mysqli_query($link, "UPDATE crop_user set  user='" . $_POST['user'] . "', name='" . $_POST['name'] . "', email='" . $_POST['email'] . "' ,
+        mysqli_query($link, "UPDATE user set  user='" . $_POST['user'] . "', name='" . $_POST['name'] . "', email='" . $_POST['email'] . "' ,
                              tel='" . $_POST['tel'] . "',type='" . $_POST['type'] . "' WHERE id='" . $_POST['id'] . "'");
-            Header("location: user.php");
+            Header("location: page_user.php");
         }
     }
     if ($_SESSION["type"] == "User") {
         if ($_POST['id'] == $_SESSION["id"] ){
             Header("location: logout.php");
         } else{
-        mysqli_query($link, "UPDATE crop_user set  user='" . $_POST['user'] . "', name='" . $_POST['name'] . "', email='" . $_POST['email'] . "' ,
+        mysqli_query($link, "UPDATE user set  user='" . $_POST['user'] . "', name='" . $_POST['name'] . "', email='" . $_POST['email'] . "' ,
                      tel='" . $_POST['tel'] . "',type='" . $_POST['type'] . "' WHERE id='" . $_POST['id'] . "'");
-            Header("location: user.php");
+            Header("location: page_user.php");
         }
     }
     if ($_SESSION["type"] == "Stuff") {
         if ($_POST['id'] == $_SESSION["id"]) {
             Header("location: logout.php");
         } else{
-        mysqli_query($link, "UPDATE crop_user set  user='" . $_POST['user'] . "', name='" . $_POST['name'] . "', email='" . $_POST['email'] . "' ,
+        mysqli_query($link, "UPDATE user set  user='" . $_POST['user'] . "', name='" . $_POST['name'] . "', email='" . $_POST['email'] . "' ,
                      tel='" . $_POST['tel'] . "',type='" . $_POST['type'] . "' WHERE id='" . $_POST['id'] . "'");
-            Header("location: user.php");
+            Header("location: page_user.php");
         }
     }
 }
-$result = mysqli_query($link, "SELECT * FROM crop_user WHERE id='" . $_GET['id'] . "'");
+$result = mysqli_query($link, "SELECT * FROM user WHERE id='" . $_GET['id'] . "'");
 $row = mysqli_fetch_array($result);
 
 ?>
@@ -48,7 +48,7 @@ $row = mysqli_fetch_array($result);
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta http-equiv="x-ua-compatible" content="ie=edge">
 
-    <title>AdminLTE 3 | Starter</title>
+    <title>AdminLTE 3 | Update User</title>
 
     <script src="js/jquery.min.js"></script>
     <link rel="stylesheet" href="plugins/fontawesome-free/css/all.min.css">
@@ -65,7 +65,7 @@ $row = mysqli_fetch_array($result);
     <script type="text/javascript" src="ckeditor/ckeditor.js"></script>
 </head>
 
-<body class="hold-transition sidebar-mini">
+<body class="hold-transition sidebar-mini layout-fixed">
     <div class="wrapper">
 
         <!-- Navbar -->
@@ -210,13 +210,13 @@ $row = mysqli_fetch_array($result);
                                 <input type="submit" class="btn btn-primary" value="Submit">
                                 <?php
                                 if ($_SESSION["type"] == "User") {
-                                    $check = "user.php";
+                                    $check = "page_user.php";
                                 }
                                 if ($_SESSION["type"] == "Admin") {
-                                    $check = "user.php";
+                                    $check = "page_user.php";
                                 }
                                 if ($_SESSION["type"] == "Stuff") {
-                                    $check = "user.php";
+                                    $check = "page_user.php";
                                 }
 
                                 ?>

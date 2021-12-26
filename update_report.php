@@ -23,7 +23,7 @@ $query3 = mysqli_query($link, $sql3);
 
 $sql4 = "SELECT Report_ID, report.Corp_ID, report.Type_ID, report.Car_ID, insurance.Corp_Name,
                 brand.Car_Name, type.Type_Name, Report_Detail, Date_Now, Date_Ext,
-                Report_Status, File1, File2, File3 
+                Report_Status
          FROM report 
          INNER JOIN insurance ON insurance.Corp_ID = report.Corp_ID
          INNER JOIN brand ON brand.Car_ID = report.Car_ID
@@ -42,9 +42,7 @@ foreach ($query4 as $value) {
     $Date_Ext_s = $value['Date_Ext'];
     $status_s = $value['Report_Status'];
     $detail_s = $value['Report_Detail'];
-    $file1s = $value['File1'];
-    $file2s = $value['File2'];
-    $file3s = $value['File3'];
+
 }
 ?>
 <?php
@@ -60,61 +58,60 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $status = $_POST['status'];
 
 
-    date_default_timezone_set('Asia/Bangkok');
-    $nameDate = date('Ymd'); //เก็บวันที่
+    // date_default_timezone_set('Asia/Bangkok');
+    // $nameDate = date('Ymd'); //เก็บวันที่
 
-    $upload1 = $_FILES['file1']['name'];
-    $upload2 = $_FILES['file2']['name'];
-    $upload3 = $_FILES['file3']['name'];
+    // $upload1 = $_FILES['file1']['name'];
+    // $upload2 = $_FILES['file2']['name'];
+    // $upload3 = $_FILES['file3']['name'];
 
-    $path = "myFile/";
+    // $path = "myFile/";
 
-    if ($upload1 == '') {
-        $addtext1='';
-    } 
-    else {
-        $numrand1 = (mt_rand(0, 1000)); //สุ่มเลข
-        $type1 = strrchr($_FILES['file1']['name'], ".");
-        $newname1 = $nameDate . $numrand1 . $type1;
-        $path_copy1 = $path . $newname1;
-        move_uploaded_file($_FILES['file1']['tmp_name'], $path_copy1);
+    // if ($upload1 == '') {
+    //     $addtext1='';
+    // } 
+    // else {
+    //     $numrand1 = (mt_rand(0, 1000)); //สุ่มเลข
+    //     $type1 = strrchr($_FILES['file1']['name'], ".");
+    //     $newname1 = $nameDate . $numrand1 . $type1;
+    //     $path_copy1 = $path . $newname1;
+    //     move_uploaded_file($_FILES['file1']['tmp_name'], $path_copy1);
 
-        $addtext1 = ", File1 ='$newname1'";
-    }
-    if ($upload2 == '') {
-        $addtext2 ='';
-    } 
-    else {
-        $numrand2 = (mt_rand(1001, 2000));
-        $type2 = strrchr($_FILES['file2']['name'], ".");
-        $newname2 = $nameDate . $numrand2 . $type2;
-        $path_copy2 = $path . $newname2;
-        move_uploaded_file($_FILES['file2']['tmp_name'], $path_copy2);
+    //     $addtext1 = ", File1 ='$newname1'";
+    // }
+    // if ($upload2 == '') {
+    //     $addtext2 ='';
+    // } 
+    // else {
+    //     $numrand2 = (mt_rand(1001, 2000));
+    //     $type2 = strrchr($_FILES['file2']['name'], ".");
+    //     $newname2 = $nameDate . $numrand2 . $type2;
+    //     $path_copy2 = $path . $newname2;
+    //     move_uploaded_file($_FILES['file2']['tmp_name'], $path_copy2);
 
-        $addtext2 = ", File2 = '$newname2'";
-    }
-    if ($upload3 == '') {
-        $addtext3='';
-    }
-    else {
-        $numrand3 = (mt_rand(2001, 3000));
-        $type3 = strrchr($_FILES['file3']['name'], ".");
-        $newname3 = $nameDate . $numrand3 . $type3;
-        $path_copy3 = $path . $newname3;
-        move_uploaded_file($_FILES['file3']['tmp_name'], $path_copy3);
+    //     $addtext2 = ", File2 = '$newname2'";
+    // }
+    // if ($upload3 == '') {
+    //     $addtext3='';
+    // }
+    // else {
+    //     $numrand3 = (mt_rand(2001, 3000));
+    //     $type3 = strrchr($_FILES['file3']['name'], ".");
+    //     $newname3 = $nameDate . $numrand3 . $type3;
+    //     $path_copy3 = $path . $newname3;
+    //     move_uploaded_file($_FILES['file3']['tmp_name'], $path_copy3);
 
-        $addtext3 = ", File3 = '$newname3'";
+    //     $addtext3 = ", File3 = '$newname3'";
 
-    }
+    // }
   
 
 
     $sqls = "UPDATE report SET Corp_ID=' $corp_id', Type_ID=' $type_id', Car_ID=' $brand_id', Report_Status='$status',Report_Detail='$detail',
-     Date_Now='$date_now',Date_ext='$date_ext',Report_Status = '$status' $addtext1 $addtext2 $addtext3 
+     Date_Now='$date_now',Date_ext='$date_ext',Report_Status = '$status'
      WHERE Report_ID = $id";
     $stmt = mysqli_query($link, $sqls);
     if ($stmt) {
-
         echo "<script type='text/javascript'>";
         echo "alert('เพิ่มข้อมูลสำเร็จ');";
         echo "window.location = 'page_report.php';";
@@ -134,7 +131,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta http-equiv="x-ua-compatible" content="ie=edge">
 
-    <title>AdminLTE 3 | Starter</title>
+    <title>AdminLTE 3 | Update Report</title>
 
     <script src="js/jquery.min.js"></script>
     <link rel="stylesheet" href="plugins/fontawesome-free/css/all.min.css">
@@ -151,117 +148,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <script type="text/javascript" src="ckeditor/ckeditor.js"></script>
 </head>
 
-<body class="hold-transition sidebar-mini">
-    <div class="wrapper">
-
-        <!-- Navbar -->
-        <nav class="main-header navbar navbar-expand navbar-white navbar-light">
-            <!-- Left navbar links -->
-            <ul class="navbar-nav">
-                <li class="nav-item">
-                    <a class="nav-link" data-widget="pushmenu" href="#" role="button"><i class="fas fa-bars"></i></a>
-            </ul>
-
-
-
-            <!-- Right navbar links -->
-
-
-        </nav>
-        <!-- /.navbar -->
-
-        <!-- Main Sidebar Container -->
-        <aside class="main-sidebar sidebar-dark-primary elevation-4">
-            <!-- Brand Logo -->
-
-            <h5 class="brand-link">
-                <img src="dist/img/AdminLTELogo.png" alt="AdminLTE Logo" class="brand-image img-circle elevation-3">
-                AdminLTE 3
-            </h5>
-
-            <!-- Sidebar -->
-            <div class="sidebar">
-                <!-- Sidebar user panel (optional) -->
-                <div class="user-panel mt-3 pb-3 mb-3 d-flex">
-
-                    <div class="info">
-                        <a href="page_profile.php" class="d-block"><i class="fas fa-user-circle"></i> My Profile</a>
-                    </div>
-                </div>
-
-                <!-- Sidebar Menu -->
-                <nav class="mt-2">
-                    <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
-                        <!-- Add icons to the links using the .nav-icon class
-               with font-awesome or any other icon font library -->
-                        <li class="nav-item">
-                            <a href="page_dashbord.php" class="nav-link">
-                                <i class="fas fa-chart-line"></i>
-                                <p>
-                                    Dashbord
-                                </p>
-                            </a>
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a href="page_user.php" class="nav-link">
-                                <i class="fas fa-users"></i>
-                                <p>
-                                    User
-                                </p>
-                            </a>
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a href="page_report.php" class="nav-link">
-                                <i class="fas fa-table"></i>
-                                <p>
-                                    Report
-                                </p>
-                            </a>
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a href="page_insurance.php" class="nav-link">
-                            <i class="fas fa-building"></i>
-                                <p>
-                                    Insurance
-                                </p>
-                            </a>
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a href="page_brand.php" class="nav-link">
-                            <i class="fas fa-copyright"></i>
-                                <p>
-                                    Brand
-                                </p>
-                            </a>
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a href="page_type.php" class="nav-link">
-                                <i class="fas fa-table"></i>
-                                <p>
-                                    type
-                                </p>
-                            </a>
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a href="logout.php" class="nav-link">
-                                <i class="fas fa-sign-out-alt"></i>
-                                <p>
-                                    Log out
-                                </p>
-                            </a>
-                            </a>
-                        </li>
-                    </ul>
-                </nav>
-            </div>
-            >
-        </aside>
+<?php 
+include "menu.php";
+?>
 
 
         <div class="content-wrapper">
@@ -284,13 +173,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                             <div class="form-group col-md-4">
                                 <label>ประเภทประกันเดิมคือ</label> - <?php echo $Type_name_s ?>*
                                 <select name="Type_ID" id="Type_ID" class="form-control">
-                                    <option value="<?php echo  $Type_id_s ?>">เลือกบริษัทเดิม</option>
+                                    <option value="<?php echo  $Type_id_s ?>">เลือกประเภทประกันเดิม</option>
                                     <?php while ($result2 = mysqli_fetch_assoc($query2)) : ?>
                                         <option value="<?= $result2["Type_ID"] ?>"><?= $result2["Type_Name"] ?></option>
                                     <?php endwhile; ?>
                                 </select>
                             </div>
-
                         </div>
                         <div class="form-row">
                             <div class="form-group col-md-4">
@@ -334,34 +222,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                                 </script>
                             </div>
                         </div>
-                        <div class="form-row">
-                            <label>ไฟล์ต่างๆ</label>
-                        </div>
-                        <div class="form-row">
-                            <div class="form-group-md-4">
-                                <label>ไฟล์ที่ 1 (เดิม)</label><br>
-                                <input type="text" name="file1s" value="<?php echo $file1s ?>" placeholder="ไม่มีไฟล์" required disabled>&nbsp;
-                                <input type="file" name="file1"><br><br>
-
-
-                            </div>
-                        </div>
-                        <div class="form-row">
-                            <div class="form-group-md-4">
-                                <label>ไฟล์ที่ 2 (เดิม)</label><br>
-                                <input type="text" name="file2s" value="<?php echo $file2s  ?>" placeholder="ไม่มีไฟล์" required disabled>&nbsp;
-                                <input type="file" name="file2"><br><br>
-
-
-                            </div>
-                        </div>
-                        <div class="form-row">
-                            <div class="form-group-md-4">
-                                <label>ไฟล์ที่ 3 (เดิม)</label><br>
-                                <input type="text" name="file2s" value="<?php echo $file3s ?>" placeholder="ไม่มีไฟล์" required disabled>&nbsp;
-                                <input type="file" name="file3">
-                            </div>
-                        </div>
+                     
+                        
 
                         <div class="form-row">
                             <div class="form-group-md-4">
