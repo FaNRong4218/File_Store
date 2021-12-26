@@ -9,17 +9,6 @@ if (!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true) {
 ?>
 <?php
 require_once "connect.php";
-$sql1 = "SELECT Corp_img, Corp_ID,Corp_Name FROM insurance WHERE Corp_Status= 'on';";
-$query1 = mysqli_query($link, $sql1);
-
-
-$sql2 = "SELECT Type_ID,Type_Name FROM type WHERE Type_Status= 'on';";
-$query2 = mysqli_query($link, $sql2);
-
-
-$sql3 = "SELECT Car_ID,Car_Name FROM brand WHERE Car_Status= 'on';";
-$query3 = mysqli_query($link, $sql3);
-
 
 $sql4 = "SELECT Report_ID, report.Corp_ID, report.Type_ID, report.Car_ID, insurance.Corp_Name,
                 brand.Car_Name, type.Type_Name, Report_Detail, Date_Now, Date_Ext,
@@ -44,6 +33,25 @@ foreach ($query4 as $value) {
     $detail_s = $value['Report_Detail'];
 
 }
+$sql1 = "SELECT Corp_img, Corp_ID,Corp_Name 
+        FROM insurance 
+        WHERE Corp_Status= 'on' AND Corp_ID != '$Corp_id_s' ";
+$query1 = mysqli_query($link, $sql1);
+
+
+$sql2 = "SELECT Type_ID,Type_Name 
+         FROM type 
+         WHERE Type_Status= 'on'AND Type_ID !='$Type_id_s'";
+$query2 = mysqli_query($link, $sql2);
+
+
+$sql3 = "SELECT Car_ID,Car_Name 
+         FROM brand 
+         WHERE Car_Status= 'on' AND Car_ID !='$Brand_id_s'";
+$query3 = mysqli_query($link, $sql3);
+
+
+
 ?>
 <?php
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
@@ -162,18 +170,18 @@ include "menu.php";
                         <div class="form-row">
                             <div class="form-group col-md-4">
                                 <input type="text" name="ids" value="<?php echo $Report_id_s ?>" hidden>
-                                <label>บริษัทประกันภัยเดิมคือ  </label> - <?php echo $Corp_name_s ?>*
+                                <label>บริษัทประกันภัย</label>
                                 <select name="Corp_ID" id="Corp_ID" class="form-control">
-                                    <option value="<?php echo $Corp_id_s ?>">เลือกบริษัทเดิม</option>
+                                    <option value="<?php echo $Corp_id_s ?>">เลือกบริษัทเดิม(<?php echo $Corp_name_s ?>)</option>
                                     <?php while ($result1 = mysqli_fetch_assoc($query1)) : ?>
                                         <option value="<?= $result1["Corp_ID"] ?>"><?= $result1["Corp_Name"] ?></option>
                                     <?php endwhile; ?>
                                 </select>
                             </div>
                             <div class="form-group col-md-4">
-                                <label>ประเภทประกันเดิมคือ</label> - <?php echo $Type_name_s ?>*
+                                <label>ประเภทประกัน</label>
                                 <select name="Type_ID" id="Type_ID" class="form-control">
-                                    <option value="<?php echo  $Type_id_s ?>">เลือกประเภทประกันเดิม</option>
+                                    <option value="<?php echo  $Type_id_s ?>">เลือกประเภทประกันเดิม (<?php echo $Type_name_s ?>)</option>
                                     <?php while ($result2 = mysqli_fetch_assoc($query2)) : ?>
                                         <option value="<?= $result2["Type_ID"] ?>"><?= $result2["Type_Name"] ?></option>
                                     <?php endwhile; ?>
@@ -183,8 +191,7 @@ include "menu.php";
                         <div class="form-row">
                             <div class="form-group col-md-4">
                                 <label>ยี่ห้อรถ</label><br>
-                                <p type="text" name="Car_ID" value="<?php echo $Brand_id_s ?>">ยี่ห้อรถเดิม คือ  <?php echo $Brand_name_s ?> /แก้ไข โดยการเลือกตัวเลือก*</p> 
-                                <label><input type="radio" name="Car_ID" value="<?php echo $Brand_id_s ?> " checked hidden></label>
+                                <label><input type="radio" name="Car_ID" value="<?php echo $Brand_id_s ?> " checked > <?php echo $Brand_name_s ?> (เดิม)</label>
                                 <?php while ($result3 = mysqli_fetch_assoc($query3)) : ?>
                                     <label><input type="radio" name="Car_ID" value="<?= $result3["Car_ID"] ?>"><?= $result3["Car_Name"] ?></label>
                                 <?php endwhile; ?>
@@ -194,7 +201,8 @@ include "menu.php";
                         <div class="form-row">
                             <div class="form-group col-md-4">
                                 <label>วันที่แก้ไข</label><br>
-                                <input name="date_now" type="date" value=<?php echo  date('Y-m-d') ?>>
+                                <input name="date_nows" type="date" value=<?php echo  date('Y-m-d') ?> disabled>
+                                <input name="date_now" type="date" value=<?php echo  date('Y-m-d') ?> hidden>
                             </div>
                             <div class="form-group col-md-4">
                                 <label>สถานะ</label><br>

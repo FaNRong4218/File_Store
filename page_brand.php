@@ -144,7 +144,7 @@ if (!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true) {
     <div class="content-wrapper">
       <div style="margin-left:4%; padding-top :4%;">
         <div class="container my-6">
-        <a href="insert_brand.php" title='Insert Data'>
+          <a href="insert_brand.php" title='Insert Data'>
             <button type=button class="btn btn-info">เพิ่มข้อมูล <i class="fas fa-plus-circle"></i></button><br><br>
           </a>
 
@@ -159,9 +159,9 @@ if (!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true) {
 
           if (mysqli_num_rows($result) > 0) {
           ?>
-            
+
             <table id="Table" class="table table-striped">
-                            <thead class="thead-dark">
+              <thead class="thead-dark">
                 <tr>
                   <th>รูป logo</th>
                   <th>ลำดับ</th>
@@ -175,25 +175,27 @@ if (!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true) {
                 while ($row = mysqli_fetch_array($result)) {
                 ?>
                   <tr>
-                    <td><img src="img/brand_car/<?php echo $row["Car_Img"]; ?>" width="80"></td>
+                    <td>
+
+                      <img src="img/brand_car/<?php echo $row["Car_Img"]; ?>" width="80"></ </td>
                     <td><?php echo $row["Car_ID"]; ?></td>
                     <td><?php echo $row["Car_Name"]; ?></td>
                     <td> <?php if ($row["Car_Status"] == 'on') {
-                          $color = "btn btn-success btn-sm";
-                          $text = "on";
-                        } else {
-                          $color = "btn btn-danger btn-sm";
-                          $text = "off";
-                        }
+                            $color = "btn btn-success btn-sm";
+                            $text = "on";
+                          } else {
+                            $color = "btn btn-danger btn-sm";
+                            $text = "off";
+                          }
                           ?>
-                      <a href="change_status.php?statusB=<?php echo $row["Car_Status"] ?>&idB=<?php echo $row["Car_ID"] ?>"title='เปลี่ยนสถานะ'>
+                      <a href="change_status.php?statusB=<?php echo $row["Car_Status"] ?>&idB=<?php echo $row["Car_ID"] ?>" title='เปลี่ยนสถานะ'>
                         <button type=button class="<?php echo $color ?>"><?php echo $text ?></button></a>
                     </td>
                     <td>
                       <a href="update_brand.php?Car_ID=<?php echo $row["Car_ID"]; ?>" title='แก้ไขข้อมูล'>
                         <button type=button class="btn btn-dark btn-sm"> <i class="far fa-edit"></i>
                         </button>
-                     </a>
+                      </a>
                     </td>
                   </tr>
                 <?php
