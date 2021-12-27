@@ -66,52 +66,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $status = $_POST['status'];
 
 
-    // date_default_timezone_set('Asia/Bangkok');
-    // $nameDate = date('Ymd'); //เก็บวันที่
-
-    // $upload1 = $_FILES['file1']['name'];
-    // $upload2 = $_FILES['file2']['name'];
-    // $upload3 = $_FILES['file3']['name'];
-
-    // $path = "myFile/";
-
-    // if ($upload1 == '') {
-    //     $addtext1='';
-    // } 
-    // else {
-    //     $numrand1 = (mt_rand(0, 1000)); //สุ่มเลข
-    //     $type1 = strrchr($_FILES['file1']['name'], ".");
-    //     $newname1 = $nameDate . $numrand1 . $type1;
-    //     $path_copy1 = $path . $newname1;
-    //     move_uploaded_file($_FILES['file1']['tmp_name'], $path_copy1);
-
-    //     $addtext1 = ", File1 ='$newname1'";
-    // }
-    // if ($upload2 == '') {
-    //     $addtext2 ='';
-    // } 
-    // else {
-    //     $numrand2 = (mt_rand(1001, 2000));
-    //     $type2 = strrchr($_FILES['file2']['name'], ".");
-    //     $newname2 = $nameDate . $numrand2 . $type2;
-    //     $path_copy2 = $path . $newname2;
-    //     move_uploaded_file($_FILES['file2']['tmp_name'], $path_copy2);
-
-    //     $addtext2 = ", File2 = '$newname2'";
-    // }
-    // if ($upload3 == '') {
-    //     $addtext3='';
-    // }
-    // else {
-    //     $numrand3 = (mt_rand(2001, 3000));
-    //     $type3 = strrchr($_FILES['file3']['name'], ".");
-    //     $newname3 = $nameDate . $numrand3 . $type3;
-    //     $path_copy3 = $path . $newname3;
-    //     move_uploaded_file($_FILES['file3']['tmp_name'], $path_copy3);
-
-    //     $addtext3 = ", File3 = '$newname3'";
-
-    // }
+   
   
 
 
