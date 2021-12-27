@@ -128,9 +128,9 @@ $query3 = mysqli_query($link, $sql3);
                   $text = "off";
                 }
                 ?>
-                <a href="change_status.php?statusR=<?php echo $row["Report_Status"] ?>&idR=<?php echo $row["Report_ID"] ?>">
-                  <button type=button class="<?php echo $color ?>"><?php echo  $text ?>
-                  </button></a>
+                  <button type=button class="<?php echo $color ?> change" 
+                   name="change" id="<?php echo $row["Report_ID"] ?>"><?php echo  $text ?>
+                  </button>
               </td>
               <td>
                 <a href="update_report.php?Report_ID=<?php echo $row["Report_ID"]; ?>" title='แก้ไขข้อมูล'>
@@ -189,6 +189,23 @@ $query3 = mysqli_query($link, $sql3);
               success: function(data) {
                 $('#File_detail').html(data);
                 $('#dataModal2').modal('show');
+              }
+            });
+          }
+        });
+        $(document).on('click', '.change', function() {
+          var Report_ID = $(this).attr("id");
+          if (Report_ID != '') {
+            $.ajax({
+              url: "Change_status.php",
+              method: "POST",
+              data: {
+                Report_ID: Report_ID
+              },
+              success: function(data) {
+                // $('#'+Report_ID).html(data);
+                $('#' + Report_ID).show();
+                location.reload(true); 
               }
             });
           }

@@ -188,8 +188,8 @@ if (!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true) {
                             $text = "off";
                           }
                           ?>
-                      <a href="change_status.php?statusB=<?php echo $row["Car_Status"] ?>&idB=<?php echo $row["Car_ID"] ?>" title='เปลี่ยนสถานะ'>
-                        <button type=button class="<?php echo $color ?>"><?php echo $text ?></button></a>
+                      <button type=button class="<?php echo $color ?> change" name="change" id="<?php echo $row["Car_ID"] ?>"><?php echo  $text ?>
+                      </button>
                     </td>
                     <td>
                       <a href="update_brand.php?Car_ID=<?php echo $row["Car_ID"]; ?>" title='แก้ไขข้อมูล'>
@@ -210,6 +210,24 @@ if (!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true) {
           }
           ?>
         </div>
+        <script>
+          $(document).on('click', '.change', function() {
+            var Car_ID = $(this).attr("id");
+            if (Car_ID != '') {
+              $.ajax({
+                url: "Change_status.php",
+                method: "POST",
+                data: {
+                  Car_ID: Car_ID
+                },
+                success: function(data) {
+                  $('#' + Car_ID).show();
+                  location.reload(true);
+                }
+              });
+            }
+          });
+        </script>
       </div>
 
     </div>

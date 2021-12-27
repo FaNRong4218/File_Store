@@ -36,128 +36,145 @@ if (!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true) {
 
 </head>
 
-<?php 
+<?php
 include "menu.php";
 ?>
 
-    <div class="content-wrapper">
-      <div style="margin-left:4%; padding-top :4%;">
-        <div class="container my-6">
-          <a href="insert_type.php" title='Insert Data'>
-            <button type=button class="btn btn-info">เพิ่มข้อมูล <i class="fas fa-plus-circle"></i></button><br><br>
-          </a>
-          <?php
-          include_once 'connect.php';
-          $sql = "SELECT * FROM type ;";
-          $result = mysqli_query($link, $sql);
+<div class="content-wrapper">
+  <div style="margin-left:4%; padding-top :4%;">
+    <div class="container my-6">
+      <a href="insert_type.php" title='Insert Data'>
+        <button type=button class="btn btn-info">เพิ่มข้อมูล <i class="fas fa-plus-circle"></i></button><br><br>
+      </a>
+      <?php
+      include_once 'connect.php';
+      $sql = "SELECT * FROM type ;";
+      $result = mysqli_query($link, $sql);
 
-          ?> <?php
+      ?> <?php
 
 
-                  if (mysqli_num_rows($result) > 0) {
-                  ?> <table id="Table" class="table table-striped">
-              <thead class="thead-dark">
-                <tr>
-                  <th>ลำดับ</th>
-                  <th>ชื่อประเภทประกัน</th>
-                  <th>สถานะ</th>
-                  <th>ฟังก์ชัน</th>
-                </tr>
-              </thead>
-              <tbody>
-                <?php
-                    while ($row = mysqli_fetch_array($result)) {
-                ?>
-                  <tr>
-                    <td><?php echo $row["Type_ID"]; ?></td>
-                    <td><?php echo $row["Type_Name"]; ?></td>
-                    <td> <?php if ($row["Type_Status"] == 'on') {
-                           $color = "btn btn-success btn-sm";
-                           $text = "on";
-                         } else {
-                           $color = "btn btn-danger btn-sm";
-                           $text = "off";
-                         }
-                          ?>
-                      <a href="change_status.php?statusT=<?php echo $row["Type_Status"] ?>&idT=<?php echo $row["Type_ID"] ?>">
-                        <button type=button class="<?php echo $color ?>"><?php echo $text ?></button></a>
-                    </td>
-                    <td>
-                      <a href="update_type.php?Type_ID=<?php echo $row["Type_ID"]; ?>" title='แก้ไขข้อมูล'>
-                        <button type=button class="btn btn-dark btn-sm"><i class="far fa-edit"></i>
-                        </button></a>
+              if (mysqli_num_rows($result) > 0) {
+              ?> <table id="Table" class="table table-striped">
+          <thead class="thead-dark">
+            <tr>
+              <th>ลำดับ</th>
+              <th>ชื่อประเภทประกัน</th>
+              <th>สถานะ</th>
+              <th>ฟังก์ชัน</th>
+            </tr>
+          </thead>
+          <tbody>
+            <?php
+                while ($row = mysqli_fetch_array($result)) {
+            ?>
+              <tr>
+                <td><?php echo $row["Type_ID"]; ?></td>
+                <td><?php echo $row["Type_Name"]; ?></td>
+                <td> <?php if ($row["Type_Status"] == 'on') {
+                        $color = "btn btn-success btn-sm";
+                        $text = "on";
+                      } else {
+                        $color = "btn btn-danger btn-sm";
+                        $text = "off";
+                      }
+                      ?>
+                  <button type=button class="<?php echo $color ?> change" name="change" id="<?php echo $row["Type_ID"] ?>"><?php echo  $text ?>
+                  </button>
+                </td>
+                <td>
+                  <a href="update_type.php?Type_ID=<?php echo $row["Type_ID"]; ?>" title='แก้ไขข้อมูล'>
+                    <button type=button class="btn btn-dark btn-sm"><i class="far fa-edit"></i>
+                    </button></a>
 
-                      <a title='รายละเอียด'>
-                        <button type=button class="btn btn-dark btn-sm view" name="view" value="ข้อมูล" id="<?php echo $row["Type_ID"]; ?>"><i class="fas fa-sticky-note"></i>
-                        </button>
-                        <a>
+                  <a title='รายละเอียด'>
+                    <button type=button class="btn btn-dark btn-sm view" name="view" value="ข้อมูล" id="<?php echo $row["Type_ID"]; ?>"><i class="fas fa-sticky-note"></i>
+                    </button>
+                    <a>
 
-                    </td>
+                </td>
 
-                  </tr>
-                <?php
-                    }
-                ?>
-                <script>
-                  //Ajax เพื่อ ดึงค่า Type_ID จาก ตาราง
-                  //ฟังชั่น on บันทึกการเป็นแปลงเมื่อคลิ๊ก และกำหนด element ใน class ชื่อ viwe_data เพื่อ
-                  //อิงการเปลี่ยนแปลงเมื่อคลิ๊กจุดนั้น
-                  $(document).on('click', '.view', function() {
-                    var Type_ID = $(this).attr("id"); //กำหนดตัวแปรเพื่อเก็บ ค่า Type_ID 
-                    if (Type_ID != '') {
-                      $.ajax({ //เขียน Ajex เพื่อส่งค่าไปยัง url ที่กำหนด
-                        url: "showType.php", //กำหนด Url
-                        method: "POST",
-                        data: {
-                          Type_ID: Type_ID //data ที่ได้ คือ Type_ID
-                        },
-                        success: function(data) {
-                          $('#Type_detail').html(data); //นำข้อมูลจาก ไฟล์ "showType.php"มา ใส่ใน id ชื่อ Type_detail
-                          $('#dataModal').modal('show'); // แสดง modal โดยมี id ชื่อ dataModal เป็นตัวอ้างอิง
-                        }
-                      });
+              </tr>
+            <?php
+                }
+            ?>
+            <script>
+              //Ajax เพื่อ ดึงค่า Type_ID จาก ตาราง
+              //ฟังชั่น on บันทึกการเป็นแปลงเมื่อคลิ๊ก และกำหนด element ใน class ชื่อ viwe_data เพื่อ
+              //อิงการเปลี่ยนแปลงเมื่อคลิ๊กจุดนั้น
+              $(document).on('click', '.view', function() {
+                var Type_ID = $(this).attr("id"); //กำหนดตัวแปรเพื่อเก็บ ค่า Type_ID 
+                if (Type_ID != '') {
+                  $.ajax({ //เขียน Ajex เพื่อส่งค่าไปยัง url ที่กำหนด
+                    url: "showType.php", //กำหนด Url
+                    method: "POST",
+                    data: {
+                      Type_ID: Type_ID //data ที่ได้ คือ Type_ID
+                    },
+                    success: function(data) {
+                      $('#Type_detail').html(data); //นำข้อมูลจาก ไฟล์ "showType.php"มา ใส่ใน id ชื่อ Type_detail
+                      $('#dataModal').modal('show'); // แสดง modal โดยมี id ชื่อ dataModal เป็นตัวอ้างอิง
                     }
                   });
-                </script>
-              </tbody>
-            </table>
-          <?php
-                  } else {
-                    echo "No result found";
-                  }
-          ?>
+                }
+              });
+              $(document).on('click', '.change', function() {
+                var Type_ID = $(this).attr("id");
+                if (Type_ID != '') {
+                  $.ajax({
+                    url: "Change_status.php",
+                    method: "POST",
+                    data: {
+                      Type_ID: Type_ID
+                    },
+                    success: function(data) {
+                      // $('#'+Report_ID).html(data);
+                      $('#' + Type_ID).show();
+                      location.reload(true);
+                    }
+                  });
+                }
+              });
+            </script>
+          </tbody>
+        </table>
+      <?php
+              } else {
+                echo "No result found";
+              }
+      ?>
+      <!-- Modal content-->
+      <div id="dataModal" class="modal fade" tabindex="-1" role="dialog">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+
           <!-- Modal content-->
-          <div id="dataModal" class="modal fade" tabindex="-1" role="dialog">
-            <div class="modal-dialog modal-dialog-centered" role="document">
-
-              <!-- Modal content-->
-              <div class="modal-content">
-                <div class="modal-header">
-                  <h5>รายละเอียดของประเภทประกัน<h5>
-                </div>
-                <div class="modal-body" id="Type_detail">
-                </div>
-                <div class="modal-footer">
-                  <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                </div>
-              </div>
-
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5>รายละเอียดของประเภทประกัน<h5>
+            </div>
+            <div class="modal-body" id="Type_detail">
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
             </div>
           </div>
 
         </div>
       </div>
+
     </div>
+  </div>
+</div>
 
 
 
 
-    <!-- jQuery -->
-    <!-- <script src="plugins/jquery/jquery.min.js"></script> -->
-    <!-- Bootstrap 4 -->
-    <script src="plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
-    <!-- AdminLTE App -->
-    <script src="dist/js/adminlte.min.js"></script>
+<!-- jQuery -->
+<!-- <script src="plugins/jquery/jquery.min.js"></script> -->
+<!-- Bootstrap 4 -->
+<script src="plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
+<!-- AdminLTE App -->
+<script src="dist/js/adminlte.min.js"></script>
 </body>
 
 </html>

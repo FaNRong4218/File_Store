@@ -93,8 +93,8 @@ include "menu.php";
                                             $text = "off";
                                         }
                                         ?>
-                                    <a href="change_status.php?statusI=<?php echo $row["Corp_Status"] ?>&idI=<?php echo $row["Corp_ID"] ?>">
-                                        <button type=button class="<?php echo $color ?>"><?php echo $text ?></button></a>
+                                    <button type=button class="<?php echo $color ?> change" name="change" id="<?php echo $row["Corp_ID"] ?>"><?php echo  $text ?>
+                                    </button>
                                 </td>
                                 <td><a href="update_insurance.php?Corp_ID=<?php echo $row["Corp_ID"]; ?>" title='แก้ไขข้อมูล'>
                                         <button type=button class="btn btn-dark btn-sm"> <i class="far fa-edit"></i>
@@ -112,6 +112,24 @@ include "menu.php";
                 echo "No result found";
             }
             ?>
+            <script>
+                $(document).on('click', '.change', function() {
+                    var Corp_ID = $(this).attr("id");
+                    if (Corp_ID!= '') {
+                        $.ajax({
+                            url: "Change_status.php",
+                            method: "POST",
+                            data: {
+                                Corp_ID: Corp_ID
+                            },
+                            success: function(data) {
+                                $('#' + Corp_ID).show();
+                                location.reload(true);
+                            }
+                        });
+                    }
+                });
+            </script>
         </div>
     </div>
 
