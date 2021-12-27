@@ -203,8 +203,6 @@ $query3 = mysqli_query($link, $sql3);
                 Report_ID: Report_ID
               },
               success: function(data) {
-                // $('#'+Report_ID).html(data);
-                $('#' + Report_ID).show();
                 location.reload(true); 
               }
             });
