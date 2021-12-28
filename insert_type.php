@@ -208,7 +208,7 @@ $query1 = mysqli_query($link, $sql1);
                         <div class="form-row">
                             <div class="form-group col-md-4">
                                 <input type="submit" class="btn btn-primary" value="ยืนยัน"> &nbsp;&nbsp;
-                                <input type="reset" class="btn btn-default" value="ล้างข้อมูล" onclick="window.location.reload();"> &nbsp;&nbsp;
+                                <input type="reset" class="btn btn-info" value="ล้างข้อมูล" onclick="window.location.reload();"> &nbsp;&nbsp;
                                 <input type=button class="btn btn-danger" onclick="window.location='page_type.php'" value=ยกเลิก>
                             </div>
                         </div>

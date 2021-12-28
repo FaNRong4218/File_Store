@@ -192,7 +192,7 @@ include "menu.php";
                             <div class="form-group-md-4">
                                 <br><br>
                                 <input type="submit" class="btn btn-primary" value="ยืนยัน"> &nbsp;&nbsp;
-                                <input type="reset" class="btn btn-default" value="ล้างข้อมูล" onclick="window.location.reload();"> &nbsp;&nbsp;
+                                <input type="reset" class="btn btn-info" value="ล้างข้อมูล" onclick="window.location.reload();"> &nbsp;&nbsp;
                                 <input type=button class="btn btn-danger" onclick="window.location='page_report.php'" value=ยกเลิก>
 
                             </div>
