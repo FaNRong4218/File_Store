@@ -19,6 +19,8 @@
     <link rel="stylesheet" type="text/css" href="http://cdn.datatables.net/1.10.12/css/jquery.dataTables.css">
     <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
     <script type="text/javascript" charset="utf8" src="http://cdn.datatables.net/1.10.12/js/jquery.dataTables.js"></script>
+
+    <script src="dist/css/MyStyle.css"></script>
 </head>
 
 <?php
@@ -91,82 +93,77 @@ mysqli_close($link);
                         <input name="hdnLine" id="hdnLine" type="hidden" value=0>
 
                         <div class="card">
-                            <div class="card-body">
-                                <div id="mySpan" name="mySpan" require>
-                        
+                            
+                            <div id="mySpan" name="mySpan" class="card-body bg-info">(ไฟล์ต่างๆ) <br>
                             </div>
+                            <script language="javascript">
+                                function fncCreateElement() {
+
+                                    var mySpan = document.getElementById('mySpan');
+                                    var myLine = document.getElementById('hdnLine');
+                                    myLine.value++;
+
+                                    var myElement4 = document.createElement('br');
+                                    myElement4.setAttribute('name', "br" + myLine.value);
+                                    myElement4.setAttribute('id', "br" + myLine.value);
+                                    mySpan.appendChild(myElement4);
+                                    
+                                    var div = document.createElement('div');
+                                    div.id = 'div'+myLine.value;
+                                    div.className = 'card-body bg-light';
+                                    div.innerHTML ='ไฟล์ที่ '+myLine.value;
+                                    
+                            
+
+                                    var myElement4 = document.createElement('br');
+                                    myElement4.setAttribute('name', "br" + myLine.value);
+                                    myElement4.setAttribute('id', "br" + myLine.value);
+                                    div.appendChild(myElement4);
+
+                                    var myElement2 = document.createElement('input');
+                                    myElement2.setAttribute('type', "file");
+                                    myElement2.setAttribute('name', "file[]");
+                                    myElement2.setAttribute('id', "file" + myLine.value);
+                                    myElement2.setAttribute('required', 'true');
+                                    div.appendChild(myElement2);
+
+                                    var myElement4 = document.createElement('br');
+                                    myElement4.setAttribute('name', "br" + myLine.value);
+                                    myElement4.setAttribute('id', "br" + myLine.value);
+                                    div.appendChild(myElement4);
+                                    
+                                    mySpan.appendChild(div);
+
+                                   
+                                }
+
+                                function fncDeleteElement() {
+
+                                    var mySpan = document.getElementById('mySpan');
+                                    var myLine = document.getElementById('hdnLine');
+
+                                    var deleteSpan = document.getElementById('div'+myLine.value);
+                                    mySpan.removeChild(deleteSpan);
+                                  
+                                    var deleteBr = document.getElementById("br" + myLine.value);
+                                    mySpan.removeChild(deleteBr);
+                                    // var deleteFile = document.getElementById("file" + myLine.value);
+                                    // mySpan.removeChild(deleteFile);
+                                    // var deleteBr = document.getElementById("br" + myLine.value);
+                                    // mySpan.removeChild(deleteBr);
+
+
+                                    myLine.value--;
+
+                                }
+                            </script>
+
                         </div>
-                        <script language="javascript">
-                            function fncCreateElement() {
-
-                                var mySpan = document.getElementById('mySpan');
-                                var myLine = document.getElementById('hdnLine');
-                                myLine.value++;
-
-                                var myElement4 = document.createElement('br');
-                                myElement4.setAttribute('name', "br" + myLine.value);
-                                myElement4.setAttribute('id', "br" + myLine.value);
-                                mySpan.appendChild(myElement4);
-
-
-                                var para = document.createElement("LABEL");
-                                para.innerText = "ไฟล์ที่ " + myLine.value;
-                                para.setAttribute('id', "txt" + myLine.value)
-                                mySpan.appendChild(para);
-
-                                var myElement4 = document.createElement('br');
-                                myElement4.setAttribute('name', "br" + myLine.value);
-                                myElement4.setAttribute('id', "br" + myLine.value);
-                                mySpan.appendChild(myElement4);
-
-
-
-                                var myElement2 = document.createElement('input');
-                                myElement2.setAttribute('type', "file");
-                                myElement2.setAttribute('name', "file[]");
-                                myElement2.setAttribute('id', "fil" + myLine.value);
-                                myElement2.setAttribute('required', 'true');
-                                mySpan.appendChild(myElement2);
-
-
-
-                                var myElement4 = document.createElement('br');
-                                myElement4.setAttribute('name', "br" + myLine.value);
-                                myElement4.setAttribute('id', "br" + myLine.value);
-                                mySpan.appendChild(myElement4);
-
-
-
-                            }
-
-                            function fncDeleteElement() {
-
-                                var mySpan = document.getElementById('mySpan');
-                                var myLine = document.getElementById('hdnLine');
-
-                                var deleteBr = document.getElementById("br" + myLine.value);
-                                mySpan.removeChild(deleteBr);
-                                var deletetxt = document.getElementById("txt" + myLine.value);
-                                mySpan.removeChild(deletetxt);
-                                var deleteBr = document.getElementById("br" + myLine.value);
-                                mySpan.removeChild(deleteBr);
-                                var deleteFile = document.getElementById("fil" + myLine.value);
-                                mySpan.removeChild(deleteFile);
-                                var deleteBr = document.getElementById("br" + myLine.value);
-                                mySpan.removeChild(deleteBr);
-
-
-                                myLine.value--;
-
-                            }
-                        </script>
-
-                    </div>
-                    <div class="form-group">
-                        <input type="submit" class="btn btn-primary" value="ยืนยัน"> &nbsp;&nbsp;
-                        <input type="reset" class="btn btn-default" value="ล้างข้อมูล" onclick="window.location.reload();"> &nbsp;&nbsp;
-                        <input type=button class="btn btn-danger" onclick="window.location='page_report.php'" value=ยกเลิก>
-                    </div>
+                        <div class="form-group">
+                            <input type="submit" class="btn btn-primary" value="ยืนยัน"> &nbsp;&nbsp;
+                            <input type="reset" class="btn btn-default" value="ล้างข้อมูล" onclick="window.location.reload();"> &nbsp;&nbsp;
+                            <input type=button class="btn btn-danger" onclick="window.location='page_report.php'" value=ยกเลิก>
+                        </div>
             </form>
         </div>
     </div>

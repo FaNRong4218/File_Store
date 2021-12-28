@@ -11,7 +11,7 @@ if (!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true) {
 <html lang="en">
 
 <head>
-    <meta charset="utf-8">
+    <meta charset="utf-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <title>AdminLTE 3 | Dashboard</title>
     <!-- Tell the browser to be responsive to screen width -->
@@ -31,14 +31,13 @@ if (!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true) {
     <!-- overlayScrollbars -->
     <link rel="stylesheet" href="plugins/overlayScrollbars/css/OverlayScrollbars.min.css">
     <!-- Daterange picker -->
-    <link rel="stylesheet" href="plugins/daterangepicker/daterangepicker.css">
+    <!-- <link rel="stylesheet" href="plugins/daterangepicker/daterangepicker.css"> -->
     <!-- summernote -->
     <link rel="stylesheet" href="plugins/summernote/summernote-bs4.css">
     <!-- Google Font: Source Sans Pro -->
     <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700" rel="stylesheet">
+    <!-- jQuery -->
 
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 
 </head>
 
@@ -52,12 +51,7 @@ if (!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true) {
                 <li class="nav-item">
                     <a class="nav-link" data-widget="pushmenu" href="#" role="button"><i class="fas fa-bars"></i></a>
             </ul>
-
-
-
             <!-- Right navbar links -->
-
-
         </nav>
         <!-- /.navbar -->
 
@@ -145,7 +139,51 @@ if (!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true) {
 
         </aside>
 
+        <?php
+        include_once 'connect.php';
+        $sql1 = "SELECT File_ID FROM file ";
+        $result1 = mysqli_query($link, $sql1);
+        $num1 = mysqli_num_rows($result1);
 
+        $sql2 = "SELECT id FROM user WHERE type='user'";
+        $result2 = mysqli_query($link, $sql2);
+        $num2 = mysqli_num_rows($result2);
+
+        $sql3 = "SELECT Car_Status FROM brand WHERE Car_Status='on'";
+        $result3 = mysqli_query($link, $sql3);
+        $num3 = mysqli_num_rows($result3);
+
+        $sql4 = "SELECT Car_Status FROM brand WHERE Car_Status='off'";
+        $result4 = mysqli_query($link, $sql4);
+        $num4 = mysqli_num_rows($result4);
+
+        $sql5 = "SELECT Corp_Status FROM insurance WHERE Corp_Status='on'";
+        $result5 = mysqli_query($link, $sql5);
+        $num5 = mysqli_num_rows($result5);
+
+        $sql6 = "SELECT Corp_Status FROM insurance WHERE Corp_Status='off'";
+        $result6 = mysqli_query($link, $sql6);
+        $num6 = mysqli_num_rows($result6);
+
+        $sql7 = "SELECT Type_Status FROM type WHERE Type_Status='on'";
+        $result7 = mysqli_query($link, $sql7);
+        $num7 = mysqli_num_rows($result7);
+
+        $sql8 = "SELECT Type_Status FROM type WHERE Type_Status='off'";
+        $result8 = mysqli_query($link, $sql8);
+        $num8 = mysqli_num_rows($result8);
+
+        $sql9 = "SELECT Report_Status FROM report WHERE Report_Status='on'";
+        $result9 = mysqli_query($link, $sql9);
+        $num9 = mysqli_num_rows($result9);
+
+        $sql10 = "SELECT Report_Status FROM report WHERE Report_Status='off'";
+        $result10 = mysqli_query($link, $sql10);
+        $num10 = mysqli_num_rows($result10);
+
+        $numOn = $num3 + $num5 + $num7 + $num9;
+        $numOff = $num4 + $num6 + $num8 + $num10;
+        ?>
         <div class="content-wrapper">
             <!-- Content Header (Page header) -->
             <div class="content-header">
@@ -154,44 +192,14 @@ if (!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true) {
                         <div class="row">
                             <div class="col-lg-3 col-6">
                                 <!-- small box -->
-                                <div class="small-box bg-info">
-                                    <div class="inner">
-                                        <h3>150</h3>
-
-                                        <p>New Orders</p>
-                                    </div>
-                                    <div class="icon">
-                                        <i class="ion ion-bag"></i>
-                                    </div>
-                                    <a href="#" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
-                                </div>
-                            </div>
-                            <!-- ./col -->
-                            <div class="col-lg-3 col-6">
-                                <!-- small box -->
                                 <div class="small-box bg-success">
                                     <div class="inner">
-                                        <h3>53<sup style="font-size: 20px">%</sup></h3>
+                                        <h3><?php echo $numOn ?> point</h3>
 
-                                        <p>Bounce Rate</p>
+                                        <p>Status ON</p>
                                     </div>
-                                    <div class="icon">
-                                        <i class="ion ion-stats-bars"></i>
-                                    </div>
-                                    <a href="#" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
-                                </div>
-                            </div>
-                            <!-- ./col -->
-                            <div class="col-lg-3 col-6">
-                                <!-- small box -->
-                                <div class="small-box bg-warning">
-                                    <div class="inner">
-                                        <h3>44</h3>
-
-                                        <p>User Registrations</p>
-                                    </div>
-                                    <div class="icon">
-                                        <i class="ion ion-person-add"></i>
+                                    <div class="icon ">
+                                        <i class="fas fa-lightbulb"></i>
                                     </div>
                                     <a href="#" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
                                 </div>
@@ -201,12 +209,42 @@ if (!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true) {
                                 <!-- small box -->
                                 <div class="small-box bg-danger">
                                     <div class="inner">
-                                        <h3>65</h3>
+                                        <h3><?php echo $numOff ?> point</h3>
 
-                                        <p>Unique Visitors</p>
+                                        <p>Status OFF</p>
                                     </div>
                                     <div class="icon">
-                                        <i class="ion ion-pie-graph"></i>
+                                        <i class="fas fa-power-off"></i>
+                                    </div>
+                                    <a href="#" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
+                                </div>
+                            </div>
+                            <!-- ./col -->
+                            <div class="col-lg-3 col-6">
+                                <!-- small box -->
+                                <div class="small-box bg-info">
+                                    <div class="inner">
+                                        <h3><?php echo $num2 ?> user</h3>
+
+                                        <p>User Registrations</p>
+                                    </div>
+                                    <div class="icon">
+                                        <i class="fas fa-user"></i>
+                                    </div>
+                                    <a href="#" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
+                                </div>
+                            </div>
+                            <!-- ./col -->
+                            <div class="col-lg-3 col-6">
+                                <!-- small box -->
+                                <div class="small-box bg-warning">
+                                    <div class="inner">
+                                        <h3><?php echo $num1 ?> file</h3>
+
+                                        <p>File</p>
+                                    </div>
+                                    <div class="icon">
+                                        <i class="fas fa-file"></i>
                                     </div>
                                     <a href="#" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
                                 </div>
@@ -214,18 +252,18 @@ if (!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true) {
                             <!-- ./col -->
                         </div>
                         <div class="row">
-                            <div class="col-lg-6">
-                                <div class="card">
-                                    <div class="card-header border-0">
+                            <div class="col-lg-6 ">
+                                <div class="card bg-dark">
+                                    <div class="card-header border-0 bg-info">
                                         <div class="d-flex justify-content-between">
                                             <h3>Hi and Welcome</h3>
                                         </div>
 
                                     </div>
-                                    <div class="card-body">
+                                    <div class="card-body bg-dark">
                                         <div class="form-row">
                                             <div class="form-group col-md-4">
-                                                <img src="img/etc/user_ic.png" width="70%">
+                                                <img src="img/etc/user_ic.png" width="70%" class="brand-image img-circle elevation-5">
                                             </div>
                                             <div class="form-group col-md-6">
                                                 <div class="form-row">
@@ -244,7 +282,7 @@ if (!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true) {
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="position-relative mb-4">
+                                    <div class="position-relative mb-4 bg-dark">
                                         <canvas id="visitors-chart" height="50"></canvas>
                                     </div>
 
@@ -253,179 +291,161 @@ if (!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true) {
                             </div>
 
                             <div class="col-lg-6">
-                                    <div class="card">
-                                    <div class="card-header border-0">
+                                <div class="card">
+                                    <div class="card-header border-0 bg-success">
                                         <div class="d-flex justify-content-between">
                                             <h3>My Work</h3>
                                         </div>
 
                                     </div>
-                                        <div class="card-body">
-                                            <ul class="todo-list" data-widget="todo-list">
-                                                <li>
-                                                    <!-- drag handle -->
-                                                    <span class="handle">
-                                                        <i class="fas fa-ellipsis-v"></i>
-                                                        <i class="fas fa-ellipsis-v"></i>
-                                                    </span>
-                                                    <!-- checkbox -->
-                                                    <div class="icheck-primary d-inline ml-2">
-                                                        <input type="checkbox" value="" name="todo1" id="todoCheck1">
-                                                        <label for="todoCheck1"></label>
-                                                    </div>
-                                                    <!-- todo text -->
-                                                    <span class="text">เช็ครายละเอียดของรายงาน</span>
-                                                    <!-- Emphasis label -->
-                                                    <small class="badge badge-danger"><i class="far fa-clock"></i> 2 mins</small>
-                                                    <!-- General tools such as edit or delete-->
-                                                    <div class="tools">
-                                                        <i class="fas fa-edit"></i>
-                                                        <i class="fas fa-trash-o"></i>
-                                                    </div>
-                                                </li>
-                                                <li>
-                                                    <span class="handle">
-                                                        <i class="fas fa-ellipsis-v"></i>
-                                                        <i class="fas fa-ellipsis-v"></i>
-                                                    </span>
-                                                    <div class="icheck-primary d-inline ml-2">
-                                                        <input type="checkbox" value="" name="todo2" id="todoCheck2" checked>
-                                                        <label for="todoCheck2"></label>
-                                                    </div>
-                                                    <span class="text">แก้ไขหน้าต่าง UI ใหม่</span>
-                                                    <small class="badge badge-primary"><i class="far fa-clock"></i> 5 day</small>
-                                                    <div class="tools">
-                                                        <i class="fas fa-edit"></i>
-                                                        <i class="fas fa-trash-o"></i>
-                                                        
-                                                    </div>
-                                                </li>
-                                                <li>
-                                                    <span class="handle">
-                                                        <i class="fas fa-ellipsis-v"></i>
-                                                        <i class="fas fa-ellipsis-v"></i>
-                                                    </span>
-                                                    <div class="icheck-primary d-inline ml-2">
-                                                        <input type="checkbox" value="" name="todo3" id="todoCheck3">
-                                                        <label for="todoCheck3"></label>
-                                                    </div>
-                                                    <span class="text">แก้ไข logo รถใหม่</span>
-                                                    <small class="badge badge-info"><i class="far fa-clock"></i> 2 day</small>
-                                                    <div class="tools">
-                                                        <i class="fas fa-edit"></i>
-                                                        <i class="fas fa-trash-o"></i>
-                                                    </div>
-                                                </li>
-                                                <li>
-                                                    <span class="handle">
-                                                        <i class="fas fa-ellipsis-v"></i>
-                                                        <i class="fas fa-ellipsis-v"></i>
-                                                    </span>
-                                                    <div class="icheck-primary d-inline ml-2">
-                                                        <input type="checkbox" value="" name="todo4" id="todoCheck4">
-                                                        <label for="todoCheck4"></label>
-                                                    </div>
-                                                    <span class="text">แก้ไข logo บริษัทใหม่</span>
-                                                    <small class="badge badge-success"><i class="far fa-clock"></i> 2 day</small>
-                                                    <div class="tools">
-                                                        <i class="fas fa-edit"></i>
-                                                        <i class="fas fa-trash-o"></i>
-                                                    </div>
-                                                </li>
-                                                <li>
-                                                    <span class="handle">
-                                                        <i class="fas fa-ellipsis-v"></i>
-                                                        <i class="fas fa-ellipsis-v"></i>
-                                                    </span>
-                                                    <div class="icheck-primary d-inline ml-2">
-                                                        <input type="checkbox" value="" name="todo5" id="todoCheck5">
-                                                        <label for="todoCheck5"></label>
-                                                    </div>
-                                                    <span class="text">เพิ่มข้อมูลรายงาน</span>
-                                                    <small class="badge badge-warning"><i class="far fa-clock"></i> 10 day</small>
-                                                    <div class="tools">
-                                                        <i class="fas fa-edit"></i>
-                                                        <i class="fas fa-trash-o"></i>
-                                                    </div>
-                                                </li>
-                                            </ul>
-                                        </div>
+                                    <div class="card-body bg-dark">
+                                        <ul class="todo-list" data-widget="todo-list">
+                                            <li>
+                                                <!-- drag handle -->
+                                                <span class="handle">
+                                                    <i class="fas fa-ellipsis-v"></i>
+                                                    <i class="fas fa-ellipsis-v"></i>
+                                                </span>
+                                                <!-- checkbox -->
+                                                <div class="icheck-primary d-inline ml-2">
+                                                    <input type="checkbox" value="" name="todo1" id="todoCheck1">
+                                                    <label for="todoCheck1"></label>
+                                                </div>
+                                                <!-- todo text -->
+                                                <span class="text">เช็ครายละเอียดของรายงาน</span>
+                                                <!-- Emphasis label -->
+                                                <small class="badge badge-danger"><i class="far fa-clock"></i> 2 mins</small>
+                                                <!-- General tools such as edit or delete-->
+                                                <div class="tools">
+                                                    <i class="fas fa-edit"></i>
+                                                    <i class="fas fa-trash-o"></i>
+                                                </div>
+                                            </li>
+                                            <li>
+                                                <span class="handle">
+                                                    <i class="fas fa-ellipsis-v"></i>
+                                                    <i class="fas fa-ellipsis-v"></i>
+                                                </span>
+                                                <div class="icheck-primary d-inline ml-2">
+                                                    <input type="checkbox" value="" name="todo2" id="todoCheck2" checked>
+                                                    <label for="todoCheck2"></label>
+                                                </div>
+                                                <span class="text">แก้ไขหน้าต่าง UI ใหม่</span>
+                                                <small class="badge badge-primary"><i class="far fa-clock"></i> 5 day</small>
+                                                <div class="tools">
+                                                    <i class="fas fa-edit"></i>
+                                                    <i class="fas fa-trash-o"></i>
+
+                                                </div>
+                                            </li>
+                                            <li>
+                                                <span class="handle">
+                                                    <i class="fas fa-ellipsis-v"></i>
+                                                    <i class="fas fa-ellipsis-v"></i>
+                                                </span>
+                                                <div class="icheck-primary d-inline ml-2">
+                                                    <input type="checkbox" value="" name="todo3" id="todoCheck3">
+                                                    <label for="todoCheck3"></label>
+                                                </div>
+                                                <span class="text">แก้ไข logo รถใหม่</span>
+                                                <small class="badge badge-info"><i class="far fa-clock"></i> 2 day</small>
+                                                <div class="tools">
+                                                    <i class="fas fa-edit"></i>
+                                                    <i class="fas fa-trash-o"></i>
+                                                </div>
+                                            </li>
+                                            <li>
+                                                <span class="handle">
+                                                    <i class="fas fa-ellipsis-v"></i>
+                                                    <i class="fas fa-ellipsis-v"></i>
+                                                </span>
+                                                <div class="icheck-primary d-inline ml-2">
+                                                    <input type="checkbox" value="" name="todo4" id="todoCheck4">
+                                                    <label for="todoCheck4"></label>
+                                                </div>
+                                                <span class="text">แก้ไข logo บริษัทใหม่</span>
+                                                <small class="badge badge-success"><i class="far fa-clock"></i> 2 day</small>
+                                                <div class="tools">
+                                                    <i class="fas fa-edit"></i>
+                                                    <i class="fas fa-trash-o"></i>
+                                                </div>
+                                            </li>
+                                            <li>
+                                                <span class="handle">
+                                                    <i class="fas fa-ellipsis-v"></i>
+                                                    <i class="fas fa-ellipsis-v"></i>
+                                                </span>
+                                                <div class="icheck-primary d-inline ml-2">
+                                                    <input type="checkbox" value="" name="todo5" id="todoCheck5">
+                                                    <label for="todoCheck5"></label>
+                                                </div>
+                                                <span class="text">เพิ่มข้อมูลรายงาน</span>
+                                                <small class="badge badge-warning"><i class="far fa-clock"></i> 10 day</small>
+                                                <div class="tools">
+                                                    <i class="fas fa-edit"></i>
+                                                    <i class="fas fa-trash-o"></i>
+                                                </div>
+                                            </li>
+                                        </ul>
                                     </div>
-                              
+                                </div>
+
 
                             </div>
                         </div>
                         <div class="row">
-                        <div class="col-lg-6">
-                                <div class="card">
+                            <div class="col-lg-6">
+                                <div class="card bg-danger">
                                     <div class="card-header border-0">
-                                        <div class="d-flex justify-content-between">
-                                            <h3>Report</h3>
-                                        </div>
-
+                                        <h3 class="card-title">
+                                            <i class="far fa-calendar-alt"></i>
+                                            Calendar
+                                        </h3>
                                     </div>
-                                    <div class="card-body table-responsive p-0">
-                                        <div class="card-body">
-                                            <?php
-                                            include_once 'connect.php';
-                                            $sql = "SELECT Report_ID, insurance.Corp_Name, brand.Car_Name, type.Type_Name, Report_Status,
-                                                    Date_Now,  Date_Ext
-                                                    FROM report 
-                                                    INNER JOIN insurance ON insurance.Corp_ID = report.Corp_ID
-                                                    INNER JOIN brand ON brand.Car_ID = report.Car_ID
-                                                    INNER JOIN type ON  type.Type_ID = report.Type_ID;";
-                                            $result = mysqli_query($link, $sql);
-                                            ?>
-
-                                            <table class="table table-striped table-valign-middle">
-                                                <thead>
-                                                    <tr>
-                                                        <th>Report ID</th>
-                                                        <th>Insurance Name</th>
-                                                        <th>Brand Name</th>
-                                                        <th>Type</th>
-                                                        <th>Date_Edit</th>
-                                                        <th>Date_Ext</th>
-                                                    </tr>
-                                                </thead>
-                                                <tbody>
-                                                    <?php
-                                                    while ($row = mysqli_fetch_array($result)) {
-                                                    ?>
-                                                        <tr>
-                                                            <td><?php echo $row["Report_ID"]; ?></td>
-                                                            <td><?php echo $row["Corp_Name"]; ?></td>
-                                                            <td><?php echo $row["Car_Name"]; ?></td>
-                                                            <td><?php echo $row["Type_Name"]; ?></td>
-                                                            <td><?php echo $row["Date_Now"]; ?></td>
-                                                            <td><?php echo $row["Date_Ext"]; ?></td>
-                                                        </tr>
-                                                    <?php
-                                                    }
-                                                    ?>
-                                                </tbody>
-                                            </table>
-                                        </div>
+                                    <!-- /.card-header -->
+                                    <div class="card-body bg-dark">
+                                        <!--The calendar -->
+                                        <div id="calendar" style="width: 100%"></div>
                                     </div>
+                                    <!-- /.card-body -->
+                                   
                                 </div>
+                                <div  hidden class="card-footer bg-transparent">
+                                            <div class="row">
+                                                <div class="col-4 text-center">
+                                                    <div id="sparkline-1"></div>
+                                                    <div class="text-white">Visitors</div>
+                                                </div>
+                                                <!-- ./col -->
+                                                <div class="col-4 text-center">
+                                                    <div id="sparkline-2"></div>
+                                                    <div class="text-white">Online</div>
+                                                </div>
+                                                <!-- ./col -->
+                                                <div class="col-4 text-center">
+                                                    <div id="sparkline-3"></div>
+                                                    <div class="text-white">Sales</div>
+                                                </div>
+                                                <!-- ./col -->
+                                            </div>
+                                            <!-- /.row -->
+                                        </div>
                             </div>
+                           
                         </div>
+
                     </div>
                 </div>
             </div>
         </div>
     </div>
 
-
-
-
-    <!-- jQuery -->
     <script src="plugins/jquery/jquery.min.js"></script>
     <!-- jQuery UI 1.11.4 -->
     <script src="plugins/jquery-ui/jquery-ui.min.js"></script>
     <!-- Resolve conflict in jQuery UI tooltip with Bootstrap tooltip -->
     <script>
-        $.widget.bridge('uibutton', $.ui.button)
+        $.widget.bridge("uibutton", $.ui.button);
     </script>
     <!-- Bootstrap 4 -->
     <script src="plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
@@ -453,6 +473,8 @@ if (!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true) {
     <script src="dist/js/pages/dashboard.js"></script>
     <!-- AdminLTE for demo purposes -->
     <script src="dist/js/demo.js"></script>
+
+
 </body>
 
 </html>

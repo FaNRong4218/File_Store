@@ -97,11 +97,12 @@ $(function () {
   sparkline2.draw([515, 519, 520, 522, 652, 810, 370, 627, 319, 630, 921]);
   sparkline3.draw([15, 19, 20, 22, 33, 27, 31, 27, 19, 30, 21]);
 
-  // The Calender
-  $('#calendar').datetimepicker({
+  //The Calender
+  $('#calendar').daterangepicker({
     format: 'L',
     inline: true
   })
+
 
   // SLIMSCROLL FOR CHAT WIDGET
   $('#chat-box').overlayScrollbars({
