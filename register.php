@@ -81,7 +81,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 echo "มีบางอย่างผิดพลาด!! กรุณาลองใหม่อีกครั้ง";
             }
 
-    
+
             mysqli_stmt_close($stmt);
         }
     }
@@ -94,64 +94,97 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 <html lang="en">
 
 <head>
-    <meta charset="UTF-8">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
     <title>Sign Up</title>
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
-    <style type="text/css">
-      
-    </style>
+    <script src="js/jquery.min.js"></script>
+    <link rel="stylesheet" href="plugins/fontawesome-free/css/all.min.css">
+    <link rel="stylesheet" href="dist/css/adminlte.min.css">
+    <link rel="stylesheet" href="dist/css/MyStyle.css">
+    <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700" rel="stylesheet">
+    <script src="https://kit.fontawesome.com/2f85583488.js" crossorigin="anonymous"></script>
+    <script type="text/javascript" charset="utf8" src="/DataTables/datatables.js"></script>
+
+    <link rel="stylesheet" type="text/css" href="http://cdn.datatables.net/1.10.12/css/jquery.dataTables.css">
+    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+    <script type="text/javascript" charset="utf8" src="http://cdn.datatables.net/1.10.12/js/jquery.dataTables.js"></script>
+
 </head>
 
 <body>
-<div class="content-wrapper">
-    <div style="margin-left:10%; padding-top :4%;">
-      <div class="container my-6">
-      <h2>สมัครสมาชิก</h2>
-            <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="post">
-                <div class="form-group <?php echo (!empty($username_err)) ? 'has-error' : ''; ?>">
-                    <label>ไอดีผู้ใช้</label>
-                    <input type="text" name="user" class="form-control" value="<?php echo $username; ?>">
-                    <span class="help-block"><?php echo $username_err; ?></span>
-                </div>
-                <div class="form-group <?php echo (!empty($password_err)) ? 'has-error' : ''; ?>">
-                    <label>รหัสผ่าน</label>
-                    <input type="password" name="pass" class="form-control" value="<?php echo $password; ?>">
-                    <span class="help-block"><?php echo $password_err; ?></span>
-                </div>
-                <div class="form-group <?php echo (!empty($confirm_password_err)) ? 'has-error' : ''; ?>">
-                    <label>ยืนยันรหัสผ่าน</label>
-                    <input type="password" name="confirm_pass" class="form-control" value="<?php echo $confirm_password; ?>">
-                    <span class="help-block"><?php echo $confirm_password_err; ?></span>
-                </div>
+    <div class="content-wrapper">
+        <div style="margin-left:10%; padding-top :4%;">
+            <div class="container my-8">
+                <h2>สมัครสมาชิก</h2>
+                <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="post">
+                    <div class="card">
+                        <div class="card-body">
+                            <div class="form-row">
+                                <div class="form-group col-md-8 <?php echo (!empty($username_err)) ? 'has-error' : ''; ?>">
+                                    <label>ไอดีผู้ใช้</label>
+                                    <input type="text" name="user" class="form-control" value="<?php echo $username; ?>">
+                                    <span class="help-block"><?php echo $username_err; ?></span>
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group col-md-8  <?php echo (!empty($password_err)) ? 'has-error' : ''; ?>">
+                                    <label>รหัสผ่าน</label>
+                                    <input type="password" name="pass" class="form-control" value="<?php echo $password; ?>">
+                                    <span class="help-block"><?php echo $password_err; ?></span>
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group col-md-8<?php echo (!empty($confirm_password_err)) ? 'has-error' : ''; ?>">
+                                    <label>ยืนยันรหัสผ่าน</label>
+                                    <input type="password" name="confirm_pass" class="form-control" value="<?php echo $confirm_password; ?>">
+                                    <span class="help-block"><?php echo $confirm_password_err; ?></span>
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group col-md-8">
+                                    <label>ชื่อ</label>
+                                    <input type="text" name="name" class="form-control" value="" required="">
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group col-md-8">
+                                    <label>อีเมล</label>
+                                    <input type="email" name="email" class="form-control" value="" required="">
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group col-md-8">
+                                    <label>เบอร์โทรศัพท์</label>
+                                    <input type="tel" name="tel" class="form-control" value="" maxlength="10" required="">
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group col-md-8">
+                                    <label>ประเภท</label><br>
+                                    <label class="radio-inline"><input type="radio" value="User" name="type" checked>User</label>
 
-                <div class="form-group">
-                    <label>ชื่อ</label>
-                    <input type="text" name="name" class="form-control" value=""  required="">
-                </div>
-                <div class="form-group ">
-                    <label>อีเมล</label>
-                    <input type="email" name="email" class="form-control" value=""  required="">
-                </div>
-                <div class="form-group">
-                    <label>เบอร์โทรศัพท์</label>
-                    <input type="tel" name="tel" class="form-control" value="" maxlength="10" required="">
-                </div>
-                <div class="form-group">
-                    <label>ประเภท</label><br>
-                    <label class="radio-inline"><input type="radio" value="User" name="type" checked>User</label>
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group col-md-8">
+                                    <input type="submit" class="btn btn-primary" value="Submit">
+                                    <input type="reset" class="btn btn-default" value="Reset">
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group col-md-8">
+                                    <p>คุณมีรหัสแล้วหรือไม่? <a href="login.php">เข้าสู่ระบบที่นี่</a>.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
 
-                </div>
-                <div class="form-group">
-                    <input type="submit" class="btn btn-primary" value="Submit">
-                    <input type="reset" class="btn btn-default" value="Reset">
-                </div>
-                <p>คุณมีรหัสแล้วหรือไม่? <a href="login.php">เข้าสู่ระบบที่นี่</a>.</p>
-            </form>
-      </div>
-    </div>
-    </div>
-     
-           
+
 </body>
 
 

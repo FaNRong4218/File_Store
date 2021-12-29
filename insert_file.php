@@ -21,9 +21,9 @@
     <script type="text/javascript" charset="utf8" src="http://cdn.datatables.net/1.10.12/js/jquery.dataTables.js"></script>
 
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-  <script src="dist/css/MyStyle.css"></script>
-    
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script src="dist/css/MyStyle.css"></script>
+
 </head>
 
 <?php
@@ -89,10 +89,10 @@ mysqli_close($link);
             <h2>เพิ่มไฟล์</h2>
             <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="post" enctype="multipart/form-data">
                 <div class="form-row">
-                    <div class="form-group col-md-10">
+                    <div class="form-group col-md-12">
                         <input type="text" name="ids" value="<?php echo $ids ?>" hidden>
-                        <input name="btnCreate" type="button" value="เพิ่มไฟล์" onClick="JavaScript:fncCreateElement();">
-                        <input name="btnDelete" type="button" value="ลบไฟล์" onClick="JavaScript:fncDeleteElement();"><br><br>
+                        <input name="btnCreate" type="button" class="btn btn-sm btn-success" value="เพิ่มไฟล์" onClick="JavaScript:fncCreateElement();">
+                        <input name="btnDelete" type="button" class="btn btn-sm btn-danger" value="ลบไฟล์" onClick="JavaScript:fncDeleteElement();"><br><br>
                         <input name="hdnLine" id="hdnLine" type="hidden" value=0>
 
                         <div class="card">
@@ -167,6 +167,7 @@ mysqli_close($link);
                             <input type="reset" class="btn btn-info" value="ล้างข้อมูล" onclick="window.location.reload();"> &nbsp;&nbsp;
                             <input type=button class="btn btn-danger" onclick="window.location='page_report.php'" value=ยกเลิก>
                         </div>
+                    </div>
             </form>
         </div>
     </div>
