@@ -18,7 +18,6 @@ if (!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true) {
   <script src="js/jquery.min.js"></script>
   <link rel="stylesheet" href="plugins/fontawesome-free/css/all.min.css">
   <link rel="stylesheet" href="dist/css/adminlte.min.css">
-  <link rel="stylesheet" href="dist/css/MyStyle.css">
   <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700" rel="stylesheet">
   <script src="https://kit.fontawesome.com/2f85583488.js" crossorigin="anonymous"></script>
   <script type="text/javascript" charset="utf8" src="/DataTables/datatables.js"></script>
@@ -29,7 +28,10 @@ if (!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true) {
 
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-  <script src="dist/css/MyStyle.css"></script>
+  <link rel="stylesheet" href="dist/css/myCSS.css">
+  <script src="dist/css/myCSS.css"></script>
+  
+
 </head>
 <?php
 include "menu.php";
@@ -79,7 +81,7 @@ $query3 = mysqli_query($link, $sql3);
         </div>
       </form>
 
-      <a href="insert_report.php" title='Insert Data'>
+      <a href="page_insert.php?Report=1" title='Insert Data'>
         <button type=button class="btn btn-info">เพิ่มข้อมูล <i class="fas fa-plus-circle"></i></button><br><br></a>
       <?php
       include_once 'connect.php';
@@ -121,19 +123,19 @@ $query3 = mysqli_query($link, $sql3);
               <td><?php echo $row["Date_Ext"]; ?></td>
               <td>
                 <?php if ($row["Report_Status"] == 'on') {
-                  $color = "btn btn-success btn-sm";
-                  $text = "on";
+                  $text = "checked";
                 } else {
-                  $color = "btn btn-danger btn-sm";
-                  $text = "off";
+                  $text = "";
                 }
                 ?>
-                  <button type=button class="<?php echo $color ?> change" 
-                   name="change" id="<?php echo $row["Report_ID"] ?>"><?php echo  $text ?>
-                  </button>
+                <label class="switch">
+                  <input type="checkbox"<?php echo $text ?> class="change" name="change" id="<?php echo $row["Report_ID"] ?>" >
+                  <span class="slider"></span>
+                </label>
+              
               </td>
               <td>
-                <a href="update_report.php?Report_ID=<?php echo $row["Report_ID"]; ?>" title='แก้ไขข้อมูล'>
+                <a href="page_update.php?Report_ID=<?php echo $row["Report_ID"]; ?>" title='แก้ไขข้อมูล'>
                   <button type=button class="btn btn-dark btn-sm"><i class="far fa-edit"></i>
                   </button></a>
 
@@ -202,8 +204,8 @@ $query3 = mysqli_query($link, $sql3);
               data: {
                 Report_ID: Report_ID
               },
-              success: function(data) {
-                location.reload(true); 
+              success: function(data) {             
+                console.log(data);
               }
             });
           }

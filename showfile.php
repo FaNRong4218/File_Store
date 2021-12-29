@@ -20,7 +20,7 @@ if (isset($_POST["Report_ID"])) {
     <script src="js/jquery.min.js"></script>
     <link rel="stylesheet" href="plugins/fontawesome-free/css/all.min.css">
     <link rel="stylesheet" href="dist/css/adminlte.min.css">
-    <link rel="stylesheet" href="dist/css/MyStyle.css">
+    
     <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700" rel="stylesheet">
     <script src="https://kit.fontawesome.com/2f85583488.js" crossorigin="anonymous"></script>
     <script type="text/javascript" charset="utf8" src="/DataTables/datatables.js"></script>
@@ -31,6 +31,9 @@ if (isset($_POST["Report_ID"])) {
 
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+    <link rel="stylesheet" href="dist/css/myCSS.css">
+    <script src="dist/css/myCSS.css"></script>
 </head>
 
 <body>
@@ -38,7 +41,7 @@ if (isset($_POST["Report_ID"])) {
 
     <div class="form-row">
         <div class="form-group col-md-12">
-            <a href="insert_file.php?id=<?php echo $ids  ?>" title='เพิ่มไฟล์'>
+            <a href="page_insert.php?id=<?php echo $ids  ?>" title='เพิ่มไฟล์'>
                 <button type=button class="btn btn-info">เพิ่มไฟล์ <i class="fas fa-plus-circle"></i></button><br><br>
             </a>
             <table id="Table" class="table table-striped">

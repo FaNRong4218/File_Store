@@ -21,7 +21,6 @@ if (!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true) {
   <script src="js/jquery.min.js"></script>
   <link rel="stylesheet" href="plugins/fontawesome-free/css/all.min.css">
   <link rel="stylesheet" href="dist/css/adminlte.min.css">
-  <link rel="stylesheet" href="dist/css/MyStyle.css">
   <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700" rel="stylesheet">
   <script src="https://kit.fontawesome.com/2f85583488.js" crossorigin="anonymous"></script>
   <script type="text/javascript" charset="utf8" src="/DataTables/datatables.js"></script>
@@ -33,7 +32,8 @@ if (!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true) {
 
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-
+  <link rel="stylesheet" href="dist/css/myCSS.css">
+  <script src="dist/css/myCSS.css"></script>
 </head>
 
 <?php
@@ -43,7 +43,7 @@ include "menu.php";
 <div class="content-wrapper">
   <div style="margin-left:4%; padding-top :4%;">
     <div class="container my-6">
-      <a href="insert_type.php" title='Insert Data'>
+      <a href="page_insert.php?Type=1" title='Insert Data'>
         <button type=button class="btn btn-info">เพิ่มข้อมูล <i class="fas fa-plus-circle"></i></button><br><br>
       </a>
       <?php
@@ -54,8 +54,8 @@ include "menu.php";
       ?> <?php
 
 
-              if (mysqli_num_rows($result) > 0) {
-              ?> <table id="Table" class="table table-striped">
+          if (mysqli_num_rows($result) > 0) {
+          ?> <table id="Table" class="table table-striped">
           <thead class="thead-dark">
             <tr>
               <th>ลำดับ</th>
@@ -66,24 +66,24 @@ include "menu.php";
           </thead>
           <tbody>
             <?php
-                while ($row = mysqli_fetch_array($result)) {
+            while ($row = mysqli_fetch_array($result)) {
             ?>
               <tr>
                 <td><?php echo $row["Type_ID"]; ?></td>
                 <td><?php echo $row["Type_Name"]; ?></td>
                 <td> <?php if ($row["Type_Status"] == 'on') {
-                        $color = "btn btn-success btn-sm";
-                        $text = "on";
+                        $text = "checked";
                       } else {
-                        $color = "btn btn-danger btn-sm";
-                        $text = "off";
+                        $text = "";
                       }
                       ?>
-                  <button type=button class="<?php echo $color ?> change" name="change" id="<?php echo $row["Type_ID"] ?>"><?php echo  $text ?>
-                  </button>
+                  <label class="switch">
+                  <input type="checkbox"<?php echo $text ?> class="change" name="change" id="<?php echo $row["Type_ID"] ?>" >
+                  <span class="slider"></span>
+                </label>
                 </td>
                 <td>
-                  <a href="update_type.php?Type_ID=<?php echo $row["Type_ID"]; ?>" title='แก้ไขข้อมูล'>
+                  <a href="page_update.php?Type_ID=<?php echo $row["Type_ID"]; ?>" title='แก้ไขข้อมูล'>
                     <button type=button class="btn btn-dark btn-sm"><i class="far fa-edit"></i>
                     </button></a>
 
@@ -96,7 +96,7 @@ include "menu.php";
 
               </tr>
             <?php
-                }
+            }
             ?>
             <script>
               //Ajax เพื่อ ดึงค่า Type_ID จาก ตาราง
@@ -128,9 +128,7 @@ include "menu.php";
                       Type_ID: Type_ID
                     },
                     success: function(data) {
-                      // $('#'+Report_ID).html(data);
-                      $('#' + Type_ID).show();
-                      location.reload(true);
+                      console.log(data);
                     }
                   });
                 }
@@ -139,9 +137,9 @@ include "menu.php";
           </tbody>
         </table>
       <?php
-              } else {
-                echo "No result found";
-              }
+          } else {
+            echo "No result found";
+          }
       ?>
       <!-- Modal content-->
       <div id="dataModal" class="modal fade" tabindex="-1" role="dialog">

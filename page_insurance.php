@@ -20,7 +20,6 @@ if (!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true) {
     <script src="js/jquery.min.js"></script>
     <link rel="stylesheet" href="plugins/fontawesome-free/css/all.min.css">
     <link rel="stylesheet" href="dist/css/adminlte.min.css">
-    <link rel="stylesheet" href="dist/css/MyStyle.css">
     <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700" rel="stylesheet">
     <script src="https://kit.fontawesome.com/2f85583488.js" crossorigin="anonymous"></script>
     <script type="text/javascript" charset="utf8" src="/DataTables/datatables.js"></script>
@@ -31,7 +30,8 @@ if (!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true) {
 
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-
+    <link rel="stylesheet" href="dist/css/myCSS.css">
+  <script src="dist/css/myCSS.css"></script>
     <style>
         img {
             border-radius: 50%;
@@ -47,7 +47,7 @@ include "menu.php";
 <div class="content-wrapper">
     <div style="margin-left:4%; padding-top :4%;">
         <div class="container my-6">
-            <a href="insert_insurance.php" title='เพิ่มข้อมูล'>
+            <a href="page_insert.php?Insurance=1" title='เพิ่มข้อมูล'>
                 <button type=button class="btn btn-info">เพิ่มข้อมูล <i class="fas fa-plus-circle"></i></button><br><br></a>
 
             <?php
@@ -86,17 +86,17 @@ include "menu.php";
                                 <td><?php echo $row["Corp_Name"]; ?></td>
                                 <td><?php echo $row["Corp_Date"]; ?></td>
                                 <td> <?php if ($row["Corp_Status"] == 'on') {
-                                            $color = "btn btn-success btn-sm";
-                                            $text = "on";
+                                            $text = "checked";
                                         } else {
-                                            $color = "btn btn-danger btn-sm";
-                                            $text = "off";
+                                            $text = "";
                                         }
                                         ?>
-                                    <button type=button class="<?php echo $color ?> change" name="change" id="<?php echo $row["Corp_ID"] ?>"><?php echo  $text ?>
-                                    </button>
+                                    <label class="switch">
+                                        <input type="checkbox" <?php echo $text ?> class="change" name="change" id="<?php echo $row["Corp_ID"] ?>">
+                                        <span class="slider"></span>
+                                    </label>
                                 </td>
-                                <td><a href="update_insurance.php?Corp_ID=<?php echo $row["Corp_ID"]; ?>" title='แก้ไขข้อมูล'>
+                                <td><a href="page_update.php?Corp_ID=<?php echo $row["Corp_ID"]; ?>" title='แก้ไขข้อมูล'>
                                         <button type=button class="btn btn-dark btn-sm"> <i class="far fa-edit"></i>
                                         </button></a>&nbsp;
                                 </td>
@@ -115,7 +115,7 @@ include "menu.php";
             <script>
                 $(document).on('click', '.change', function() {
                     var Corp_ID = $(this).attr("id");
-                    if (Corp_ID!= '') {
+                    if (Corp_ID != '') {
                         $.ajax({
                             url: "Change_status.php",
                             method: "POST",
@@ -123,8 +123,7 @@ include "menu.php";
                                 Corp_ID: Corp_ID
                             },
                             success: function(data) {
-                                $('#' + Corp_ID).show();
-                                location.reload(true);
+                                console.log(data);
                             }
                         });
                     }

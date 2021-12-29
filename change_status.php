@@ -7,7 +7,6 @@ if (isset($_POST["Report_ID"])) {
     foreach ($query1 as $value ){
         $status = $value['Report_Status'];
     }
-
     if ($status == 'on') {
         $sql = "UPDATE report SET Report_Status = 'off' WHERE Report_ID ='$idR'";
         $result = mysqli_query($link, $sql);

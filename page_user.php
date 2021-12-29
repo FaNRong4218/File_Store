@@ -178,7 +178,7 @@ if (!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true) {
                     <td><?php echo $row["tel"]; ?></td>
                     <td><?php echo $row["type"]; ?></td>
                     <td>
-                      <a href="update_user.php?id=<?php echo $row["id"]; ?>" title='Update Record'>
+                      <a href="page_update.php?id=<?php echo $row["id"]; ?>" title='Update Record'>
                       <button type=button class="btn btn-dark btn-sm"><i class="far fa-edit"></i>
                     </button></a>
                       <a href="delete_user.php?id=<?php echo $row["id"]; ?>&submit=DEL" onclick="return confirm('ต้องการจะลบผู้ใช้งานนี้หรือไม่ ?')" title='ลบผู้ใช้งาน'>

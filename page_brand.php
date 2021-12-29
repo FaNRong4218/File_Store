@@ -19,7 +19,6 @@ if (!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true) {
   <script src="js/jquery.min.js"></script>
   <link rel="stylesheet" href="plugins/fontawesome-free/css/all.min.css">
   <link rel="stylesheet" href="dist/css/adminlte.min.css">
-  <link rel="stylesheet" href="dist/css/MyStyle.css">
   <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700" rel="stylesheet">
   <script src="https://kit.fontawesome.com/2f85583488.js" crossorigin="anonymous"></script>
   <script type="text/javascript" charset="utf8" src="/DataTables/datatables.js"></script>
@@ -31,6 +30,8 @@ if (!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true) {
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 
+  <link rel="stylesheet" href="dist/css/myCSS.css">
+  <script src="dist/css/myCSS.css"></script>
   <style>
     img {
       border-radius: 50%;
@@ -144,7 +145,7 @@ if (!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true) {
     <div class="content-wrapper">
       <div style="margin-left:4%; padding-top :4%;">
         <div class="container my-6">
-          <a href="insert_brand.php" title='Insert Data'>
+          <a href="page_insert.php?brand=1" title='Insert Data'>
             <button type=button class="btn btn-info">เพิ่มข้อมูล <i class="fas fa-plus-circle"></i></button><br><br>
           </a>
 
@@ -181,18 +182,18 @@ if (!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true) {
                     <td><?php echo $row["Car_ID"]; ?></td>
                     <td><?php echo $row["Car_Name"]; ?></td>
                     <td> <?php if ($row["Car_Status"] == 'on') {
-                            $color = "btn btn-success btn-sm";
-                            $text = "on";
-                          } else {
-                            $color = "btn btn-danger btn-sm";
-                            $text = "off";
-                          }
-                          ?>
-                      <button type=button class="<?php echo $color ?> change" name="change" id="<?php echo $row["Car_ID"] ?>"><?php echo  $text ?>
-                      </button>
-                    </td>
+                                            $text = "checked";
+                                        } else {
+                                            $text = "";
+                                        }
+                                        ?>
+                                    <label class="switch">
+                                        <input type="checkbox" <?php echo $text ?> class="change" name="change" id="<?php echo $row["Car_ID"] ?>">
+                                        <span class="slider"></span>
+                                    </label>
+                                </td>
                     <td>
-                      <a href="update_brand.php?Car_ID=<?php echo $row["Car_ID"]; ?>" title='แก้ไขข้อมูล'>
+                      <a href="page_update.php?Car_ID=<?php echo $row["Car_ID"]; ?>" title='แก้ไขข้อมูล'>
                         <button type=button class="btn btn-dark btn-sm"> <i class="far fa-edit"></i>
                         </button>
                       </a>
@@ -222,7 +223,7 @@ if (!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true) {
                 },
                 success: function(data) {
                   $('#' + Car_ID).show();
-                  location.reload(true);
+                    header('Refresh:0; url=page_brand.php');
                 }
               });
             }
@@ -237,8 +238,8 @@ if (!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true) {
 
 
 
-  <!-- jQuery -->
-  <!-- <script src="plugins/jquery/jquery.min.js"></script> -->
+  <!-- jQuery
+  <script src="plugins/jquery/jquery.min.js"></script> -->
   <!-- Bootstrap 4 -->
   <script src="plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
   <!-- AdminLTE App -->
