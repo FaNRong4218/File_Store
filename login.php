@@ -48,17 +48,17 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                             $_SESSION["tel"] = $tel;
                             $_SESSION["email"] = $email;
 
-                            if ($_SESSION["type"] == "Admin") { 
+                            if ($_SESSION["type"] == "admin") { 
 
                                 Header("location:page_dashboard.php");
                             }
-                            if ($_SESSION["type"] == "Stuff") { 
+                            if ($_SESSION["type"] == "employee") { 
 
                                 Header("location: page_dashboard.php");
                             }
 
 
-                            if ($_SESSION["type"] == "User") { 
+                            if ($_SESSION["type"] == "member") { 
 
                                 Header("location: page_dashboard.php");
                             }

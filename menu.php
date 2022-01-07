@@ -1,3 +1,25 @@
+<?php
+include_once 'connect.php';
+
+if (!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true) {
+  header("location: login.php");
+  exit;
+}
+$id = $_SESSION['id'];
+if (empty($id)) {
+  header('Location:login.php');
+}
+$sql = "SELECT * FROM user WHERE id= $id ";
+$result = mysqli_query($link, $sql);
+$row = mysqli_fetch_assoc($result);
+
+
+$sqlp = "SELECT * FROM user_role  ";
+$resultp = mysqli_query($link, $sqlp);
+
+
+?>
+
 <body class="hold-transition sidebar-mini layout-fixed">
   <div class="wrapper">
 
@@ -8,12 +30,6 @@
         <li class="nav-item">
           <a class="nav-link" data-widget="pushmenu" href="#" role="button"><i class="fas fa-bars"></i></a>
       </ul>
-
-
-
-      <!-- Right navbar links -->
-
-
     </nav>
     <!-- /.navbar -->
 
@@ -22,70 +38,65 @@
       <!-- Brand Logo -->
 
       <h5 class="brand-link">
-        <img src="dist/img/AdminLTELogo.png" alt="AdminLTE Logo" class="brand-image img-circle elevation-3">
-        AdminLTE 3
+        <img src="img/etc/user_ic.png" alt="AdminLTE Logo" class="brand-image img-circle elevation-3">
+        <?php echo ($_SESSION["name"]); ?> (<?php echo ($_SESSION["type"]); ?>)
       </h5>
 
       <!-- Sidebar -->
       <div class="sidebar">
         <!-- Sidebar user panel (optional) -->
-        <div class="user-panel mt-3 pb-3 mb-3 d-flex">
 
-          <div class="info">
-            <a href="page_dashboard.php" class="d-block"><i class="fas fa-user-circle"></i> Dashboard</a>
-          </div>
-        </div>
 
         <!-- Sidebar Menu -->
         <nav class="mt-2">
           <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
             <!-- Add icons to the links using the .nav-icon class
                with font-awesome or any other icon font library -->
-            <li class="nav-item">
-              <a href="page_user.php" class="nav-link">
-                <i class="fas fa-users"></i>
+            <?php
+            while ($rowp = mysqli_fetch_assoc($resultp)) {
+              $idp = $rowp['id'];
+              if ($_SESSION['type'] == 'admin') {
+                $role = explode(",", $rowp['role']); //array
+                $result_array = array_search("admin$idp", $role); //array
+                if ($result_array !== false) {
+                  echo " <li class='nav-item'><a href='$rowp[link]' class='nav-link '>
+                <i class='$rowp[icon]'></i>
                 <p>
-                  User
+                $rowp[page]
                 </p>
-              </a>
-              </a>
-            </li>
-            <li class="nav-item">
-              <a href="page_report.php" class="nav-link">
-                <i class="fas fa-table"></i>
+                </a>
+              </li> ";
+                }
+              }
+              if ($_SESSION['type'] == 'member') {
+                $role = explode(",", $rowp['role']); //array
+                $result_array = array_search("member$idp", $role); //array
+                if ($result_array !== false) {
+                  echo " <li class='nav-item'><a href='$rowp[link]' class='nav-link '>
+                  <i class='$rowp[icon]'></i>
+                  <p>
+                  $rowp[page]
+                  </p>
+                  </a>
+                </li> ";
+                }
+              }
+              if ($_SESSION['type'] == 'employee') {
+                $role = explode(",", $rowp['role']); //array
+                $result_array = array_search("employee$idp", $role); //array
+                if ($result_array !== false) {
+                  echo " <li class='nav-item'><a href='$rowp[link]' class='nav-link '>
+                <i class='$rowp[icon]'></i>
                 <p>
-                  Report
+                $rowp[page]
                 </p>
-              </a>
-              </a>
-            </li>
-            <li class="nav-item">
-              <a href="page_insurance.php" class="nav-link">
-                <i class="fas fa-building"></i>
-                <p>
-                  Insurance
-                </p>
-              </a>
-              </a>
-            </li>
-            <li class="nav-item">
-              <a href="page_brand.php" class="nav-link">
-                <i class="fas fa-copyright"></i>
-                <p>
-                  Brand
-                </p>
-              </a>
-              </a>
-            </li>
-            <li class="nav-item">
-              <a href="page_type.php" class="nav-link">
-                <i class="fas fa-table"></i>
-                <p>
-                  type
-                </p>
-              </a>
-              </a>
-            </li>
+                </a>
+              </li> ";
+                }
+              }
+            }
+
+            ?>
             <li class="nav-item">
               <a href="logout.php" class="nav-link">
                 <i class="fas fa-sign-out-alt"></i>
@@ -98,5 +109,5 @@
           </ul>
         </nav>
       </div>
-      >
-    </aside>
+  </div>
+  </aside>

@@ -115,70 +115,70 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 <body>
     <div class="content-wrapper">
         <div style="margin-left:10%; padding-top :4%;">
-            <div class="container my-8">
+            <div class="container my-6">
                 <h2>สมัครสมาชิก</h2>
                 <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="post">
-                    <div class="card">
+                    
                         <div class="card-body">
                             <div class="form-row">
-                                <div class="form-group col-md-8 <?php echo (!empty($username_err)) ? 'has-error' : ''; ?>">
+                                <div class="form-group col-md-4 <?php echo (!empty($username_err)) ? 'has-error' : ''; ?>">
                                     <label>ไอดีผู้ใช้</label>
                                     <input type="text" name="user" class="form-control" value="<?php echo $username; ?>">
                                     <span class="help-block"><?php echo $username_err; ?></span>
                                 </div>
                             </div>
                             <div class="form-row">
-                                <div class="form-group col-md-8  <?php echo (!empty($password_err)) ? 'has-error' : ''; ?>">
+                                <div class="form-group col-md-4  <?php echo (!empty($password_err)) ? 'has-error' : ''; ?>">
                                     <label>รหัสผ่าน</label>
                                     <input type="password" name="pass" class="form-control" value="<?php echo $password; ?>">
                                     <span class="help-block"><?php echo $password_err; ?></span>
                                 </div>
                             </div>
                             <div class="form-row">
-                                <div class="form-group col-md-8<?php echo (!empty($confirm_password_err)) ? 'has-error' : ''; ?>">
+                                <div class="form-group col-md-4<?php echo (!empty($confirm_password_err)) ? 'has-error' : ''; ?>">
                                     <label>ยืนยันรหัสผ่าน</label>
                                     <input type="password" name="confirm_pass" class="form-control" value="<?php echo $confirm_password; ?>">
                                     <span class="help-block"><?php echo $confirm_password_err; ?></span>
                                 </div>
                             </div>
                             <div class="form-row">
-                                <div class="form-group col-md-8">
+                                <div class="form-group col-md-4">
                                     <label>ชื่อ</label>
                                     <input type="text" name="name" class="form-control" value="" required="">
                                 </div>
                             </div>
                             <div class="form-row">
-                                <div class="form-group col-md-8">
+                                <div class="form-group col-md-4">
                                     <label>อีเมล</label>
                                     <input type="email" name="email" class="form-control" value="" required="">
                                 </div>
                             </div>
                             <div class="form-row">
-                                <div class="form-group col-md-8">
+                                <div class="form-group col-md-4">
                                     <label>เบอร์โทรศัพท์</label>
                                     <input type="tel" name="tel" class="form-control" value="" maxlength="10" required="">
                                 </div>
                             </div>
                             <div class="form-row">
-                                <div class="form-group col-md-8">
+                                <div class="form-group col-md-4">
                                     <label>ประเภท</label><br>
-                                    <label class="radio-inline"><input type="radio" value="User" name="type" checked>User</label>
+                                    <label class="radio-inline"><input type="radio" value="member" name="type" checked>Member</label>
 
                                 </div>
                             </div>
                             <div class="form-row">
-                                <div class="form-group col-md-8">
+                                <div class="form-group col-md-4">
                                     <input type="submit" class="btn btn-primary" value="Submit">
                                     <input type="reset" class="btn btn-default" value="Reset">
                                 </div>
                             </div>
                             <div class="form-row">
-                                <div class="form-group col-md-8">
+                                <div class="form-group col-md-4">
                                     <p>คุณมีรหัสแล้วหรือไม่? <a href="login.php">เข้าสู่ระบบที่นี่</a>.</p>
                                 </div>
                             </div>
                         </div>
-                    </div>
+                    
                 </form>
             </div>
         </div>

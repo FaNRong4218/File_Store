@@ -26,6 +26,8 @@ if (!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true) {
     <script type="text/javascript" charset="utf8" src="http://cdn.datatables.net/1.10.12/js/jquery.dataTables.js"></script>
 
     <script type="text/javascript" src="ckeditor/ckeditor.js"></script>
+
+    <script src="plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
 </head>
 
 <?php
@@ -463,9 +465,9 @@ include "menu.php";
                                 <label>Type</label><br>
                                 <p>(type เดิม คือ <?php echo $type ?>)</p>
                                 <label><input type="radio" name="type" value="<?php echo $type ?>" hidden></label>
-                                <label><input type="radio" name="type" value="Admin"> Admin</label>
-                                <label><input type="radio" name="type" value="Stuff">Stuff </label>
-                                <label><input type="radio" name="type" value="User">User</label>
+                                <label><input type="radio" name="type" value="admin"> Admin</label>
+                                <label><input type="radio" name="type" value="employee">Employee </label>
+                                <label><input type="radio" name="type" value="member">member</label>
                             </div>
                             <input type="submit" class="btn btn-primary" value="ยืนยัน">
                             <?php

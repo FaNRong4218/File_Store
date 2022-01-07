@@ -26,11 +26,10 @@ if (!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true) {
   <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
   <script type="text/javascript" charset="utf8" src="http://cdn.datatables.net/1.10.12/js/jquery.dataTables.js"></script>
 
-  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+  <script src="plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
   <link rel="stylesheet" href="dist/css/myCSS.css">
   <script src="dist/css/myCSS.css"></script>
-  
+
 
 </head>
 <?php
@@ -54,19 +53,18 @@ $query3 = mysqli_query($link, $sql3);
       <form action="search.php" method="post">
         <div class="form-row">
           <div class="form-group col-md-2">
+            <label>เลือกวันที่ต้องการ</label><br>
+            <input type="radio" value="date_Now" name="date" required><label>วันแก้ไข</label>
+            <input type="radio" value="date_Ext" name="date" required><label>วันหมดอายุ</label>
+            <input type="radio" value="date_Start" name="date" required><label>วันเริ่มสร้าง</label>
+          </div>
+          <div class="form-group col-md-2">
             <label for="insurance">วันที่</label>
             <input name="date_start" type="date" value="">
           </div>
           <div class="form-group col-md-2">
             <label for="insurance">ถึงวันที่</label>
             <input name="date_end" type="date" value="">
-          </div>
-          <div class="form-group col-md-2">
-            <label>เลือกวันที่ต้องการ</label><br>
-            <input type="radio" value="date_Now" name="date" required><label>วันแก้ไข</label>
-            <input type="radio" value="date_Ext" name="date" required><label>วันหมดอายุ</label>
-            <input type="radio" value="date_Start" name="date" required><label>วันเริ่มสร้าง</label>
-
           </div>
         </div>
         <div class="form-row">
@@ -85,13 +83,14 @@ $query3 = mysqli_query($link, $sql3);
         <button type=button class="btn btn-info">เพิ่มข้อมูล <i class="fas fa-plus-circle"></i></button><br><br></a>
       <?php
       include_once 'connect.php';
-      $sql = "SELECT Report_ID, insurance.Corp_Name, brand.Car_Name, type.Type_Name, Report_Status,
+      $sql = "SELECT Report_ID, insurance.Corp_Name, brand.Car_Name, type.Type_Name, Report_Status,Report.Car_ID,
                   Date_Now,  Date_Ext, Date_Start
           FROM report 
           INNER JOIN insurance ON insurance.Corp_ID = report.Corp_ID
           INNER JOIN brand ON brand.Car_ID = report.Car_ID
-          INNER JOIN type ON  type.Type_ID = report.Type_ID;";
+          INNER JOIN type ON  type.Type_ID = report.Type_ID";
       $result = mysqli_query($link, $sql);
+
       ?>
 
 
@@ -111,6 +110,8 @@ $query3 = mysqli_query($link, $sql3);
         </thead>
         <tbody>
           <?php
+          $i = 1;
+          $i++;
           while ($row = mysqli_fetch_array($result)) {
           ?>
             <tr>
@@ -129,10 +130,10 @@ $query3 = mysqli_query($link, $sql3);
                 }
                 ?>
                 <label class="switch">
-                  <input type="checkbox"<?php echo $text ?> class="change" name="change" id="<?php echo $row["Report_ID"] ?>" >
+                  <input type="checkbox" <?php echo $text ?> class="change" name="change" id="<?php echo $row["Report_ID"] ?>">
                   <span class="slider"></span>
                 </label>
-              
+
               </td>
               <td>
                 <a href="page_update.php?Report_ID=<?php echo $row["Report_ID"]; ?>" title='แก้ไขข้อมูล'>
@@ -204,7 +205,7 @@ $query3 = mysqli_query($link, $sql3);
               data: {
                 Report_ID: Report_ID
               },
-              success: function(data) {             
+              success: function(data) {
                 console.log(data);
               }
             });
