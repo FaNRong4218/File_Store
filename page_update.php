@@ -1,10 +1,13 @@
 <?php
+
 session_start();
 if (!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true) {
     header("location: login.php");
     exit;
 }
 ?>
+<!DOCTYPE html>
+<html lang="en">
 
 <head>
     <meta charset="utf-8">
@@ -16,7 +19,6 @@ if (!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true) {
     <script src="js/jquery.min.js"></script>
     <link rel="stylesheet" href="plugins/fontawesome-free/css/all.min.css">
     <link rel="stylesheet" href="dist/css/adminlte.min.css">
-    <link rel="stylesheet" href="dist/css/MyStyle.css">
     <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700" rel="stylesheet">
     <script src="https://kit.fontawesome.com/2f85583488.js" crossorigin="anonymous"></script>
     <script type="text/javascript" charset="utf8" src="/DataTables/datatables.js"></script>
@@ -26,16 +28,21 @@ if (!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true) {
     <script type="text/javascript" charset="utf8" src="http://cdn.datatables.net/1.10.12/js/jquery.dataTables.js"></script>
 
     <script type="text/javascript" src="ckeditor/ckeditor.js"></script>
-
     <script src="plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
+
+    <link rel="stylesheet" href="plugins/bootstrap4-duallistbox/bootstrap-duallistbox.min.css">
+    <script src="plugins/bootstrap4-duallistbox/jquery.bootstrap-duallistbox.min.js"></script>
 </head>
 
 <?php
-include "menu.php";
+require_once "menu.php";
+require_once "connect.php";
 ?>
-<?php if (isset($_GET['Car_ID'])) { ?>
+
+
+<?php if (isset($_GET['Car_ID'])) {
+?>
     <?php
-    require_once "connect.php";
     $sqls = "SELECT * FROM brand WHERE Car_ID='" . $_GET['Car_ID'] . "'";
     $querys = mysqli_query($link, $sqls);
     foreach ($querys as $value) {
@@ -44,6 +51,7 @@ include "menu.php";
         $file_s = $value['Car_Img'];
     }
     ?>
+
     <div class="content-wrapper">
         <div style="margin-left:10%; padding-top :2%;">
             <div class="container my-6">
@@ -88,32 +96,31 @@ include "menu.php";
                             <img id="imgAvatar" width="40%">
                         </div>
                     </div>
-            </div>
-            <div class="form-row">
-                <div class="form-group col-md-4">
-                    <input type="text" name="imgs" value="<?php echo $file_s ?>" accept="image/*" required disabled>
-                </div>
-                <div class="form-group col-md-4">
 
-                    <input type="file" name="img" accept="image/* " OnChange="showPreview(this)">
-                </div>
+                    <div class="form-row">
+                        <div class="form-group col-md-4">
+                            <input type="text" name="imgs" value="<?php echo $file_s ?>" accept="image/*" required disabled>
+                        </div>
+                        <div class="form-group col-md-4">
+
+                            <input type="file" name="img" accept="image/* " OnChange="showPreview(this)">
+                        </div>
+                    </div>
+                    <br>
+                    <div class="form-row">
+                        <div class="form-group col-md-4">
+                            <input type="submit" class="btn btn-primary" value="ยืนยัน"> &nbsp;&nbsp;
+                            <input type="reset" class="btn btn-info" value="รีเซ็ตข้อมูล" onclick="window.location.reload();"> &nbsp;&nbsp;
+                            <input type=button class="btn btn-danger" onclick="window.location='page_brand.php'" value=ยกเลิก>
+                        </div>
+                    </div>
+                </form>
             </div>
-            <br>
-            <div class="form-row">
-                <div class="form-group col-md-4">
-                    <input type="submit" class="btn btn-primary" value="ยืนยัน"> &nbsp;&nbsp;
-                    <input type="reset" class="btn btn-info" value="ล้างข้อมูล" onclick="window.location.reload();"> &nbsp;&nbsp;
-                    <input type=button class="btn btn-danger" onclick="window.location='page_brand.php'" value=ยกเลิก>
-                </div>
-            </div>
-            </form>
         </div>
     </div>
 
-    </div>
 
 <?php } ?>
-
 <?php if (isset($_GET['Corp_ID'])) { ?>
     <?php
     require_once "connect.php";
@@ -184,7 +191,7 @@ include "menu.php";
             <div class="form-row">
                 <div class="form-group col-md-4">
                     <input type="submit" class="btn btn-primary" value="ยืนยัน"> &nbsp;&nbsp;
-                    <input type="reset" class="btn btn-info" value="ล้างข้อมูล" onclick="window.location.reload();"> &nbsp;&nbsp;
+                    <input type="reset" class="btn btn-info" value="รีเซ็ตข้อมูล" onclick="window.location.reload();"> &nbsp;&nbsp;
                     <input type=button class="btn btn-danger" onclick="window.location='page_insurance.php'" value=ยกเลิก>
                 </div>
             </div>
@@ -194,14 +201,10 @@ include "menu.php";
 
     </div>
 <?php } ?>
-<?php ?>
 <?php if (isset($_GET['Report_ID'])) { ?>
-    
+
     <?php
-
-    
-     require_once "connect.php";
-
+    //โชว์ ข้อมูลเดิมที่จะแก้ไข
     $sql4 = "SELECT Report_ID, report.Corp_ID, report.Type_ID, report.Car_ID, insurance.Corp_Name,
                 brand.Car_Name, type.Type_Name, Report_Detail, Date_Now, Date_Ext,
                 Report_Status
@@ -224,22 +227,29 @@ include "menu.php";
         $status_s = $value['Report_Status'];
         $detail_s = $value['Report_Detail'];
     }
+    //โชว์ id/ชื่อ บริษัทที่ไม่ได้เลือก
     $sql1 = "SELECT Corp_img, Corp_ID,Corp_Name 
         FROM insurance 
         WHERE Corp_Status= 'on' AND Corp_ID != '$Corp_id_s' ";
     $query1 = mysqli_query($link, $sql1);
 
-
+    //โชว์ id/ชื่อ ประเภทที่ไม่ได้เลือก
     $sql2 = "SELECT Type_ID,Type_Name 
          FROM type 
          WHERE Type_Status= 'on'AND Type_ID !='$Type_id_s'";
     $query2 = mysqli_query($link, $sql2);
 
-
+    //โชว์ id/ชื่อ รถที่เลือก
     $sql3 = "SELECT Car_ID,Car_Name 
-         FROM brand 
-         WHERE Car_Status= 'on' AND Car_ID !='$Brand_id_s'";
+             FROM brand 
+             WHERE Car_Status= 'on' AND Car_ID IN($Brand_id_s)";
     $query3 = mysqli_query($link, $sql3);
+
+    //โชว์ id/ชื่อ รถที่ไม่ได้เลือก
+    $sqlc = "SELECT Car_ID,Car_Name 
+         FROM brand 
+         WHERE Car_Status= 'on' AND Car_ID NOT IN($Brand_id_s) AND Car_ID!=6";
+    $queryc = mysqli_query($link, $sqlc);
     ?>
     <div class="content-wrapper">
         <div style="margin-left:10%; padding-top :2%;">
@@ -253,8 +263,8 @@ include "menu.php";
                             <label>บริษัทประกันภัย</label>
                             <select name="Corp_ID" id="Corp_ID" class="form-control">
                                 <option value="<?php echo $Corp_id_s ?>">เลือกบริษัทเดิม(<?php echo $Corp_name_s ?>)</option>
-                                <?php while ($result1 = mysqli_fetch_assoc($query1)) : ?>
-                                    <option value="<?= $result1["Corp_ID"] ?>"><?= $result1["Corp_Name"] ?></option>
+                                <?php while ($result = mysqli_fetch_assoc($query1)) : ?>
+                                    <option value="<?= $result["Corp_ID"] ?>"><?= $result["Corp_Name"] ?></option>
                                 <?php endwhile; ?>
                             </select>
                         </div>
@@ -262,37 +272,74 @@ include "menu.php";
                             <label>ประเภทประกัน</label>
                             <select name="Type_ID" id="Type_ID" class="form-control">
                                 <option value="<?php echo  $Type_id_s ?>">เลือกประเภทประกันเดิม (<?php echo $Type_name_s ?>)</option>
-                                <?php while ($result2 = mysqli_fetch_assoc($query2)) : ?>
-                                    <option value="<?= $result2["Type_ID"] ?>"><?= $result2["Type_Name"] ?></option>
+                                <?php while ($result = mysqli_fetch_assoc($query2)) : ?>
+                                    <option value="<?= $result["Type_ID"] ?>"><?= $result["Type_Name"] ?></option>
                                 <?php endwhile; ?>
                             </select>
                         </div>
                     </div>
                     <div class="form-row">
-                        <div class="form-group col-md-4">
-                            <label>ยี่ห้อรถ</label><br>
-                            <label><input type="radio" name="Car_ID" value="<?php echo $Brand_id_s ?> " checked> <?php echo $Brand_name_s ?> (เดิม)</label>
-                            <?php while ($result3 = mysqli_fetch_assoc($query3)) : ?>
-                                <label><input type="radio" name="Car_ID" value="<?= $result3["Car_ID"] ?>"><?= $result3["Car_Name"] ?></label>
-                            <?php endwhile; ?>
 
-                        </div>
+                        <?php if ($Brand_id_s == 6) { ?>
+                            <div class="form-group col-md-8">
+                                <label>ยี่ห้อรถ</label><br>
+                                <input onclick="check()" checked id="myCheck" type="checkbox" name="Car_ID[]" value=<?php echo $Brand_id_s ?>>ไม่เลือกยี่ห้อรถยนต์
+                            </div>
+                            <div class="form-group col-md-8" id='f1' style="display:none">
+                                <select id="Ck" name="Car_ID[]" class="duallistbox" multiple="multiple">
+                                    <?php while ($result = mysqli_fetch_assoc($queryc)) : ?>
+                                        <option   id="check" value="<?= $result["Car_ID"] ?>"><?= $result["Car_Name"] ?></option>
+                                    <?php endwhile; ?>
+                                </select>
+                            </div>
+
+                        <?php } else { ?>
+                            <div class="form-group col-md-8">
+                                <label>ยี่ห้อรถ</label><br>
+                                <input onclick="check()" id="myCheck" type="checkbox" name="Car_ID[]" value=<?php echo $Brand_id_s ?>>ไม่เลือกยี่ห้อรถยนต์
+                            </div>
+                            <div class="form-group col-md-8">
+                                <select id="Ck" name="Car_ID[]" class="duallistbox" multiple="multiple">
+                                    <?php while ($result = mysqli_fetch_assoc($query3)) : ?>
+                                        <option id="check" selected value="<?= $result["Car_ID"] ?>"><?= $result["Car_Name"] ?></option>
+                                    <?php endwhile; ?>
+                                    <?php while ($result = mysqli_fetch_assoc($queryc)) : ?>
+                                        <option id="check" value="<?= $result["Car_ID"] ?>"><?= $result["Car_Name"] ?></option>
+                                    <?php endwhile; ?>
+                                </select>
+                            </div>
+                        <?php } ?>
                     </div>
-                    <div class="form-row">
-                        <div class="form-group col-md-4">
-                            <label>วันที่แก้ไข</label><br>
-                            <input name="date_nows" type="date" value=<?php echo  date('Y-m-d') ?> disabled>
-                            <input name="date_now" type="date" value=<?php echo  date('Y-m-d') ?> hidden>
-                        </div>
-                        <div class="form-group col-md-4">
-                            <label>สถานะ</label><br>
-                            <input type="radio" value="on" name="status" checked><label>On</label>&nbsp;&nbsp;
-                            <input type="radio" value="off" name="status"><label>Off</label>
-                        </div>
-                    </div>
+
+
+                    <script>
+                        $(function() {
+                            $('.duallistbox').bootstrapDualListbox()
+                        });
+
+                        myCheck.onchange = function() {
+                            var text = document.getElementById("f1");
+                            if (this.checked == true) {
+                                document.querySelector("#check").closest('.form-group').style.display = "none";
+                                text.style.display = "none";
+                            }
+                            if (this.checked == false) {
+                                document.querySelector("#check").closest('.form-group').style.display = "";
+                                text.style.display = "";
+                            }
+                        }
+                        $(function() {
+                            $("#myCheck").on("click", function() {
+                                $("#Ck")[0].selectedIndex = -1;
+                                $(".duallistbox").bootstrapDualListbox('refresh', true);
+                            });
+                        });
+                    </script>
+
                     <div class="form-row">
                         <div class="form-group col-md-4">
                             <label>วันที่หมดอายุ</label><br>
+                            <input name="date_now" type="date" value=<?php echo  date('Y-m-d') ?> hidden>
                             <input name="date_ext" type="date" value=<?php echo  $Date_Ext_s ?>>
                         </div>
                     </div>
@@ -317,7 +364,7 @@ include "menu.php";
                         <div class="form-group-md-4">
                             <br><br>
                             <input type="submit" class="btn btn-primary" value="ยืนยัน"> &nbsp;&nbsp;
-                            <input type="reset" class="btn btn-info" value="ล้างข้อมูล" onclick="window.location.reload();"> &nbsp;&nbsp;
+                            <input type="reset" class="btn btn-info" value="รีเซ็ตข้อมูล" onclick="window.location.reload();"> &nbsp;&nbsp;
                             <input type=button class="btn btn-danger" onclick="window.location='page_report.php'" value=ยกเลิก>
 
                         </div>
@@ -343,7 +390,7 @@ include "menu.php";
         $status_s = $value['Type_Status'];
         $detail_s = $value['Type_detail'];
     }
-    if($_SESSION['type'] == 'User'){
+    if ($_SESSION['type'] == 'User') {
         echo "<script type='text/javascript'>";
         echo "alert('คุณอยู่สถานะ User ไม่สามารถแก้ไขข้อมูลได้');";
         echo "window.location = 'page_user.php';";
@@ -388,9 +435,9 @@ include "menu.php";
                     </div>
                     <br>
                     <div class="form-row">
-                        <div class="form-group col-md-4">
+                        <div class="form-group col-md-8">
                             <input type="submit" class="btn btn-primary" value="ยืนยัน"> &nbsp;&nbsp;
-                            <input type="reset" class="btn btn-info" value="ล้างข้อมูล" onclick="window.location.reload();"> &nbsp;&nbsp;
+                            <input type="reset" class="btn btn-info" value="รีเซ็ตข้อมูล" onclick="window.location.reload();"> &nbsp;&nbsp;
                             <input type=button class="btn btn-danger" onclick="window.location='page_type.php'" value=ยกเลิก>
                         </div>
                     </div>
@@ -400,12 +447,11 @@ include "menu.php";
 
     </div>
 <?php } ?>
-
 <?php if (isset($_GET['id'])) {
 ?>
     <?php
-    $ids = $_GET['id'];
     require_once "connect.php";
+    $ids = $_GET['id'];
     $sqls =  "SELECT * FROM user WHERE id= $ids ";
     $querys = mysqli_query($link, $sqls);
     foreach ($querys as $value); {
@@ -416,91 +462,85 @@ include "menu.php";
         $tel = $value['tel'];
         $type = $value['type'];
     }
-    if($_SESSION['type'] == 'User'){
+    if ($_SESSION['type'] == 'User') {
         echo "<script type='text/javascript'>";
         echo "alert('คุณอยู่สถานะ User ไม่สามารถแก้ไขข้อมูลของผู้ใช้อื่นได้');";
         echo "window.location = 'page_user.php';";
         echo "</script>";
     }
-    if($_SESSION['type'] == 'Stuff'){
-        if( $type == 'Admin' || $type == 'Stuff'){
-        echo "<script type='text/javascript'>";
-        echo "alert('คุณอยู่สถานะ Stuff ไม่สามารถแก้ไขข้อมูลของผู้ใช้สถานะ Admin หรือ Stuff คนอื่นได้');";
-        echo "window.location = 'page_user.php';";
-        echo "</script>";
-    }
+    if ($_SESSION['type'] == 'Stuff') {
+        if ($type == 'Admin' || $type == 'Stuff') {
+            echo "<script type='text/javascript'>";
+            echo "alert('คุณอยู่สถานะ Stuff ไม่สามารถแก้ไขข้อมูลของผู้ใช้สถานะ Admin หรือ Stuff คนอื่นได้');";
+            echo "window.location = 'page_user.php';";
+            echo "</script>";
+        }
     }
     ?>
     <div class="content-wrapper">
         <div class="container">
             <div class="row">
                 <div class="col-lg-8">
-        
-                        <div class="page-header">
-                            <h2>แก้ไขข้อมูล ของ user</h2>
+
+                    <div class="page-header">
+                        <h2>แก้ไขข้อมูล ของ user</h2>
+                    </div>
+
+                    <form action="update.php?user=1" method="post">
+                        <div class="form-group">
+                            <input hidden type="text" name="id" class="form-control" value="<?php echo $ids ?>" maxlength="50" required="">
+                            <label>User</label>
+                            <input type="text" name="user" class="form-control" value="<?php echo $user ?>" maxlength="50" required="">
+
+                        </div>
+                        <div class="form-group">
+                            <label>Name</label>
+                            <input type="text" name="name" class="form-control" value="<?php echo  $name ?>" maxlength="50" required="">
+                        </div>
+                        <div class="form-group ">
+                            <label>Email</label>
+                            <input type="email" name="email" class="form-control" value="<?php echo  $email ?>" maxlength="30" required="">
+                        </div>
+                        <div class="form-group">
+                            <label>Tel</label>
+                            <input type="mobile" name="tel" class="form-control" value="<?php echo  $tel ?>" maxlength="10">
+
                         </div>
 
-                        <form action="update.php?user=1" method="post">
-                            <div class="form-group">
-                                <input hidden type="text" name="id" class="form-control" value="<?php echo $ids ?>" maxlength="50" required="">
-                                <label>User</label>
-                                <input type="text" name="user" class="form-control" value="<?php echo $user ?>" maxlength="50" required="">
+                        <div class="form-group">
+                            <label>Type</label><br>
+                            <p>(type เดิม คือ <?php echo $type ?>)</p>
+                            <label><input type="radio" name="type" value="<?php echo $type ?>" hidden></label>
+                            <label><input type="radio" name="type" value="admin"> Admin</label>
+                            <label><input type="radio" name="type" value="employee">Employee </label>
+                            <label><input type="radio" name="type" value="member">member</label>
+                        </div>
+                        <input type="submit" class="btn btn-primary" value="ยืนยัน">
+                        <?php
+                        if ($_SESSION["type"] == "User") {
+                            $check = "page_user.php";
+                        }
+                        if ($_SESSION["type"] == "Admin") {
+                            $check = "page_user.php";
+                        }
+                        if ($_SESSION["type"] == "Stuff") {
+                            $check = "page_user.php";
+                        }
 
-                            </div>
-                            <div class="form-group">
-                                <label>Name</label>
-                                <input type="text" name="name" class="form-control" value="<?php echo  $name ?>" maxlength="50" required="">
-                            </div>
-                            <div class="form-group ">
-                                <label>Email</label>
-                                <input type="email" name="email" class="form-control" value="<?php echo  $email ?>" maxlength="30" required="">
-                            </div>
-                            <div class="form-group">
-                                <label>Tel</label>
-                                <input type="mobile" name="tel" class="form-control" value="<?php echo  $tel ?>" maxlength="10">
+                        ?>
+                        <a href="<?php echo $check ?>" class="btn btn-danger">ยกเลิก</a>
+                    </form>
 
-                            </div>
-
-                            <div class="form-group">
-                                <label>Type</label><br>
-                                <p>(type เดิม คือ <?php echo $type ?>)</p>
-                                <label><input type="radio" name="type" value="<?php echo $type ?>" hidden></label>
-                                <label><input type="radio" name="type" value="admin"> Admin</label>
-                                <label><input type="radio" name="type" value="employee">Employee </label>
-                                <label><input type="radio" name="type" value="member">member</label>
-                            </div>
-                            <input type="submit" class="btn btn-primary" value="ยืนยัน">
-                            <?php
-                            if ($_SESSION["type"] == "User") {
-                                $check = "page_user.php";
-                            }
-                            if ($_SESSION["type"] == "Admin") {
-                                $check = "page_user.php";
-                            }
-                            if ($_SESSION["type"] == "Stuff") {
-                                $check = "page_user.php";
-                            }
-
-                            ?>
-                            <a href="<?php echo $check ?>" class="btn btn-danger">ยกเลิก</a>
-                        </form>
-                 
                 </div>
             </div>
         </div>
     </div>
 <?php } ?>
-<!-- jQuery -->
-<script src="plugins/jquery/jquery.min.js"></script>
-<!-- Bootstrap 4 -->
-<script src="plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
-<!-- AdminLTE App -->
-<script src="dist/js/adminlte.min.js"></script>
 </body>
 
 </html>
-<script>
+<!-- <script>
     $(document).ready(function() {
         $('#Table').DataTable();
     });
-</script>
+</script> -->

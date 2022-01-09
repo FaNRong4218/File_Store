@@ -15,7 +15,7 @@ if (!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true) {
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta http-equiv="x-ua-compatible" content="ie=edge">
 
-  <title>AdminLTE 3 | Insert Brand</title>
+  <title>AdminLTE 3 | Insert</title>
 
   <script src="js/jquery.min.js"></script>
   <link rel="stylesheet" href="plugins/fontawesome-free/css/all.min.css">
@@ -29,12 +29,14 @@ if (!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true) {
   <script type="text/javascript" charset="utf8" src="http://cdn.datatables.net/1.10.12/js/jquery.dataTables.js"></script>
 
   <script type="text/javascript" src="ckeditor/ckeditor.js"></script>
-
   <script src="plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
+
+  <link rel="stylesheet" href="plugins/bootstrap4-duallistbox/bootstrap-duallistbox.min.css">
+  <script src="plugins/bootstrap4-duallistbox/jquery.bootstrap-duallistbox.min.js"></script>
 </head>
 
 <?php
-include "menu.php";
+require_once "menu.php";
 require_once "connect.php";
 ?>
 
@@ -88,7 +90,7 @@ if (isset($_GET['brand']) == 1) {
           <div class="form-row">
             <div class="form-group col-md-4">
               <input type="submit" class="btn btn-primary" value="ยืนยัน"> &nbsp;&nbsp;
-              <input type="reset" class="btn btn-info" value="ล้างข้อมูล" onclick="window.location.reload();"> &nbsp;&nbsp;
+              <input type="reset" class="btn btn-info" value="รีเซ็ตข้อมูล" onclick="window.location.reload();"> &nbsp;&nbsp;
               <input type=button class="btn btn-danger" onclick="window.location='page_brand.php'" value=ยกเลิก>
             </div>
           </div>
@@ -155,7 +157,7 @@ if (isset($_GET['brand']) == 1) {
           <div class="form-row">
             <div class="form-group col-md-4">
               <input type="submit" class="btn btn-primary" value="ยืนยัน"> &nbsp;&nbsp;
-              <input type="reset" class="btn btn-info" value="ล้างข้อมูล" onclick="window.location.reload();"> &nbsp;&nbsp;
+              <input type="reset" class="btn btn-info" value="รีเซ็ตข้อมูล" onclick="window.location.reload();"> &nbsp;&nbsp;
               <input type=button class="btn btn-danger" onclick="window.location='page_insurance.php'" value=ยกเลิก>
             </div>
           </div>
@@ -175,7 +177,7 @@ if (isset($_GET['brand']) == 1) {
   $sql2 = "SELECT Type_ID,Type_Name FROM type WHERE Type_Status= 'on';";
   $query2 = mysqli_query($link, $sql2);
 
-  $sql3 = "SELECT Car_ID,Car_Name FROM brand WHERE Car_Status= 'on';";
+  $sql3 = "SELECT Car_ID,Car_Name FROM brand WHERE Car_Status= 'on' AND Car_ID !=6";
   $query3 = mysqli_query($link, $sql3);
   ?>
   <div class="content-wrapper">
@@ -205,36 +207,52 @@ if (isset($_GET['brand']) == 1) {
 
           </div>
           <div class="form-row">
-            <div class="form-group col-md-4">
+            <div class="form-group col-md-8">
               <label>ยี่ห้อรถ</label><br>
-              <?php while ($result3 = mysqli_fetch_assoc($query3)) : ?>
-                <label><input type="radio" name="Car_ID" value="<?= $result3["Car_ID"] ?>" required><?= $result3["Car_Name"] ?></label>&nbsp;&nbsp;
-              <?php endwhile; ?>
+              <input onclick="check()" id="myCheck" type="checkbox" name="Car_ID[]" value='6'>ไม่เลือกยี่ห้อรถยนต์
+            </div>
+            <div class="form-group col-md-8">
+
+              <select id="Ck" name="Car_ID[]" class="duallistbox" multiple="multiple">
+
+                <?php while ($result2 = mysqli_fetch_assoc($query3)) : ?>
+                  <option id="check" name="Car_ID[]" value="<?= $result2["Car_ID"] ?>"><?= $result2["Car_Name"] ?></option>
+                <?php endwhile; ?>
+                <script>
+                  $(function() {
+                    $('.duallistbox').bootstrapDualListbox()
+                  });
+
+                  myCheck.onclick = function() {
+                    if (this.checked == true) {
+                      document.querySelector("#check").closest('.form-group').style.display = "none";
+                    }
+                    if (this.checked == false) {
+                      document.querySelector("#check").closest('.form-group').style.display = "";
+                    }
+                  }
+                  $(function() {
+                    $("#myCheck").on("click", function() {
+                      $("#Ck")[0].selectedIndex = -1;
+                      $(".duallistbox").bootstrapDualListbox('refresh', true);
+                    });
+                  });
+                </script>
               </select>
+
             </div>
           </div>
           <div class="form-row">
             <div class="form-group col-md-4">
-              <label>วันที่สร้าง</label><br>
-              <input name="date_start" type="date" value=<?php echo date('Y-m-d') ?>>
+              <label>วันที่หมดอายุ</label><br>
+              <input name="date_ext" type="date" value='' required>
             </div>
-
             <div class="form-group col-md-4">
               <label>สถานะ</label><br>
               <input type="radio" value="on" name="status" required="" checked><label>On</label>&nbsp;&nbsp;
             </div>
           </div>
 
-          <div class="form-row">
-            <div class="form-group col-md-4">
-              <label>วันที่แก้ไข</label><br>
-              <input name="date_now" type="date" value=<?php echo  date('Y-m-d') ?>>
-            </div>
-            <div class="form-group col-md-4">
-              <label>วันที่หมดอายุ</label><br>
-              <input name="date_ext" type="date" value='' required>
-            </div>
-          </div>
           <div class="form-row">
             <div class="form-group col-md-8">
               <label>รายละเอียดของประกัน</label><br>
@@ -249,17 +267,16 @@ if (isset($_GET['brand']) == 1) {
               </script>
             </div>
           </div>
-
+          <div class="form-group">
+            <input type="submit" class="btn btn-primary" value="ยืนยัน"> &nbsp;&nbsp;
+            <input type="reset" class="btn btn-info" value="รีเซ็ตข้อมูล" onclick="window.location.reload();"> &nbsp;&nbsp;
+            <input type=button class="btn btn-danger" onclick="window.location='page_report.php'" value=ยกเลิก>
+          </div>
+          <input hidden name="date_start" type="date" value=<?php echo date('Y-m-d') ?>>
+          <input hidden name="date_now" type="date" value=<?php echo  date('Y-m-d') ?>>
+        </form>
       </div>
-      <div class="form-group">
-        <input type="submit" class="btn btn-primary" value="ยืนยัน"> &nbsp;&nbsp;
-        <input type="reset" class="btn btn-info" value="ล้างข้อมูล" onclick="window.location.reload();"> &nbsp;&nbsp;
-        <input type=button class="btn btn-danger" onclick="window.location='page_report.php'" value=ยกเลิก>
-      </div>
-
-      </form>
     </div>
-  </div>
 
   </div>
 <?php } ?>
@@ -297,11 +314,12 @@ if (isset($_GET['brand']) == 1) {
               </script>
             </div>
           </div>
+
           <br>
           <div class="form-row">
             <div class="form-group col-md-4">
               <input type="submit" class="btn btn-primary" value="ยืนยัน"> &nbsp;&nbsp;
-              <input type="reset" class="btn btn-info" value="ล้างข้อมูล" onclick="window.location.reload();"> &nbsp;&nbsp;
+              <input type="reset" class="btn btn-info" value="รีเซ็ตข้อมูล" onclick="window.location.reload();"> &nbsp;&nbsp;
               <input type=button class="btn btn-danger" onclick="window.location='page_type.php'" value=ยกเลิก>
             </div>
           </div>
@@ -313,7 +331,6 @@ if (isset($_GET['brand']) == 1) {
 <?php } ?>
 <?php if (isset($_GET['id'])) {
   $ids = $_GET["id"]; ?>
-
   <div class="content-wrapper">
     <div style="margin-left:10%; padding-top :2%;">
       <div class="container my-8">
@@ -395,7 +412,7 @@ if (isset($_GET['brand']) == 1) {
               </div>
               <div class="form-group">
                 <input type="submit" class="btn btn-primary" value="ยืนยัน"> &nbsp;&nbsp;
-                <input type="reset" class="btn btn-info" value="ล้างข้อมูล" onclick="window.location.reload();"> &nbsp;&nbsp;
+                <input type="reset" class="btn btn-info" value="รีเซ็ตข้อมูล" onclick="window.location.reload();"> &nbsp;&nbsp;
                 <input type=button class="btn btn-danger" onclick="window.location='page_report.php'" value=ยกเลิก>
               </div>
             </div>
@@ -406,14 +423,6 @@ if (isset($_GET['brand']) == 1) {
 
 <?php } ?>
 
-
-
-<!-- jQuery -->
-<script src="plugins/jquery/jquery.min.js"></script>
-<!-- Bootstrap 4 -->
-<script src="plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
-<!-- AdminLTE App -->
-<script src="dist/js/adminlte.min.js"></script>
 </body>
 
 </html>

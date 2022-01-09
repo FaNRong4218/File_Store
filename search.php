@@ -27,7 +27,7 @@ if (!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true) {
     <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
     <script type="text/javascript" charset="utf8" src="http://cdn.datatables.net/1.10.12/js/jquery.dataTables.js"></script>
 
-   
+
     <script src="plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
     <link rel="stylesheet" href="dist/css/myCSS.css">
     <script src="dist/css/myCSS.css"></script>
@@ -45,57 +45,20 @@ include "menu.php";
 // $sql3 = "SELECT * FROM brand";
 // $query3 = mysqli_query($link, $sql3);
 ?>
+<?php
+$date = $_POST['date'];
+$date_start = $_POST['date_start'];
+$date_end = $_POST['date_end'];
 
-<div class="content-wrapper">
-    <div style="margin-left:4%; padding-top :4%;">
-        <div class="container my-6">
+if ($date_start == '' && $date_end == '') {
+    echo "<script type='text/javascript'>";
+    echo "alert('กรุณาเลือกข้อมูลอย่างใดอย่างหนึ่ง');";
+    echo "window.location = 'page_report.php';";
+    echo "</script>";
+} else {
 
-            <h4>ค้นหารายงาน</h4>
-            <form action="search.php" method="post">
-                <div class="form-row">
-                    <div class="form-group col-md-2">
-                        <label>เลือกวันที่ต้องการ</label><br>
-                        <input type="radio" value="Date_Now" name="date" required><label>วันแก้ไข</label>
-                        <input type="radio" value="Date_Ext" name="date" required><label>วันหมดอายุ</label>
-                        <input type="radio" value="Date_Start" name="date" required><label>วันเริ่มสร้าง</label>
-                    </div>
-                    <div class="form-group col-md-2">
-                        <label for="insurance">วันที่</label>
-                        <input name="date_start" type="date" value="<?php echo $_POST['date_start']  ?>">
-                    </div>
-                    <div class="form-group col-md-2">
-                        <label for="insurance">ถึงวันที่</label>
-                        <input name="date_end" type="date" value="<?php echo $_POST['date_end'] ?>">
-                    </div>
-                </div>
-                <div class="form-row">
-                    <div class="form-group col-md-5">
-                        <button class="btn btn-success" type="submit" name="submit" id="submit"><i class="fas fa-search" value="submit"></i>
-                            ค้นหารายละเอียด
-                        </button>
-                        <button class="btn btn-danger" type="button" name="restart" id="restart" onclick="window.location='page_report.php'"><i class="fas fa-trash"></i>
-                            ล้างการค้นหา
-                        </button>
-                    </div>
-                </div>
-            </form>
-
-            <a href="insert_report.php" title='Insert Data'>
-                <button type=button class="btn btn-info">เพิ่มข้อมูล <i class="fas fa-plus-circle"></i></button><br><br></a>
-            <?php
-            $date = $_POST['date'];
-            $date_start = $_POST['date_start'];
-            $date_end = $_POST['date_end'];
-
-            if ($date_start == '' && $date_end == '') {
-                echo "<script type='text/javascript'>";
-                echo "alert('กรุณาเลือกข้อมูลอย่างใดอย่างหนึ่ง');";
-                echo "window.location = 'page_report.php';";
-                echo "</script>";
-            } else {
-
-                include_once 'connect.php';
-                $sql = "SELECT Report_ID, insurance.Corp_Name, brand.Car_Name, type.Type_Name, Report_Status,
+    include_once 'connect.php';
+    $sql = "SELECT Report_ID, insurance.Corp_Name, brand.Car_Name, type.Type_Name, Report_Status,
                             Date_Now,  Date_Ext, Date_Start
                             FROM report 
                             INNER JOIN insurance ON insurance.Corp_ID = report.Corp_ID
@@ -103,166 +66,233 @@ include "menu.php";
                             INNER JOIN type ON  type.Type_ID = report.Type_ID
                             WHERE $date BETWEEN '$date_start' AND '$date_end'";
 
-                $result = mysqli_query($link, $sql);
-            }
-            ?>
+    $result = mysqli_query($link, $sql);
+}
+?>
+<div class="content-wrapper">
+    <div style=" padding-top :4%;">
+        <div class="container my-6">
+
+            <div class="card " style="width: 105%;">
+                <h2 class="card-header bg-dark">ค้นหารายงาน</h2>
+                <div class="card-body">
+                    <form action="search.php" method="post">
+                        <div class="form-row">
+                            <div class="form-group col-md-2">
+                                <label>เลือกวันที่ต้องการ</label><br>
+                                <select name="date" id="date" class="form-control">
+                                    <?php if($date =='date_Start'){ 
+                                        $text1 = 'selected';
+                                        $text2 = '';
+                                        $text3 = '';
+                                    } ?>
+                                    <?php if($date =='date_Now'){ 
+                                        $text1 = '';
+                                        $text2 = 'selected';
+                                        $text3 = '';
+                                    } ?>
+                                    <?php if($date =='date_Ext'){ 
+                                        $text1 = '';
+                                        $text2 = '';
+                                        $text3 = 'selected';
+                                    } ?>
+                                    <option value="">เลือกวันที่ต้องการ</option>
+                                    <option <?php echo $text1 ?> value="date_Start">วันแก้ไขรายงาน</option>
+                                    <option <?php echo $text2 ?> value="date_Now">วันเริ่มสร้าง</option>
+                                    <option <?php echo $text3 ?> value="date_Ext">วันหมดอายุ</option>
+                                    
+                                </select>
+                            </div>
+                            <div class="form-group col-md-2">
+                                <label for="insurance">วันที่</label>
+                                <input name="date_start" type="date" value="<?php echo $date_start ?>" class="form-control">
+                            </div>
+                            <div class="form-group col-md-2">
+                                <label for="insurance">ถึงวันที่</label>
+                                <input name="date_end" type="date" value="<?php echo $date_end ?>" class="form-control">
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group col-md-5">
+                                <button class="btn btn-success" type="submit" name="submit" id="submit"><i class="fas fa-search" value="submit"></i></a>&nbsp;
+                                    ค้นหารายละเอียด
+                                </button>
+                                <button class="btn btn-warning" type="button" name="restart" id="submit" onclick="window.location='page_report.php'"><i class="fas fa-retweet"></i></i>
+                                    รีเซ็ตการค้นหา
+                                </button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            <div class="card" style="width: 105%;">
+                <div class="card-body">
+                    <a href="insert_report.php" title='Insert Data'>
+                        <button type='button' class="btn btn-info float-lg-right">เพิ่มข้อมูล <i class="fas fa-plus-circle"></i></button><br><br></a>
 
 
-            <table id="Table" class="display">
-                <thead>
-                    <tr>
-                        <th>ลำดับ</th>
-                        <th>ชื่อบริษัท</th>
-                        <th>ชื่อยี่ห้อรถ</th>
-                        <th>ประเภทประกัน</th>
-                        <th>วันเริ่มสร้าง</th>
-                        <th>วันแก้ไข</th>
-                        <th>วันหมดอายุ</th>
-                        <th>สถานะ</th>
-                        <th>ฟังก์ชัน</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <?php
-                    while ($row = mysqli_fetch_array($result)) {
-                    ?>
-                        <tr>
-                            <td><?php echo $row["Report_ID"]; ?></td>
-                            <td><?php echo $row["Corp_Name"]; ?></td>
-                            <td><?php echo $row["Car_Name"]; ?></td>
-                            <td><?php echo $row["Type_Name"]; ?></td>
-                            <td><?php echo $row["Date_Start"]; ?></td>
-                            <td><?php echo $row["Date_Now"]; ?></td>
-                            <td><?php echo $row["Date_Ext"]; ?></td>
-                            <td>
-                                <?php if ($row["Report_Status"] == 'on') {
-                                    $text = "checked";
-                                } else {
-                                    $text = "";
-                                }
-                                ?>
-                                <label class="switch">
-                                    <input type="checkbox" <?php echo $text ?> class="change" name="change" id="<?php echo $row["Report_ID"] ?>">
-                                    <span class="slider"></span>
-                                </label>
 
-                            </td>
-                            <td><a title='แก้ไขข้อมูล' href="update_report.php?Report_ID=<?php echo $row["Report_ID"]; ?>">
-                                    <button type=button class="btn btn-dark btn-sm"> <i class="far fa-edit"></i>
-                                    </button>
-                                </a> &nbsp;
+                    <table id="Table" class="display">
+                        <thead>
+                            <tr>
+                                <th>ลำดับ</th>
+                                <th>ชื่อบริษัท</th>
+                                <th>ชื่อยี่ห้อรถ</th>
+                                <th>ประเภทประกัน</th>
+                                <th>วันเริ่มสร้าง</th>
+                                <th>วันแก้ไข</th>
+                                <th>วันหมดอายุ</th>
+                                <th>สถานะ</th>
+                                <th>ฟังก์ชัน</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <?php
+                            while ($row = mysqli_fetch_array($result)) {
+                            ?>
+                                <tr>
+                                    <td><?php echo $row["Report_ID"]; ?></td>
+                                    <td><?php echo $row["Corp_Name"]; ?></td>
+                                    <td><?php echo $row["Car_Name"]; ?></td>
+                                    <td><?php echo $row["Type_Name"]; ?></td>
+                                    <td><?php echo $row["Date_Start"]; ?></td>
+                                    <td><?php echo $row["Date_Now"]; ?></td>
+                                    <td><?php echo $row["Date_Ext"]; ?></td>
+                                    <td>
+                                        <?php if ($_SESSION['type'] == 'member') {
+                                            $text_dis = "disabled";
+                                        } else {
+                                            $text_dis = "";
+                                        }
+                                        ?>
+                                        <?php if ($row["Report_Status"] == 'on') {
+                                            $text = "checked";
+                                        } else {
+                                            $text = "";
+                                        }
+                                        ?>
+                                        <label class="switch">
+                                            <input type="checkbox" <?php echo $text ?> <?php echo $text_dis ?> class="change" name="change" id="<?php echo $row["Report_ID"] ?>">
+                                            <span class="slider"></span>
+                                        </label>
 
-                                <a title='รายละเอียด'>
-                                    <button type=button class="btn btn-dark btn-sm view" name="view" value="ข้อมูล" id="<?php echo $row["Report_ID"]; ?>">
-                                        <i class="fas fa-sticky-note"></i>
-                                    </button>
-                                    <a>&nbsp;
-
-                                        <a title='ไฟล์'>
-                                            <button type=button class="btn btn-dark btn-sm file" name="file" value="ไฟล์" id="<?php echo $row["Report_ID"]; ?>">
-                                                <i class="fas fa-folder"></i>
+                                    </td>
+                                    <td><a title='แก้ไขข้อมูล' href="update_report.php?Report_ID=<?php echo $row["Report_ID"]; ?>">
+                                            <button type=button class="btn btn-dark btn-sm"> <i class="far fa-edit"></i>
                                             </button>
-                                            <a>
-                            </td>
+                                        </a> &nbsp;
 
-                        </tr>
+                                        <a title='รายละเอียด'>
+                                            <button type=button class="btn btn-dark btn-sm view" name="view" value="ข้อมูล" id="<?php echo $row["Report_ID"]; ?>">
+                                                <i class="fas fa-sticky-note"></i>
+                                            </button>
+                                            <a>&nbsp;
+                                                <a title='ไฟล์'>
+                                                    <button type=button class="btn btn-dark btn-sm file" name="file" value="ไฟล์" id="<?php echo $row["Report_ID"]; ?>">
+                                                        <i class="fas fa-folder"></i>
+                                                    </button>
+                                                    <a>
+                                    </td>
+
+                                </tr>
+                            <?php
+                            }
+                            ?>
+                        </tbody>
+                    </table>
+
                     <?php
-                    }
+
                     ?>
-                </tbody>
-            </table>
-
-            <?php
-
-            ?>
-            <script>
-                $(document).on('click', '.view', function() {
-                    var Report_ID = $(this).attr("id");
-                    if (Report_ID != '') {
-                        $.ajax({
-                            url: "showReport.php",
-                            method: "POST",
-                            data: {
-                                Report_ID: Report_ID
-                            },
-                            success: function(data) {
-                                $('#Report_detail').html(data);
-                                $('#dataModal1').modal('show');
+                    <script>
+                        $(document).on('click', '.view', function() {
+                            var Report_ID = $(this).attr("id");
+                            if (Report_ID != '') {
+                                $.ajax({
+                                    url: "showReport.php",
+                                    method: "POST",
+                                    data: {
+                                        Report_ID: Report_ID
+                                    },
+                                    success: function(data) {
+                                        $('#Report_detail').html(data);
+                                        $('#dataModal1').modal('show');
+                                    }
+                                });
                             }
                         });
-                    }
-                });
-                $(document).on('click', '.file', function() {
-                    var Report_ID = $(this).attr("id");
-                    if (Report_ID != '') {
-                        $.ajax({
-                            url: "showfile.php",
-                            method: "POST",
-                            data: {
-                                Report_ID: Report_ID
-                            },
-                            success: function(data) {
-                                $('#File_detail').html(data);
-                                $('#dataModal2').modal('show');
+                        $(document).on('click', '.file', function() {
+                            var Report_ID = $(this).attr("id");
+                            if (Report_ID != '') {
+                                $.ajax({
+                                    url: "showfile.php",
+                                    method: "POST",
+                                    data: {
+                                        Report_ID: Report_ID
+                                    },
+                                    success: function(data) {
+                                        $('#File_detail').html(data);
+                                        $('#dataModal2').modal('show');
+                                    }
+                                });
                             }
                         });
-                    }
-                });
-                $(document).on('click', '.change', function() {
-                    var Report_ID = $(this).attr("id");
-                    if (Report_ID != '') {
-                        $.ajax({
-                            url: "Change_status.php",
-                            method: "POST",
-                            data: {
-                                Report_ID: Report_ID
-                            },
-                            success: function(data) {
-                                console.log(data);
+                        $(document).on('click', '.change', function() {
+                            var Report_ID = $(this).attr("id");
+                            if (Report_ID != '') {
+                                $.ajax({
+                                    url: "Change_status.php",
+                                    method: "POST",
+                                    data: {
+                                        Report_ID: Report_ID
+                                    },
+                                    success: function(data) {
+                                        console.log(data);
+                                    }
+                                });
                             }
                         });
-                    }
-                });
-            </script>
-        </div>
-    </div>
-
-    <!-- Modal content-->
-    <div id="dataModal1" class="modal fade" tabindex="-1" role="dialog">
-        <div class="modal-dialog modal-dialog-centered" role="document">
-
-            <!-- Modal content-->
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5>รายละเอียดของประกัน<h5>
-                </div>
-                <div class="modal-body" id="Report_detail">
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    </script>
                 </div>
             </div>
 
-        </div>
-    </div>
-    <div id="dataModal2" class="modal fade" tabindex="-1" role="dialog">
-        <div class="modal-dialog modal-dialog-centered" role="document">
-
             <!-- Modal content-->
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5>ไฟล์ต่างๆ<h5>
-                </div>
-                <div class="modal-body" id="File_detail">
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            <div id="dataModal1" class="modal fade" tabindex="-1" role="dialog">
+                <div class="modal-dialog modal-dialog-centered" role="document">
+
+                    <!-- Modal content-->
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5>รายละเอียดของประกัน<h5>
+                        </div>
+                        <div class="modal-body" id="Report_detail">
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                        </div>
+                    </div>
+
                 </div>
             </div>
+            <div id="dataModal2" class="modal fade" tabindex="-1" role="dialog">
+                <div class="modal-dialog modal-dialog-centered" role="document">
 
+                    <!-- Modal content-->
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5>ไฟล์ต่างๆ<h5>
+                        </div>
+                        <div class="modal-body" id="File_detail">
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
         </div>
     </div>
-
 </div>
 
 

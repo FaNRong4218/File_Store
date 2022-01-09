@@ -51,7 +51,9 @@ if (isset($_GET['brand']) == 1) {
   if(isset($_GET['Report'])==1){
     $Corp_ID = $_POST['Corp_ID'];
     $Type_ID = $_POST['Type_ID'];
-    $Car_ID = $_POST['Car_ID'];
+    for ($i = 0; $i < count($_POST['Car_ID']); $i++) {
+      $Car_ID = implode(",", $_POST['Car_ID']);
+    }
     $detail = $_POST['detail'];
     $date_start = $_POST['date_start'];
     $date_now = $_POST['date_now'];

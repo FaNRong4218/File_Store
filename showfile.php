@@ -1,4 +1,12 @@
 <?php
+
+session_start();
+if (!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true) {
+    header("location: login.php");
+    exit;
+}
+?>
+<?php
 if (isset($_POST["Report_ID"])) {
     include_once 'connect.php';
     $ids = $_POST["Report_ID"];
@@ -11,16 +19,12 @@ if (isset($_POST["Report_ID"])) {
 <html lang="en">
 
 <head>
-    <title>Bootstrap Example</title>
+    <title>Show file</title>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700" rel="stylesheet">
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-
     <script src="js/jquery.min.js"></script>
     <link rel="stylesheet" href="plugins/fontawesome-free/css/all.min.css">
     <link rel="stylesheet" href="dist/css/adminlte.min.css">
-    
     <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700" rel="stylesheet">
     <script src="https://kit.fontawesome.com/2f85583488.js" crossorigin="anonymous"></script>
     <script type="text/javascript" charset="utf8" src="/DataTables/datatables.js"></script>
@@ -29,11 +33,10 @@ if (isset($_POST["Report_ID"])) {
     <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
     <script type="text/javascript" charset="utf8" src="http://cdn.datatables.net/1.10.12/js/jquery.dataTables.js"></script>
 
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-
+    <script src="plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
     <link rel="stylesheet" href="dist/css/myCSS.css">
     <script src="dist/css/myCSS.css"></script>
+
 </head>
 
 <body>
@@ -65,7 +68,8 @@ if (isset($_POST["Report_ID"])) {
                                 <a href="download.php?id=<?php echo $row["File_ID"] ?>" title="ดาวน์โหลดไฟล์">
                                     <button type=button class="btn btn-dark btn-sm"><i class="fas fa-download"></i>
                                     </button></a>
-                                <a href="delete_file.php?id=<?php echo $row["File_ID"]; ?>&submit=DEL" onclick="return confirm('ต้องการจะลบไฟล์นี้หรือไม่ ?')" title='ลบไฟล์'>
+                               
+                                <a  href="delete_file.php?id=<?php echo $row["File_ID"]; ?>&submit=DEL" onclick="return confirm('ต้องการจะลบไฟล์นี้หรือไม่ ?')" title='ลบไฟล์'>
                                     <button type=button class="btn btn-dark btn-sm"><i class="fas fa-trash-alt"></i>
                                     </button></a>
 

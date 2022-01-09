@@ -130,6 +130,7 @@ if (isset($_POST['but_update'])) { //ถ้ามีการกดปุ่ม 
                                             while ($rowc = mysqli_fetch_assoc($resultc)) {
                                                 $idr = $rowc['id'];
                                                 $role_arr = array("admin$idr", "employee$idr", "member$idr");
+                                               
                                             ?>
 
                                                 <tr>

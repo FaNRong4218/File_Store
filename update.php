@@ -90,7 +90,9 @@ if (isset($_GET['report']) == 1) {
         $id = $_POST['ids'];
         $corp_id = $_POST['Corp_ID'];
         $type_id = $_POST['Type_ID'];
-        $brand_id = $_POST['Car_ID'];
+        for ($i = 0; $i < count($_POST['Car_ID']); $i++) {
+            $brand_id = implode(",", $_POST['Car_ID']);
+          }
         $status = $_POST['status'];
         $detail = $_POST['detail'];
         $date_now = $_POST['date_now'];
