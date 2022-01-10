@@ -12,7 +12,7 @@ if (isset($_POST["Report_ID"])) {
     $ids = $_POST["Report_ID"];
 
     $sql = "SELECT * FROM file WHERE Report_ID='$ids'";
-    $query = mysqli_query($link, $sql);
+    $query = mysqli_query($con, $sql);
 }
 ?>
 <!DOCTYPE html>

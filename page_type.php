@@ -48,7 +48,7 @@ include "menu.php";
       <?php
       include_once 'connect.php';
       $sql = "SELECT * FROM type ;";
-      $result = mysqli_query($link, $sql);
+      $result = mysqli_query($con, $sql);
 
       ?> <?php
 

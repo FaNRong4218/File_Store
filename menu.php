@@ -1,21 +1,19 @@
 <?php
-include_once 'connect.php';
-
 if (!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true) {
   header("location: login.php");
   exit;
 }
+include_once 'connect.php';
+
 $id = $_SESSION['id'];
-if (empty($id)) {
-  header('Location:login.php');
-}
+
 $sql = "SELECT * FROM user WHERE id= $id ";
-$result = mysqli_query($link, $sql);
+$result = mysqli_query($con, $sql);
 $row = mysqli_fetch_assoc($result);
 
 
 $sqlp = "SELECT * FROM user_role  ";
-$resultp = mysqli_query($link, $sqlp);
+$resultp = mysqli_query($con, $sqlp);
 
 
 ?>

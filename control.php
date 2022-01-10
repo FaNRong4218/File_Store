@@ -6,20 +6,17 @@ if (!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true) {
     exit;
 }
 $id = $_SESSION['id'];
-if (empty($id)) {
-    header('Location:login.php');
-}
 if ($_SESSION['type'] !== 'admin') {
     echo "<script type='text/javascript'>alert('You have no permission to access this page');
     window.location.href='logout.php';</script>";
 }
 $sql = "SELECT * FROM user WHERE id= $id ";
-$result = mysqli_query($link, $sql);
+$result = mysqli_query($con, $sql);
 $row = mysqli_fetch_assoc($result);
 
 
 $sqlp = "SELECT * FROM user_role  ";
-$resultp = mysqli_query($link, $sqlp);
+$resultp = mysqli_query($con, $sqlp);
 
 $order = 1;
 
@@ -69,8 +66,11 @@ if (isset($_POST['but_update'])) { //ถ้ามีการกดปุ่ม 
             $update = "UPDATE user_role SET 
                         role='" . $role . "'
                     WHERE id=" . $updateid;
-            mysqli_query($link, $update);
-            header('location:control.php');
+            mysqli_query($con, $update);
+
+            echo "<script type='text/javascript'>";
+            echo "window.location = 'control.php';";
+            echo "</script>";
         }
     }
 }
@@ -119,6 +119,7 @@ if (isset($_POST['but_update'])) { //ถ้ามีการกดปุ่ม 
                                             <th>Admin</th>
                                             <th>Employee</th>
                                             <th>Member</th>
+                                            <th>Action</th>
 
                                         </tr>
                                     </thead>
@@ -126,11 +127,11 @@ if (isset($_POST['but_update'])) { //ถ้ามีการกดปุ่ม 
                                         <div class="form-group">
                                             <?php
                                             $sqlc = "SELECT * FROM user_role ";
-                                            $resultc = mysqli_query($link, $sqlc);
+                                            $resultc = mysqli_query($con, $sqlc);
                                             while ($rowc = mysqli_fetch_assoc($resultc)) {
                                                 $idr = $rowc['id'];
                                                 $role_arr = array("admin$idr", "employee$idr", "member$idr");
-                                               
+
                                             ?>
 
                                                 <tr>
@@ -148,11 +149,20 @@ if (isset($_POST['but_update'])) { //ถ้ามีการกดปุ่ม 
                                                         }
                                                     }
                                                     ?>
+                                                    <td><a href="page_update.php?page_id=<?php echo  $idr ?>"><i class="far fa-edit"></a></i>&nbsp;&nbsp;
+                                                        &nbsp;
+                                                        <a href="tab_delete.php?id=<?php echo  $idr ?>" onclick="return confirm('Are you sure to delete ?')"><i class="far fa-trash-alt"></i>
+                                                        </a>
+                                                    </td>
                                                 </tr>
                                             <?php  } ?>
                                         </div>
                                     </tbody>
-                                    <input type="submit" name="but_update" class="btn btn-warning mb-3 d-block" value="Save Data">
+                                    <div  class='row'>
+                                        <input type="submit" name="but_update" class="btn btn-warning mb-3 d-block" value="Save Data">&nbsp;
+
+                                        <a href="page_insert.php?page=1" name="but_update" class="btn btn-success mb-3 d-block"> ADD</a> 
+                                    </div>
                                 </table>
                             </div>
                         </div>

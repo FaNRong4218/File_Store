@@ -25,7 +25,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     if (empty($username_err) && empty($password_err)) {
         $sql = "SELECT id, user, pass, type, name, email,tel FROM user WHERE user = ?";
 
-        if ($stmt = mysqli_prepare($link, $sql)) {
+        if ($stmt = mysqli_prepare($con, $sql)) {
             
             mysqli_stmt_bind_param($stmt, "s", $param_username);
             $param_username = $username;
@@ -77,7 +77,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             mysqli_stmt_close($stmt);
         }
     }
-    mysqli_close($link);
+    mysqli_close($con);
 }
 ?>
 

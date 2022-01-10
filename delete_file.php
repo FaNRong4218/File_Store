@@ -11,11 +11,11 @@ $submit = $_GET['submit'];
 
 if ($submit=="DEL") {
    $sql = "DELETE FROM file WHERE File_ID='" . $_GET["id"] . "'";
-   mysqli_query($link, $sql);
+   mysqli_query($con, $sql);
    header("location: page_report.php");
    exit();
 } else {
-    echo "Error deleting record: " . mysqli_error($link);
+    echo "Error deleting record: " . mysqli_error($con);
 }
-mysqli_close($link);
+mysqli_close($con);
 ?>

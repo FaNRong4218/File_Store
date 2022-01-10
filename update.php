@@ -18,7 +18,7 @@ if (isset($_GET['brand']) == 1) {
         $sql = "UPDATE brand set  Car_Name=' $Name', Car_Status='$status'
         WHERE Car_ID = $id";
 
-        $stmt = mysqli_query($link, $sql);
+        $stmt = mysqli_query($con, $sql);
 
         if ($stmt) {
 
@@ -34,7 +34,7 @@ if (isset($_GET['brand']) == 1) {
         $sql2 = "UPDATE brand set  Car_Name=' $Name', Car_Img='$file', Car_Status='$status'
                  WHERE Car_ID = $id";
 
-        $stmt2 = mysqli_query($link, $sql2);
+        $stmt2 = mysqli_query($con, $sql2);
 
         if ($stmt2) {
 
@@ -56,7 +56,7 @@ if (isset($_GET['insurance']) == 1) {
         $sql = "UPDATE insurance set  Corp_Name=' $Name' , Corp_Status='$status'
         WHERE Corp_ID = $id";
 
-        $insert1 = mysqli_query($link, $sql);
+        $insert1 = mysqli_query($con, $sql);
 
         if ($insert1) {
 
@@ -72,7 +72,7 @@ if (isset($_GET['insurance']) == 1) {
         $sql2 = "UPDATE insurance set  Corp_Name=' $Name', Corp_Date='$date', Corp_img='$file', Corp_Status='$status'
         WHERE Corp_ID = $id";
 
-        $insert2 = mysqli_query($link, $sql2);
+        $insert2 = mysqli_query($con, $sql2);
 
         if ($insert2) {
 
@@ -97,12 +97,11 @@ if (isset($_GET['report']) == 1) {
         $detail = $_POST['detail'];
         $date_now = $_POST['date_now'];
         $date_ext = $_POST['date_ext'];
-        $status = $_POST['status'];
 
         $sqls = "UPDATE report SET Corp_ID=' $corp_id', Type_ID=' $type_id', Car_ID=' $brand_id', Report_Status='$status',Report_Detail='$detail',
-         Date_Now='$date_now',Date_ext='$date_ext',Report_Status = '$status'
+         Date_Now='$date_now',Date_ext='$date_ext'
          WHERE Report_ID = $id";
-        $stmt = mysqli_query($link, $sqls);
+        $stmt = mysqli_query($con, $sqls);
         if ($stmt) {
             echo "<script type='text/javascript'>";
             echo "alert('เพิ่มข้อมูลสำเร็จ');";
@@ -122,7 +121,7 @@ if (isset($_GET['type']) == 1) {
     $sql = "UPDATE type set  Type_Name=' $Name', Type_Status='$status',Type_detail='$detail'
         WHERE Type_ID = $id";
 
-    $stmt = mysqli_query($link, $sql);
+    $stmt = mysqli_query($con, $sql);
 
     if ($stmt) {
 
@@ -143,7 +142,7 @@ if (isset($_GET['user']) == 1) {
             echo "window.location = 'logout.php';";
             echo "</script>";
         } else {
-            mysqli_query($link, "UPDATE user set  user='" . $_POST['user'] . "', name='" . $_POST['name'] . "', email='" . $_POST['email'] . "' ,
+            mysqli_query($con, "UPDATE user set  user='" . $_POST['user'] . "', name='" . $_POST['name'] . "', email='" . $_POST['email'] . "' ,
                              tel='" . $_POST['tel'] . "',type='" . $_POST['type'] . "' WHERE id='" . $_POST['id'] . "'");
 
             echo "<script type='text/javascript'>";
@@ -159,7 +158,7 @@ if (isset($_GET['user']) == 1) {
             echo "window.location = 'logout.php';";
             echo "</script>";
         } else {
-            mysqli_query($link, "UPDATE user set  user='" . $_POST['user'] . "', name='" . $_POST['name'] . "', email='" . $_POST['email'] . "' ,
+            mysqli_query($con, "UPDATE user set  user='" . $_POST['user'] . "', name='" . $_POST['name'] . "', email='" . $_POST['email'] . "' ,
                      tel='" . $_POST['tel'] . "',type='" . $_POST['type'] . "' WHERE id='" . $_POST['id'] . "'");
 
             echo "<script type='text/javascript'>";
@@ -176,12 +175,38 @@ if (isset($_GET['user']) == 1) {
             echo "window.location = 'logout.php';";
             echo "</script>";
         } else {
-            mysqli_query($link, "UPDATE user set  user='" . $_POST['user'] . "', name='" . $_POST['name'] . "', email='" . $_POST['email'] . "' ,
+            mysqli_query($con, "UPDATE user set  user='" . $_POST['user'] . "', name='" . $_POST['name'] . "', email='" . $_POST['email'] . "' ,
                      tel='" . $_POST['tel'] . "',type='" . $_POST['type'] . "' WHERE id='" . $_POST['id'] . "'");
             echo "<script type='text/javascript'>";
             echo "alert('แก้ไขข้อมูลสำเร็จ');";
             echo "window.location = 'page_user.php';";
             echo "</script>";
         }
+    }
+
+    
+}
+if (isset($_GET['page']) == 1) {
+    $ids = $_POST['ids'];
+    $name = $_POST['name'];
+    $link = $_POST['link'];
+    $icon = $_POST['icon'];
+   
+
+    $sql2 = "UPDATE user_role
+    SET page = '$name', link= '$link',icon = '$icon'
+     WHERE id = '$ids' ";
+    $result2 = mysqli_query($con, $sql2);
+
+    if ($result2) {
+
+        echo "<script type='text/javascript'>";
+        echo "alert('แก้ไขข้อมูลสำเร็จ');";
+        echo "window.location = 'control.php';";
+        echo "</script>";
+    }
+    else
+    {
+        echo "มีบางอย่างผิดพลาด!! กรุณาลองใหม่อีกครั้ง";
     }
 }

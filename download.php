@@ -11,7 +11,7 @@ if(isset($_GET['id']) ){
     $id = $_GET['id'];
     require_once "connect.php";
     $sql = "SELECT File_Name FROM file WHERE File_ID=$id";
-    $query = mysqli_query($link,$sql);
+    $query = mysqli_query($con,$sql);
     
     foreach ($query as $value){
         $No = $value["File_Name"];

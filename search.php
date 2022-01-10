@@ -35,38 +35,92 @@ if (!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true) {
 
 <?php
 include "menu.php";
+include_once 'connect.php';
 ?>
 <?php
-// include_once 'connect.php';
-// $sql1 = "SELECT * FROM insurance";
-// $query1 = mysqli_query($link, $sql1);
-// $sql2 = "SELECT * FROM type";
-// $query2 = mysqli_query($link, $sql2);
-// $sql3 = "SELECT * FROM brand";
-// $query3 = mysqli_query($link, $sql3);
 ?>
 <?php
 $date = $_POST['date'];
 $date_start = $_POST['date_start'];
 $date_end = $_POST['date_end'];
 
-if ($date_start == '' && $date_end == '') {
+$insurance = $_POST['insurance'];
+$brand = $_POST['brand'];
+$type = $_POST['type'];
+
+$sql1 = "SELECT * FROM insurance WHERE Corp_Status = 'on'";
+$query1 = mysqli_query($con, $sql1);
+$sql2 = "SELECT * FROM brand WHERE Car_Status = 'on' ";
+$query2 = mysqli_query($con, $sql2);
+$sql3 = "SELECT * FROM type WHERE Type_Status = 'on' ";
+$query3 = mysqli_query($con, $sql3);
+
+
+
+// $where1 = '';
+if($insurance=='' || $brand==''|| $type ==''){
+    $text= 'selected';
+}
+if ($date == '' && $date_start == '' && $date_end == '' && $insurance == '' && $brand == '' && $type == '') {
     echo "<script type='text/javascript'>";
     echo "alert('กรุณาเลือกข้อมูลอย่างใดอย่างหนึ่ง');";
     echo "window.location = 'page_report.php';";
     echo "</script>";
 } else {
 
-    include_once 'connect.php';
-    $sql = "SELECT Report_ID, insurance.Corp_Name, brand.Car_Name, type.Type_Name, Report_Status,
+    if ($date != '') {
+        if ($date_start == '' || $date_end == '') {
+            echo "<script type='text/javascript'>";
+            echo "alert('กรุณาเลือกข้อมูลให้ถูกต้อง');";
+            echo "window.location = 'page_report.php';";
+            echo "</script>";
+        } else {
+            // $where1 = "$date BETWEEN '$date_start' AND '$date_end'";
+        }
+    } else {
+        if ($date_start != '' || $date_end != '') {
+            echo "<script type='text/javascript'>";
+            echo "alert('กรุณาเลือกข้อมูลให้ถูกต้อง');";
+            echo "window.location = 'page_report.php';";
+            echo "</script>";
+        }
+    }
+    $sqlz = "SELECT Report_ID, insurance.Corp_Name, brand.Car_Name, type.Type_Name, Report_Status,
+                    Date_Now,  Date_Ext, Date_Start,report.Car_ID
+             FROM report 
+             INNER JOIN insurance ON insurance.Corp_ID = report.Corp_ID
+             INNER JOIN brand ON brand.Car_ID = report.Car_ID
+             INNER JOIN type ON  type.Type_ID = report.Type_ID";
+    $queryz = mysqli_query($con, $sqlz);
+
+    $conditions = array();
+    if (!empty($date)) {
+        $conditions[] = "$date BETWEEN '$date_start' AND '$date_end'";
+    }
+    if (!empty($insurance)) {
+        $conditions[] = "report.Corp_ID='$insurance'";
+    }
+    if (!empty($brand)) {
+        $conditions[] = "report.Car_ID IN($brand)";
+    }
+    if (!empty($type)) {
+        $conditions[] = "report.Type_ID='$type'";
+    }
+
+
+
+    $sqls = "SELECT Report_ID, insurance.Corp_Name, brand.Car_Name, type.Type_Name, Report_Status,
                             Date_Now,  Date_Ext, Date_Start
                             FROM report 
                             INNER JOIN insurance ON insurance.Corp_ID = report.Corp_ID
                             INNER JOIN brand ON brand.Car_ID = report.Car_ID
-                            INNER JOIN type ON  type.Type_ID = report.Type_ID
-                            WHERE $date BETWEEN '$date_start' AND '$date_end'";
+                            INNER JOIN type ON  type.Type_ID = report.Type_ID";
+    $sql = $sqls;
+    if (count($conditions) > 0) {
+        $sql .= " WHERE " . implode(' AND ', $conditions);
+    }
 
-    $result = mysqli_query($link, $sql);
+    $result = mysqli_query($con, $sql);
 }
 ?>
 <div class="content-wrapper">
@@ -77,42 +131,97 @@ if ($date_start == '' && $date_end == '') {
                 <h2 class="card-header bg-dark">ค้นหารายงาน</h2>
                 <div class="card-body">
                     <form action="search.php" method="post">
-                        <div class="form-row">
-                            <div class="form-group col-md-2">
+                        <div class="form-row justify-content-center">
+                            <div class="form-group col-md-3">
                                 <label>เลือกวันที่ต้องการ</label><br>
                                 <select name="date" id="date" class="form-control">
-                                    <?php if($date =='date_Start'){ 
+                                    <?php if ($date == 'date_Start') {
                                         $text1 = 'selected';
                                         $text2 = '';
                                         $text3 = '';
                                     } ?>
-                                    <?php if($date =='date_Now'){ 
+                                    <?php if ($date == 'date_Now') {
                                         $text1 = '';
                                         $text2 = 'selected';
                                         $text3 = '';
                                     } ?>
-                                    <?php if($date =='date_Ext'){ 
+                                    <?php if ($date == 'date_Ext') {
                                         $text1 = '';
                                         $text2 = '';
                                         $text3 = 'selected';
+                                    } ?>
+                                    <?php if ($date == '') {
+                                        $text1 = '';
+                                        $text2 = '';
+                                        $text3 = '';
                                     } ?>
                                     <option value="">เลือกวันที่ต้องการ</option>
                                     <option <?php echo $text1 ?> value="date_Start">วันแก้ไขรายงาน</option>
                                     <option <?php echo $text2 ?> value="date_Now">วันเริ่มสร้าง</option>
                                     <option <?php echo $text3 ?> value="date_Ext">วันหมดอายุ</option>
-                                    
+
                                 </select>
                             </div>
-                            <div class="form-group col-md-2">
+                            <div class="form-group col-md-3">
                                 <label for="insurance">วันที่</label>
                                 <input name="date_start" type="date" value="<?php echo $date_start ?>" class="form-control">
                             </div>
-                            <div class="form-group col-md-2">
+                            <div class="form-group col-md-3">
                                 <label for="insurance">ถึงวันที่</label>
                                 <input name="date_end" type="date" value="<?php echo $date_end ?>" class="form-control">
                             </div>
                         </div>
-                        <div class="form-row">
+                        <div class="form-row justify-content-center">
+                            <div class="form-group col-md-9">
+                                <div class="card ">
+                                    <div class="card-header">
+                                        <h3 class="card-title">ค้นหาเพิ่มเติม</h3>
+
+                                        <div class="card-tools">
+                                            <button type="button" class="btn btn-tool" data-card-widget="collapse"><i class="fas fa-plus"></i>
+                                            </button>
+                                        </div>
+                                        <!-- /.card-tools -->
+                                    </div>
+                                    <!-- /.card-header -->
+                                    <div class="card-body">
+                                        <div class="form-row justify-content-center">
+                                            <div class="form-group col-md-4">
+                                                <label>เลือกบริษัทประกันภัย</label><br>
+                                                <select name="insurance" id="insurance" class="form-control">
+                                                    <option $text value="">เลือกบริษัทประกันภัยนที่ต้องการ</option>
+                                                    <?php while ($results = mysqli_fetch_assoc($query1)) : ?>
+                                                        <option value="<?= $results["Corp_ID"] ?>"><?= $results["Corp_Name"] ?></option>
+                                                    <?php endwhile; ?>
+                                                </select>
+                                            </div>
+                                            <div class="form-group col-md-4">
+                                                <label>เลือกยี่ห้อรถ</label><br>
+                                                <select name="brand" id="brand" class="form-control">
+                                                    <option value="">เลือกยี่ห้อรถที่ต้องการ</option>
+                                                    <?php while ($results = mysqli_fetch_assoc($query2)) : ?>
+                                                        <option value="<?= $results["Car_ID"] ?>"><?= $results["Car_Name"] ?></option>
+                                                    <?php endwhile; ?>
+                                                </select>
+                                            </div>
+
+                                            <div class="form-group col-md-4">
+                                                <label>เลือกประเภท</label><br>
+                                                <select name="type" id="type" class="form-control">
+                                                    <option value="">เลือกประเภทประกันที่ต้องการ</option>
+                                                    <?php while ($results = mysqli_fetch_assoc($query3)) : ?>
+                                                        <option value="<?= $results["Type_ID"] ?>"><?= $results["Type_Name"] ?></option>
+                                                    <?php endwhile; ?>
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!-- /.card-body -->
+                                </div>
+
+                            </div>
+                        </div>
+                        <div class="form-row justify-content-center">
                             <div class="form-group col-md-5">
                                 <button class="btn btn-success" type="submit" name="submit" id="submit"><i class="fas fa-search" value="submit"></i></a>&nbsp;
                                     ค้นหารายละเอียด

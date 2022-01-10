@@ -38,55 +38,103 @@ include "menu.php";
 <?php
 include_once 'connect.php';
 $sql1 = "SELECT * FROM insurance WHERE Corp_Status = 'on'";
-$query1 = mysqli_query($link, $sql1);
-$sql2 = "SELECT * FROM type WHERE Type_Status = 'on'";
-$query2 = mysqli_query($link, $sql2);
-$sql3 = "SELECT * FROM brand WHERE Car_Status = 'on'";
-$query3 = mysqli_query($link, $sql3);
+$query1 = mysqli_query($con, $sql1);
+$sql2 = "SELECT * FROM brand WHERE Car_Status = 'on'";
+$query2 = mysqli_query($con, $sql2);
+$sql3 = "SELECT * FROM type WHERE Type_Status = 'on'";
+$query3 = mysqli_query($con, $sql3);
 ?>
 
 <div class="content-wrapper">
   <div style="padding:px; padding-top :4%;">
     <div class="container my-6">
-      <div class="card " style="width: 105%;">
-        <center>
-          <h2 class="card-header bg-dark">ค้นหารายงาน</h2>
-        </center>
-        <div class="card-body">
-          <form action="search.php" method="post">
-            <div class="form-row">
-              <div class="form-group col-md-2">
-                <label>เลือกวันที่ต้องการ</label><br>
-                <select name="date" id="date"class="form-control" >
-                <option value="">เลือกวันที่ต้องการ</option>
-                  <option value="date_Start">วันแก้ไขรายงาน</option>
-                  <option value="date_Now">วันเริ่มสร้าง</option>
-                  <option value="date_Ext">วันหมดอายุ</option>
-                 
-              </select>
+        <div class="card" style="width: 105%; ">
+            <h2 class="card-header bg-dark">ค้นหารายงาน</h2>
+          <div class="card-body ">
+            <form action="search.php" method="post">
+              <div class="form-row justify-content-center">
+                <div class="form-group col-md-3">
+                  <label>เลือกวันที่ต้องการ</label><br>
+                  <select name="date" id="date" class="form-control">
+                    <option value="">เลือกวันที่ต้องการ</option>
+                    <option value="date_Start">วันแก้ไขรายงาน</option>
+                    <option value="date_Now">วันเริ่มสร้าง</option>
+                    <option value="date_Ext">วันหมดอายุ</option>
+                  </select>
+                </div>
+                <div class="form-group col-md-3">
+                  <label for="insurance">วันที่</label>
+                  <input name="date_start" type="date" value="" class="form-control">
+                </div>
+
+                <div class="form-group col-md-3">
+                  <label for="insurance">ถึงวันที่</label>
+                  <input name="date_end" type="date" value="" class="form-control">
+                </div>
               </div>
-              <div class="form-group col-md-2">
-                <label for="insurance">วันที่</label>
-                <input name="date_start" type="date" value="" class="form-control">
+              <div class="form-row justify-content-center">
+                <div class="form-group col-md-9">
+                  <div class="card collapsed-card">
+                    <div class="card-header">
+                      <h3 class="card-title">ค้นหาเพิ่มเติม</h3>
+
+                      <div class="card-tools">
+                        <button type="button" class="btn btn-tool" data-card-widget="collapse"><i class="fas fa-plus"></i>
+                        </button>
+                      </div>
+                      <!-- /.card-tools -->
+                    </div>
+                    <!-- /.card-header -->
+                    <div class="card-body">
+                      <div class="form-row justify-content-center">
+                        <div class="form-group col-md-4">
+                          <label>เลือกบริษัทประกันภัย</label><br>
+                          <select name="insurance" id="insurance" class="form-control">
+                            <option value="">เลือกบริษัทประกันภัยนที่ต้องการ</option>
+                            <?php while ($results = mysqli_fetch_assoc($query1)) : ?>
+                                    <option value="<?= $results["Corp_ID"] ?>"><?= $results["Corp_Name"] ?></option>
+                                <?php endwhile; ?>
+                          </select>
+                        </div>
+                        <div class="form-group col-md-4">
+                          <label>เลือกยี่ห้อรถ</label><br>
+                          <select name="brand" id="brand" class="form-control">
+                            <option value="">เลือกยี่ห้อรถที่ต้องการ</option>
+                            <?php while ($results = mysqli_fetch_assoc($query2)) : ?>
+                                    <option value="<?= $results["Car_ID"] ?>"><?= $results["Car_Name"] ?></option>
+                                <?php endwhile; ?>
+                          </select>
+                        </div>
+
+                        <div class="form-group col-md-4">
+                          <label>เลือกประเภท</label><br>
+                          <select name="type" id="type" class="form-control">
+                            <option value="">เลือกประเภทประกันที่ต้องการ</option>
+                            <?php while ($results = mysqli_fetch_assoc($query3)) : ?>
+                                    <option value="<?= $results["Type_ID"] ?>"><?= $results["Type_Name"] ?></option>
+                                <?php endwhile; ?>
+                          </select>
+                        </div>
+                      </div>
+                    </div>
+                    <!-- /.card-body -->
+                  </div>
+
+                </div>
               </div>
-              <div class="form-group col-md-2">
-                <label for="insurance">ถึงวันที่</label>
-                <input name="date_end" type="date" value="" class="form-control">
+              <div class="form-row justify-content-center">
+                <div class="form-group col-md-5">
+                  <button class="btn btn-success" type="submit" name="submit" id="submit"><i class="fas fa-search" value="submit"></i></a>&nbsp;
+                    ค้นหารายละเอียด
+                  </button>
+                  <button class="btn btn-warning" type="button" name="restart" id="submit" onclick="window.location='page_report.php'"><i class="fas fa-retweet"></i></i>
+                    รีเซ็ตการค้นหา
+                  </button>
+                </div>
               </div>
-            </div>
-            <div class="form-row">
-              <div class="form-group col-md-5">
-                <button class="btn btn-success" type="submit" name="submit" id="submit"><i class="fas fa-search" value="submit"></i></a>&nbsp;
-                  ค้นหารายละเอียด
-                </button>
-                <button class="btn btn-warning" type="button" name="restart" id="submit" onclick="window.location='page_report.php'"><i class="fas fa-retweet"></i></i>
-                  รีเซ็ตการค้นหา
-                </button>
-              </div>
-            </div>
-          </form>
+            </form>
+          </div>
         </div>
-      </div>
       <div class="card" style="width: 105%;">
         <div class="card-body">
           <a href="page_insert.php?Report=1" title='Insert Data'>
@@ -101,7 +149,7 @@ $query3 = mysqli_query($link, $sql3);
           INNER JOIN type ON  type.Type_ID = report.Type_ID
           ";
 
-          $result = mysqli_query($link, $sql);
+          $result = mysqli_query($con, $sql);
 
 
           // while ($rows = mysqli_fetch_array($results)) {
@@ -139,7 +187,7 @@ $query3 = mysqli_query($link, $sql3);
                 // print_r($carid);
                 // echo "<br>";
                 $sqlc = "SELECT * FROM brand WHERE Car_ID IN ($carids)";
-                $resultc = mysqli_query($link, $sqlc);
+                $resultc = mysqli_query($con, $sqlc);
 
               ?>
 

@@ -49,43 +49,43 @@ include "menu.php";
 
 <?php
 $sql1 = "SELECT File_ID FROM file ";
-$result1 = mysqli_query($link, $sql1);
+$result1 = mysqli_query($con, $sql1);
 $num1 = mysqli_num_rows($result1);
 
 $sql2 = "SELECT id FROM user ";
-$result2 = mysqli_query($link, $sql2);
+$result2 = mysqli_query($con, $sql2);
 $num2 = mysqli_num_rows($result2);
 
 $sql3 = "SELECT Car_Status FROM brand WHERE Car_Status='on'";
-$result3 = mysqli_query($link, $sql3);
+$result3 = mysqli_query($con, $sql3);
 $num3 = mysqli_num_rows($result3);
 
 $sql4 = "SELECT Car_Status FROM brand WHERE Car_Status='off'";
-$result4 = mysqli_query($link, $sql4);
+$result4 = mysqli_query($con, $sql4);
 $num4 = mysqli_num_rows($result4);
 
 $sql5 = "SELECT Corp_Status FROM insurance WHERE Corp_Status='on'";
-$result5 = mysqli_query($link, $sql5);
+$result5 = mysqli_query($con, $sql5);
 $num5 = mysqli_num_rows($result5);
 
 $sql6 = "SELECT Corp_Status FROM insurance WHERE Corp_Status='off'";
-$result6 = mysqli_query($link, $sql6);
+$result6 = mysqli_query($con, $sql6);
 $num6 = mysqli_num_rows($result6);
 
 $sql7 = "SELECT Type_Status FROM type WHERE Type_Status='on'";
-$result7 = mysqli_query($link, $sql7);
+$result7 = mysqli_query($con, $sql7);
 $num7 = mysqli_num_rows($result7);
 
 $sql8 = "SELECT Type_Status FROM type WHERE Type_Status='off'";
-$result8 = mysqli_query($link, $sql8);
+$result8 = mysqli_query($con, $sql8);
 $num8 = mysqli_num_rows($result8);
 
 $sql9 = "SELECT Report_Status FROM report WHERE Report_Status='on'";
-$result9 = mysqli_query($link, $sql9);
+$result9 = mysqli_query($con, $sql9);
 $num9 = mysqli_num_rows($result9);
 
 $sql10 = "SELECT Report_Status FROM report WHERE Report_Status='off'";
-$result10 = mysqli_query($link, $sql10);
+$result10 = mysqli_query($con, $sql10);
 $num10 = mysqli_num_rows($result10);
 
 $numOn = $num3 + $num5 + $num7 + $num9;
@@ -98,7 +98,14 @@ INNER JOIN insurance ON insurance.Corp_ID = report.Corp_ID
 INNER JOIN brand ON brand.Car_ID = report.Car_ID
 INNER JOIN type ON  type.Type_ID = report.Type_ID
 ";
-$result11 = mysqli_query($link, $sql11);
+$result11 = mysqli_query($con, $sql11);
+
+$sql12 = "SELECT insurance.Corp_Name, COUNT(report.Corp_ID ) as num_corp  FROM report 
+INNER JOIN insurance ON  insurance.Corp_ID = report.Corp_ID
+GROUP BY insurance.Corp_Name
+ORDER BY num_corp DESC  LIMIT 0,5
+";
+$result12 = mysqli_query($con, $sql12);
 
 ?>
 
@@ -170,12 +177,12 @@ $result11 = mysqli_query($link, $sql11);
                     <!-- ./col -->
                 </div>
                 <div class="row">
-                    <div class="col-lg-12">
-                        <div class="card " >
+                    <div class="col-lg-8">
+                        <div class="card ">
                             <h2 class="card-header bg-dark">รายงาน</h2>
                             <div class="card-body ">
                                 <table id="example1" class="table table-bordered table-hover" style="width: 100%;">
-                                    <thead class="bg-info">
+                                    <thead>
                                         <tr>
                                             <th>ลำดับ</th>
                                             <th>ชื่อบริษัท</th>
@@ -199,7 +206,7 @@ $result11 = mysqli_query($link, $sql11);
                                             // print_r($carid);
                                             // echo "<br>";
                                             $sqlc = "SELECT * FROM brand WHERE Car_ID IN ($carids)";
-                                            $resultc = mysqli_query($link, $sqlc);
+                                            $resultc = mysqli_query($con, $sqlc);
 
                                         ?>
 
@@ -233,6 +240,40 @@ $result11 = mysqli_query($link, $sql11);
 
                                             </tr>
                                         <?php
+                                        }
+                                        ?>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class="col-lg-4">
+                        <div class="card ">
+                            <h2 class="card-header bg-dark">5 อันดับบริษัทประกัน ยอดนิยม</h2>
+                            <div class="card-body ">
+                                <table id="example1" class="table table-bordered table-hover" style="width: 100%;">
+                                    <thead>
+                                        <tr>
+                                            <th>ลำดับ</th>
+                                            <th>ชื่อบริษัทประกัน</th>
+                                            <th>จำนวนรายงาน</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <?php
+                                        $i = 1;
+                                        while ($row = mysqli_fetch_array($result12)) {
+                                        ?>
+
+                                            <tr>
+                                                <td><?php echo $i ?></td>
+                                                <td><?php echo $row["Corp_Name"]; ?></td>
+                                                <td><?php echo $row["num_corp"]; ?></td>
+
+                                            </tr>
+                                        <?php
+                                            $i++;
                                         }
                                         ?>
                                     </tbody>
@@ -296,19 +337,19 @@ $result11 = mysqli_query($link, $sql11);
 </html>
 
 <script>
-        $(function() {
-            $("#example1").DataTable({
-                "responsive": true,
-                "autoWidth": false,
-            });
-            $('#example2').DataTable({
-                "paging": true,
-                "lengthChange": false,
-                "searching": false,
-                "ordering": true,
-                "info": true,
-                "autoWidth": false,
-                "responsive": true,
-            });
+    $(function() {
+        $("#example1").DataTable({
+            "responsive": true,
+            "autoWidth": false,
         });
-    </script>
+        $('#example2').DataTable({
+            "paging": true,
+            "lengthChange": false,
+            "searching": false,
+            "ordering": true,
+            "info": true,
+            "autoWidth": false,
+            "responsive": true,
+        });
+    });
+</script>

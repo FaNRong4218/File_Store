@@ -14,7 +14,7 @@ $submit = $_GET["submit"];
 
 if ($submit =="DEL" && $id != $_SESSION["id"] ) {
    $sql = "DELETE FROM user WHERE id='" . $_GET["id"] . "'";
-   mysqli_query($link, $sql);
+   mysqli_query($con, $sql);
    echo "<script type='text/javascript'>";
    echo "alert('ลบผู้ใช้สำเร็จ')";
    echo "window.location = 'page_user.php';";
@@ -29,7 +29,7 @@ if ($submit =="DEL" && $id != $_SESSION["id"] ) {
    exit();
 }
 else{
-echo "Error deleting record: " . mysqli_error($link);
+echo "Error deleting record: " . mysqli_error($con);
 }
 
 ?>

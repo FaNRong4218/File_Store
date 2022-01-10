@@ -41,7 +41,7 @@ include "menu.php";
     <div class="container my-6">
       <?php
       include_once 'connect.php';
-      $result = mysqli_query($link, "SELECT * FROM user");
+      $result = mysqli_query($con, "SELECT * FROM user");
       ?>
       <?php
       if (mysqli_num_rows($result) > 0) {

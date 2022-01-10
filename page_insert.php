@@ -172,13 +172,13 @@ if (isset($_GET['brand']) == 1) {
   <?php
   require_once "connect.php";
   $sql1 = "SELECT Corp_img, Corp_ID,Corp_Name FROM insurance WHERE Corp_Status= 'on';";
-  $query1 = mysqli_query($link, $sql1);
+  $query1 = mysqli_query($con, $sql1);
 
   $sql2 = "SELECT Type_ID,Type_Name FROM type WHERE Type_Status= 'on';";
-  $query2 = mysqli_query($link, $sql2);
+  $query2 = mysqli_query($con, $sql2);
 
-  $sql3 = "SELECT Car_ID,Car_Name FROM brand WHERE Car_Status= 'on' AND Car_ID !=6";
-  $query3 = mysqli_query($link, $sql3);
+  $sql3 = "SELECT Car_ID,Car_Name FROM brand WHERE Car_Status= 'on' AND Car_ID !=1";
+  $query3 = mysqli_query($con, $sql3);
   ?>
   <div class="content-wrapper">
     <div style="margin-left:10%; padding-top :2%;">
@@ -209,7 +209,7 @@ if (isset($_GET['brand']) == 1) {
           <div class="form-row">
             <div class="form-group col-md-8">
               <label>ยี่ห้อรถ</label><br>
-              <input onclick="check()" id="myCheck" type="checkbox" name="Car_ID[]" value='6'>ไม่เลือกยี่ห้อรถยนต์
+              <input onclick="check()" id="myCheck" type="checkbox" name="Car_ID[]" value='1'>ไม่เลือกยี่ห้อรถยนต์
             </div>
             <div class="form-group col-md-8">
 
@@ -422,7 +422,51 @@ if (isset($_GET['brand']) == 1) {
   </div>
 
 <?php } ?>
+<?php if (isset($_GET['page']) ==1) {
+?>
+  <div class="content-wrapper">
+    <div class="row">
+      <div class="offset-3 col-md-6">
+        <!-- general form elements -->
+        <div class="card card-success">
+          <div class="card-header">
+            <h3 class="card-title">อัพเดทข้อมูล</h3>
+          </div>
 
+          <form action="insert.php?page=1" method="POST">
+            <div class="card-body">
+              <div class="form-group">
+
+                <label for="exampleInputEmail1">ชื่อรายการ</label>
+                <input type="text" class="form-control" id="exampleInputEmail1" name="name" value="" placeholder="ชื่อรายการ" required>
+
+              </div>
+              <div class="form-group">
+                <label for="exampleInputPassword1">หน้ารายการ (.php)</label>
+                <input type="text" class="form-control" id="exampleInputPassword1" name="file" value="" placeholder="XXXX.php" required>
+              </div>
+              <div class="form-group">
+                <label for="exampleInputPassword1">ไอคอน ( <a href="https://fontawesome.com/" target="_blank">fontawesome</a>)</label>
+
+                <input type="text" class="form-control" id="exampleInputPassword1" name="icon" value="" placeholder="fa fa-XXXX" required>
+              </div>
+
+            </div>
+            <!-- /.card-body -->
+
+            <div class="card-footer">
+              <button type="submit" class="btn btn-primary d-block m-auto">บันทึก</button>
+            </div>
+          </form>
+        </div>
+        <!-- /.card -->
+
+
+        </form>
+      </div>
+    </div>
+  </div>
+<?php } ?>
 </body>
 
 </html>

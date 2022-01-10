@@ -11,7 +11,7 @@ if (!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true) {
     include_once 'connect.php';
     $id = $_POST['Type_ID'];
     $sql = "SELECT * FROM type WHERE Type_ID= $id";
-    $result = mysqli_query($link, $sql);
+    $result = mysqli_query($con, $sql);
 
     foreach ($result as $value) {
         $detail = $value['Type_detail'];

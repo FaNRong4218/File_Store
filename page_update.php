@@ -44,7 +44,7 @@ require_once "connect.php";
 ?>
     <?php
     $sqls = "SELECT * FROM brand WHERE Car_ID='" . $_GET['Car_ID'] . "'";
-    $querys = mysqli_query($link, $sqls);
+    $querys = mysqli_query($con, $sqls);
     foreach ($querys as $value) {
         $id_s = $value['Car_ID'];
         $Name_s = $value['Car_Name'];
@@ -125,7 +125,7 @@ require_once "connect.php";
     <?php
     require_once "connect.php";
     $sqls = "SELECT * FROM insurance WHERE Corp_ID='" . $_GET['Corp_ID'] . "'";
-    $querys = mysqli_query($link, $sqls);
+    $querys = mysqli_query($con, $sqls);
     foreach ($querys as $value) {
         $id_s = $value['Corp_ID'];
         $Name_s = $value['Corp_Name'];
@@ -214,7 +214,7 @@ require_once "connect.php";
          INNER JOIN type ON  type.Type_ID = report.Type_ID
          WHERE Report_ID='" . $_GET['Report_ID'] . "'";
 
-    $query4 = mysqli_query($link, $sql4);
+    $query4 = mysqli_query($con, $sql4);
     foreach ($query4 as $value) {
         $Report_id_s = $value['Report_ID'];
         $Corp_id_s = $value['Corp_ID'];
@@ -231,25 +231,25 @@ require_once "connect.php";
     $sql1 = "SELECT Corp_img, Corp_ID,Corp_Name 
         FROM insurance 
         WHERE Corp_Status= 'on' AND Corp_ID != '$Corp_id_s' ";
-    $query1 = mysqli_query($link, $sql1);
+    $query1 = mysqli_query($con, $sql1);
 
     //โชว์ id/ชื่อ ประเภทที่ไม่ได้เลือก
     $sql2 = "SELECT Type_ID,Type_Name 
          FROM type 
          WHERE Type_Status= 'on'AND Type_ID !='$Type_id_s'";
-    $query2 = mysqli_query($link, $sql2);
+    $query2 = mysqli_query($con, $sql2);
 
     //โชว์ id/ชื่อ รถที่เลือก
     $sql3 = "SELECT Car_ID,Car_Name 
              FROM brand 
              WHERE Car_Status= 'on' AND Car_ID IN($Brand_id_s)";
-    $query3 = mysqli_query($link, $sql3);
+    $query3 = mysqli_query($con, $sql3);
 
     //โชว์ id/ชื่อ รถที่ไม่ได้เลือก
     $sqlc = "SELECT Car_ID,Car_Name 
          FROM brand 
-         WHERE Car_Status= 'on' AND Car_ID NOT IN($Brand_id_s) AND Car_ID!=6";
-    $queryc = mysqli_query($link, $sqlc);
+         WHERE Car_Status= 'on' AND Car_ID NOT IN($Brand_id_s) AND Car_ID!=1";
+    $queryc = mysqli_query($con, $sqlc);
     ?>
     <div class="content-wrapper">
         <div style="margin-left:10%; padding-top :2%;">
@@ -280,7 +280,7 @@ require_once "connect.php";
                     </div>
                     <div class="form-row">
 
-                        <?php if ($Brand_id_s == 6) { ?>
+                        <?php if ($Brand_id_s == 1) { ?>
                             <div class="form-group col-md-8">
                                 <label>ยี่ห้อรถ</label><br>
                                 <input onclick="check()" checked id="myCheck" type="checkbox" name="Car_ID[]" value=<?php echo $Brand_id_s ?>>ไม่เลือกยี่ห้อรถยนต์
@@ -288,7 +288,7 @@ require_once "connect.php";
                             <div class="form-group col-md-8" id='f1' style="display:none">
                                 <select id="Ck" name="Car_ID[]" class="duallistbox" multiple="multiple">
                                     <?php while ($result = mysqli_fetch_assoc($queryc)) : ?>
-                                        <option   id="check" value="<?= $result["Car_ID"] ?>"><?= $result["Car_Name"] ?></option>
+                                        <option id="check" value="<?= $result["Car_ID"] ?>"><?= $result["Car_Name"] ?></option>
                                     <?php endwhile; ?>
                                 </select>
                             </div>
@@ -382,7 +382,7 @@ require_once "connect.php";
     <?php
     require_once "connect.php";
     $sqls = "SELECT * FROM type WHERE Type_ID='" . $_GET['Type_ID'] . "'";
-    $querys = mysqli_query($link, $sqls);
+    $querys = mysqli_query($con, $sqls);
 
     foreach ($querys as $value) {
         $id_s = $value['Type_ID'];
@@ -453,7 +453,7 @@ require_once "connect.php";
     require_once "connect.php";
     $ids = $_GET['id'];
     $sqls =  "SELECT * FROM user WHERE id= $ids ";
-    $querys = mysqli_query($link, $sqls);
+    $querys = mysqli_query($con, $sqls);
     foreach ($querys as $value); {
 
         $user = $value['user'];
@@ -532,6 +532,65 @@ require_once "connect.php";
                     </form>
 
                 </div>
+            </div>
+        </div>
+    </div>
+<?php } ?>
+
+<?php if (isset($_GET['page_id'])) {
+    $ids = $_SESSION['id'];
+
+    $sql = "SELECT * FROM user WHERE id= $ids ";
+    $result = mysqli_query($con, $sql);
+    $row = mysqli_fetch_assoc($result);
+
+    $sqlp = "SELECT * FROM user_role  ";
+    $resultp = mysqli_query($con, $sqlp);
+
+    $id = $_GET['page_id'];
+    $sql = "SELECT * FROM user_role WHERE id = $id ";
+    $result = mysqli_query($con, $sql);
+    $row = mysqli_fetch_array($result);
+?>
+    <div class="content-wrapper">
+        <div class="row">
+            <div class="offset-3 col-md-6">
+                <!-- general form elements -->
+                <div class="card card-success">
+                    <div class="card-header">
+                        <h3 class="card-title">อัพเดทข้อมูล</h3>
+                    </div>
+                    <form action="update.php?page=1" method="POST">
+                        <div class="card-body">
+                            <div class="form-group">
+                                <label for="exampleInputEmail1" name="id">ลำดับที่ <?php echo $row['id']; ?> </label><br>
+
+                                <label for="exampleInputEmail1">ชื่อรายการ</label>
+                                <input type="text" class="form-control" id="exampleInputEmail1" name="name" value="<?php echo $row['page']; ?>" placeholder="Insurance Name" required>
+                                <input type="text" class="form-control" id="exampleInputEmail1" name="ids" value="<?php echo $row['id']; ?>" hidden placeholder="Insurance Name">
+
+                            </div>
+                            <div class="form-group">
+                                <label for="exampleInputPassword1">หน้ารายการ (.php)</label>
+                                <input type="phone" class="form-control" id="exampleInputPassword1" name="link" value="<?php echo $row['link']; ?>" placeholder="Phone" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="exampleInputPassword1">ไอคอน ( <a href="https://fontawesome.com/" target="_blank">fontawesome</a>)</label>
+                                <input type="text" class="form-control" id="exampleInputPassword1" name="icon" value="<?php echo $row['icon']; ?>" placeholder="Type" required>
+                            </div>
+
+                        </div>
+                        <!-- /.card-body -->
+
+                        <div class="card-footer">
+                            <button type="submit" class="btn btn-primary d-block m-auto">บันทึก</button>
+                        </div>
+                    </form>
+                </div>
+                <!-- /.card -->
+
+
+                </form>
             </div>
         </div>
     </div>

@@ -17,13 +17,13 @@ if (isset($_POST["Report_ID"])) {
            INNER JOIN brand ON brand.Car_ID = report.Car_ID
            INNER JOIN type ON  type.Type_ID = report.Type_ID
            WHERE Report_ID='$id';";
-  $result = mysqli_query($link, $sql);
+  $result = mysqli_query($con, $sql);
 
   while ($row = mysqli_fetch_array($result)) {
     $carid = explode(",", $row["Car_ID"]);
     $carids = implode(",", $carid);
     $sqlc = "SELECT * FROM brand WHERE Car_ID IN ($carids)";
-    $resultc = mysqli_query($link, $sqlc);
+    $resultc = mysqli_query($con, $sqlc);
   }
   foreach ($result as $value) {
     $report_ID = $value['Report_ID'];
