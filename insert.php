@@ -8,15 +8,26 @@ if (isset($_GET['brand']) == 1) {
   $status = $_POST['Status'];
   $file = $_FILES['img']['name'];
 
-  echo $Name;
-  echo $status;
-  echo $file;
+  $files_v = strrev($file);
+  $files_r = strrchr($files_v, ".");
+  $files = strrev($files_r);
+
+  $nameDate = date('Ymd'); //เก็บวันที่
+  $path = "myImg/brand/"; //สร้างไฟล์สำหรับเก็บไฟล์ใหม่
+  date_default_timezone_set('Asia/Bangkok');
+  $numrand = (mt_rand(1000, 9999));
+
+  if($file !=''){
+  $type = strrchr($file, "."); //ตัดชื่อไฟล์เหลือแต่นามสกุล
+  $newname = $nameDate . $numrand. $files . $type; //ประกอบเป็นชื่อใหม่
+  $path_copy = $path . $newname; //กำหนด path ในการเก็บ
+  move_uploaded_file($_FILES['img']['tmp_name'], $path_copy);
 
   $sql = "INSERT INTO brand (Car_Name, Car_Status, Car_Img)
-        VALUES ('$Name', '$status', '$file' )";
+        VALUES ('$Name', '$status', '$newname' )";
 
   $insert = mysqli_query($con, $sql);
-
+  }
   if ($insert) {
 
     echo "<script type='text/javascript'>";
@@ -32,13 +43,30 @@ if (isset($_GET['insurance']) == 1) {
   $date = $_POST['Date'];
   $status = $_POST['Status'];
   $file = $_FILES['img']['name'];
+  $files_v = strrev($file);
+  $files_r = strrchr($files_v, ".");
+  $files = strrev($files_r);
+
+  $nameDate = date('Ymd'); //เก็บวันที่
+  $path = "myImg/insurance/"; //สร้างไฟล์สำหรับเก็บไฟล์ใหม่
+  date_default_timezone_set('Asia/Bangkok');
+  $numrand = (mt_rand(1000, 9999));
+
+  if($file !=''){
+  $type = strrchr($file, "."); //ตัดชื่อไฟล์เหลือแต่นามสกุล
+  $newname = $nameDate . $numrand. $files . $type; //ประกอบเป็นชื่อใหม่
+  $path_copy = $path . $newname; //กำหนด path ในการเก็บ
+
+  echo $path_copy;
+  move_uploaded_file($_FILES['img']['tmp_name'], $path_copy);
 
   $sql = "INSERT INTO insurance (Corp_Name, Corp_Date, Corp_Status, Corp_img) 
-      VALUES ('$Name', '$date', '$status', '$file' )";
+      VALUES ('$Name', '$date', '$status', '$newname' )";
 
-  $stmt = mysqli_query($con, $sql);
+$insert = mysqli_query($con, $sql);
+}
 
-  if ($stmt) {
+  if ($insert) {
 
     echo "<script type='text/javascript'>";
     echo "alert('เพิ่มข้อมูลสำเร็จ');";
@@ -83,9 +111,9 @@ if (isset($_GET['Type']) == 1) {
   $sql = "INSERT INTO type (Type_Name, Type_Status, Type_detail) 
   VALUES ('$Name', '$status', '$detail' )";
 
-  $stmt = mysqli_query($con, $sql);
+$insert = mysqli_query($con, $sql);
 
-  if ($stmt) {
+  if ($insert) {
 
     echo "<script type='text/javascript'>";
     echo "alert('เพิ่มข้อมูลสำเร็จ');";
@@ -144,9 +172,9 @@ if (isset($_GET['page']) == 1) {
   $sql = "INSERT INTO user_role (page, link, icon)
 VALUES ('$name', '$file', '$icon')";
 
-  $result = mysqli_query($con, $sql) or die;
+$insert = mysqli_query($con, $sql) or die;
 
-  if ($result) {
+  if ($insert) {
     echo '<script> window.location.href = "control.php";alert("Insert success")</script>';
   }
 }

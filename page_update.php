@@ -66,15 +66,8 @@ require_once "connect.php";
                     </div>
                     <div class="form-row">
                         <div class="form-group col-md-4">
-                            <label>สถานะ</label><br>
-                            <input type="radio" value="on" name="Status" required checked><label>On</label>
-                            <input type="radio" value="off" name="Status" required><label>Off</label>
-                        </div>
-                    </div>
-                    <div class="form-row">
-                        <div class="form-group col-md-4">
                             <label>ไฟล์ Logo(เดิม)</label><br>
-                            <img src="img/brand_car/<?php echo $file_s; ?>" width="40%"> &nbsp;&nbsp;
+                            <img src="myImg/brand/<?php echo $file_s; ?>" width="40%"> &nbsp;&nbsp;
                         </div>
                         <div class="form-group col-md-4">
 
@@ -102,7 +95,6 @@ require_once "connect.php";
                             <input type="text" name="imgs" value="<?php echo $file_s ?>" accept="image/*" required disabled>
                         </div>
                         <div class="form-group col-md-4">
-
                             <input type="file" name="img" accept="image/* " OnChange="showPreview(this)">
                         </div>
                     </div>
@@ -146,16 +138,11 @@ require_once "connect.php";
                         </div>
                     </div>
                     <div class="form-row">
-                        <div class="form-group col-md-4">
-                            <label>สถานะ</label><br>
-                            <input type="radio" value="on" name="Status" required checked><label>On</label>
-                            <input type="radio" value="off" name="Status" required><label>Off</label>
-                        </div>
                     </div>
                     <div class="form-row">
                         <div class="form-group col-md-4">
                             <label>ไฟล์ Logo(เดิม)</label><br>
-                            <img src="img/brand_insurance/<?php echo $file_s; ?>" width="40%"> &nbsp;&nbsp;
+                            <img src="myImg/insurance/<?php echo $file_s; ?>" width="40%"> &nbsp;&nbsp;
                         </div>
                         <div class="form-group col-md-4">
 
@@ -183,7 +170,6 @@ require_once "connect.php";
                     <input type="text" name="imgs" value="<?php echo $file_s ?>" accept="image/*" required disabled>
                 </div>
                 <div class="form-group col-md-4">
-
                     <input type="file" name="img" accept="image/* " OnChange="showPreview(this)">
                 </div>
             </div>
@@ -410,13 +396,6 @@ require_once "connect.php";
                         </div>
                     </div>
 
-                    <div class="form-row">
-                        <div class="form-group col-md-4">
-                            <label>สถานะ</label><br>
-                            <input type="radio" value="on" name="Status" required checked><label>On</label>
-                            <input type="radio" value="off" name="Status" required><label>Off</label>
-                        </div>
-                    </div>
 
                     <div class="form-row">
                         <div class="form-group col-md-8">

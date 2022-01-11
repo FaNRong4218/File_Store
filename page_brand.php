@@ -79,7 +79,7 @@ include "menu.php";
                   <tr>
                     <td>
 
-                      <img src="img/brand_car/<?php echo $row["Car_Img"]; ?>" width="80"></ </td>
+                      <img src="myImg/brand/<?php echo $row["Car_Img"]; ?>" width="80"></ </td>
                     <td><?php echo $row["Car_ID"]; ?></td>
                     <td><?php echo $row["Car_Name"]; ?></td>
                     <td> <?php if ($row["Car_Status"] == 'on') {

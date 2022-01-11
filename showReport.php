@@ -67,7 +67,7 @@ if (isset($_POST["Report_ID"])) {
       <div class="row">
         <div class="col-md-4">
           <label> บริษัทประกันภัย</label>
-          <img src="img/brand_insurance/<?php echo  $insurance_img ?>" width="60%"><br>
+          <img src="myImg/insurance/<?php echo  $insurance_img ?>" width="60%"><br>
         </div>
       </div><br>
       <div class="row">
@@ -78,7 +78,7 @@ if (isset($_POST["Report_ID"])) {
       <div class="row">
         <?php while ($result = mysqli_fetch_array($resultc)) { ?>
           <div class="col-md-4">
-            <img src="img/brand_car/<?php echo $result['Car_Img'] ?>" width="60%">
+            <img src="myImg/brand/<?php echo $result['Car_Img'] ?>" width="60%">
           </div>
         <?php } ?>
       </div>

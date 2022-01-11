@@ -12,10 +12,9 @@ include_once 'connect.php';
 if (isset($_GET['brand']) == 1) {
     $id = $_POST['ids'];
     $Name = $_POST['Name'];
-    $status = $_POST['Status'];
     $file = $_FILES['img']['name'];
     if ($file == "") {
-        $sql = "UPDATE brand set  Car_Name=' $Name', Car_Status='$status'
+        $sql = "UPDATE brand set  Car_Name=' $Name''
         WHERE Car_ID = $id";
 
         $stmt = mysqli_query($con, $sql);
@@ -30,13 +29,27 @@ if (isset($_GET['brand']) == 1) {
             echo "มีบางอย่างผิดพลาด!! กรุณาลองใหม่อีกครั้ง";
         }
     } else {
+        $files_v = strrev($file);
+        $files_r = strrchr($files_v, ".");
+        $files = strrev($files_r);
+      
+        $nameDate = date('Ymd'); //เก็บวันที่
+        $path = "myImg/brand/"; //สร้างไฟล์สำหรับเก็บไฟล์ใหม่
+        date_default_timezone_set('Asia/Bangkok');
+        $numrand = (mt_rand(1000, 9999));
+      
+        if($file !=''){
+        $type = strrchr($file, "."); //ตัดชื่อไฟล์เหลือแต่นามสกุล
+        $newname = $nameDate . $numrand. $files . $type; //ประกอบเป็นชื่อใหม่
+        $path_copy = $path . $newname; //กำหนด path ในการเก็บ
+        move_uploaded_file($_FILES['img']['tmp_name'], $path_copy);
 
-        $sql2 = "UPDATE brand set  Car_Name=' $Name', Car_Img='$file', Car_Status='$status'
+        $sql2 = "UPDATE brand set  Car_Name=' $Name', Car_Img='$newname'
                  WHERE Car_ID = $id";
 
-        $stmt2 = mysqli_query($con, $sql2);
-
-        if ($stmt2) {
+        $update = mysqli_query($con, $sql2);
+        }
+        if ($update) {
 
             echo "<script type='text/javascript'>";
             echo "alert('แก้ไขข้อมูลสำเร็จ');";
@@ -50,15 +63,14 @@ if (isset($_GET['brand']) == 1) {
 if (isset($_GET['insurance']) == 1) {
     $id = $_POST['ids'];
     $Name = $_POST['Name'];
-    $status = $_POST['Status'];
     $file = $_FILES['img']['name'];
     if ($file == "") {
-        $sql = "UPDATE insurance set  Corp_Name=' $Name' , Corp_Status='$status'
+        $sql = "UPDATE insurance set  Corp_Name='$Name'
         WHERE Corp_ID = $id";
 
-        $insert1 = mysqli_query($con, $sql);
+     $update  = mysqli_query($con, $sql);
 
-        if ($insert1) {
+        if ($update) {
 
             echo "<script type='text/javascript'>";
             echo "alert('แก้ไขข้อมูลสำเร็จ');";
@@ -69,12 +81,28 @@ if (isset($_GET['insurance']) == 1) {
         }
     } else {
 
-        $sql2 = "UPDATE insurance set  Corp_Name=' $Name', Corp_Date='$date', Corp_img='$file', Corp_Status='$status'
+        $files_v = strrev($file);
+        $files_r = strrchr($files_v, ".");
+        $files = strrev($files_r);
+      
+        $nameDate = date('Ymd'); //เก็บวันที่
+        $path = "myImg/insurance/"; //สร้างไฟล์สำหรับเก็บไฟล์ใหม่
+        date_default_timezone_set('Asia/Bangkok');
+        $numrand = (mt_rand(1000, 9999));
+      
+        if($file !=''){
+        $type = strrchr($file, "."); //ตัดชื่อไฟล์เหลือแต่นามสกุล
+        $newname = $nameDate . $numrand. $files . $type; //ประกอบเป็นชื่อใหม่
+        $path_copy = $path . $newname; //กำหนด path ในการเก็บ
+      
+        move_uploaded_file($_FILES['img']['tmp_name'], $path_copy);
+        
+        $sql2 = "UPDATE insurance set  Corp_Name='$Name', Corp_img='$newname'
         WHERE Corp_ID = $id";
 
-        $insert2 = mysqli_query($con, $sql2);
-
-        if ($insert2) {
+$update = mysqli_query($con, $sql2);
+        }
+        if ($update) {
 
             echo "<script type='text/javascript'>";
             echo "alert('แก้ไขข้อมูลสำเร็จ');";
@@ -93,12 +121,11 @@ if (isset($_GET['report']) == 1) {
         for ($i = 0; $i < count($_POST['Car_ID']); $i++) {
             $brand_id = implode(",", $_POST['Car_ID']);
           }
-        $status = $_POST['status'];
         $detail = $_POST['detail'];
         $date_now = $_POST['date_now'];
         $date_ext = $_POST['date_ext'];
 
-        $sqls = "UPDATE report SET Corp_ID=' $corp_id', Type_ID=' $type_id', Car_ID=' $brand_id', Report_Status='$status',Report_Detail='$detail',
+        $sqls = "UPDATE report SET Corp_ID=' $corp_id', Type_ID=' $type_id', Car_ID='$brand_id',Report_Detail='$detail',
          Date_Now='$date_now',Date_ext='$date_ext'
          WHERE Report_ID = $id";
         $stmt = mysqli_query($con, $sqls);
@@ -121,9 +148,9 @@ if (isset($_GET['type']) == 1) {
     $sql = "UPDATE type set  Type_Name=' $Name', Type_Status='$status',Type_detail='$detail'
         WHERE Type_ID = $id";
 
-    $stmt = mysqli_query($con, $sql);
+$update = mysqli_query($con, $sql);
 
-    if ($stmt) {
+    if ($update) {
 
         echo "<script type='text/javascript'>";
         echo "alert('แก้ไขข้อมูลสำเร็จ');";
@@ -196,9 +223,9 @@ if (isset($_GET['page']) == 1) {
     $sql2 = "UPDATE user_role
     SET page = '$name', link= '$link',icon = '$icon'
      WHERE id = '$ids' ";
-    $result2 = mysqli_query($con, $sql2);
+    $update = mysqli_query($con, $sql2);
 
-    if ($result2) {
+    if ($update) {
 
         echo "<script type='text/javascript'>";
         echo "alert('แก้ไขข้อมูลสำเร็จ');";
