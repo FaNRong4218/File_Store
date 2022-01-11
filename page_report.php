@@ -152,13 +152,6 @@ $query3 = mysqli_query($con, $sql3);
           $result = mysqli_query($con, $sql);
 
 
-          // while ($rows = mysqli_fetch_array($results)) {
-
-          // }
-
-
-
-
           ?>
           <table id="Table" class="table table-striped" style="width: 100%;">
             <thead class="thead-dark">
@@ -179,13 +172,7 @@ $query3 = mysqli_query($con, $sql3);
 
               while ($row = mysqli_fetch_array($result)) {
                 $car_id = array($row["Car_ID"]);
-
-                $car_arr = array($car_id);
-                $carid = explode(",", $row["Car_ID"]);
-                $carids = implode(",", $carid);
-                // echo "$carids <br>";
-                // print_r($carid);
-                // echo "<br>";
+                $carids = implode(",", $car_id);
                 $sqlc = "SELECT * FROM brand WHERE Car_ID IN ($carids)";
                 $resultc = mysqli_query($con, $sqlc);
 

@@ -58,8 +58,8 @@ $query3 = mysqli_query($con, $sql3);
 
 
 // $where1 = '';
-if($insurance=='' || $brand==''|| $type ==''){
-    $text= 'selected';
+if ($insurance == '' || $brand == '' || $type == '') {
+    $text = 'selected';
 }
 if ($date == '' && $date_start == '' && $date_end == '' && $insurance == '' && $brand == '' && $type == '') {
     echo "<script type='text/javascript'>";
@@ -101,7 +101,8 @@ if ($date == '' && $date_start == '' && $date_end == '' && $insurance == '' && $
         $conditions[] = "report.Corp_ID='$insurance'";
     }
     if (!empty($brand)) {
-        $conditions[] = "report.Car_ID IN($brand)";
+
+        $conditions[] = "report.Car_ID LIKE('%$brand%')";
     }
     if (!empty($type)) {
         $conditions[] = "report.Type_ID='$type'";
@@ -110,7 +111,7 @@ if ($date == '' && $date_start == '' && $date_end == '' && $insurance == '' && $
 
 
     $sqls = "SELECT Report_ID, insurance.Corp_Name, brand.Car_Name, type.Type_Name, Report_Status,
-                            Date_Now,  Date_Ext, Date_Start
+                            Date_Now,  Date_Ext, Date_Start,report.Car_ID
                             FROM report 
                             INNER JOIN insurance ON insurance.Corp_ID = report.Corp_ID
                             INNER JOIN brand ON brand.Car_ID = report.Car_ID
@@ -257,12 +258,21 @@ if ($date == '' && $date_start == '' && $date_end == '' && $insurance == '' && $
                         </thead>
                         <tbody>
                             <?php
+
                             while ($row = mysqli_fetch_array($result)) {
+                                $car_id = array($row["Car_ID"]);
+                                $carids = implode(",", $car_id);
+                                $sqlc = "SELECT * FROM brand WHERE Car_ID IN ($carids)";
+                                $resultc = mysqli_query($con, $sqlc);
+
                             ?>
+
                                 <tr>
                                     <td><?php echo $row["Report_ID"]; ?></td>
                                     <td><?php echo $row["Corp_Name"]; ?></td>
-                                    <td><?php echo $row["Car_Name"]; ?></td>
+                                    <td><?php foreach ($resultc as $value) {
+                                            echo $value["Car_Name"] . "  ";
+                                        } ?></td>
                                     <td><?php echo $row["Type_Name"]; ?></td>
                                     <td><?php echo $row["Date_Start"]; ?></td>
                                     <td><?php echo $row["Date_Now"]; ?></td>
@@ -286,16 +296,17 @@ if ($date == '' && $date_start == '' && $date_end == '' && $insurance == '' && $
                                         </label>
 
                                     </td>
-                                    <td><a title='แก้ไขข้อมูล' href="update_report.php?Report_ID=<?php echo $row["Report_ID"]; ?>">
-                                            <button type=button class="btn btn-dark btn-sm"> <i class="far fa-edit"></i>
-                                            </button>
-                                        </a> &nbsp;
+                                    <td>
+                                        <a href="page_update.php?Report_ID=<?php echo $row["Report_ID"]; ?>" title='แก้ไขข้อมูล'>
+                                            <button type=button class="btn btn-dark btn-sm"><i class="far fa-edit"></i>
+                                            </button></a>
 
                                         <a title='รายละเอียด'>
                                             <button type=button class="btn btn-dark btn-sm view" name="view" value="ข้อมูล" id="<?php echo $row["Report_ID"]; ?>">
                                                 <i class="fas fa-sticky-note"></i>
                                             </button>
-                                            <a>&nbsp;
+                                            <a>
+
                                                 <a title='ไฟล์'>
                                                     <button type=button class="btn btn-dark btn-sm file" name="file" value="ไฟล์" id="<?php echo $row["Report_ID"]; ?>">
                                                         <i class="fas fa-folder"></i>
