@@ -48,11 +48,57 @@ $insurance = $_POST['insurance'];
 $brand = $_POST['brand'];
 $type = $_POST['type'];
 
-$sql1 = "SELECT * FROM insurance WHERE Corp_Status = 'on'";
+if ($insurance != '') {
+    $sqls = "SELECT * FROM insurance WHERE Corp_Status = 'on' AND Corp_ID=$insurance";
+    $querys = mysqli_query($con, $sqls);
+    foreach ($querys as $value) {
+        $ins_id = $value['Corp_ID'];
+        $ins_name = $value['Corp_Name'];
+    }
+    $textsql1 = ' AND Corp_ID !=' . $insurance;
+    $texts = '<option value="' . $ins_id . '">' . $ins_name . '</option>' .
+        '<option value="">เลือกบริษัทประกันที่ต้องการ</option>';
+} else {
+    $textsql1 = '';
+    $texts = '<option value="">เลือกบริษัทประกันที่ต้องการ</option>';
+}
+
+if ($brand != '') {
+    $sqlx = "SELECT * FROM brand WHERE Car_Status = 'on' AND Car_ID=$brand";
+    $queryx = mysqli_query($con, $sqlx);
+    foreach ($queryx as $value) {
+        $b_id = $value['Car_ID'];
+        $b_name = $value['Car_Name'];
+    }
+    $textsql2 = ' AND Car_ID !=' . $brand;
+    $textx = '<option value="' . $b_id . '">' . $b_name . '</option>' .
+        '<option value="">เลือกยี่ห้อรถที่ต้องการ</option>';
+} else {
+    $textsql2 = '';
+    $textx = '<option value="">เลือกยี่ห้อรถที่ต้องการ</option>';
+}
+
+if ($type != '') {
+    $sqlz = "SELECT * FROM type WHERE Type_Status = 'on' AND Type_ID=$type";
+    $queryz = mysqli_query($con, $sqlz);
+    foreach ($queryz as $value) {
+        $t_id = $value['Type_ID'];
+        $t_name = $value['Type_Name'];
+    }
+    $textsql3 = ' AND Type_ID !=' . $type;
+    $textz = '<option value="' . $t_id . '">' . $t_name . '</option>' .
+        '<option value="">เลือกประเภทประกันที่ต้องการ</option>';
+} else {
+    $textsql3 = '';
+    $textz = '<option value="">เลือกประเภทประกันที่ต้องการ</option>';
+}
+
+//แสดงตัวเลือกที่เหลือ
+$sql1 = "SELECT * FROM insurance WHERE Corp_Status = 'on' $textsql1";
 $query1 = mysqli_query($con, $sql1);
-$sql2 = "SELECT * FROM brand WHERE Car_Status = 'on' ";
+$sql2 = "SELECT * FROM brand WHERE Car_Status = 'on'  $textsql2 ";
 $query2 = mysqli_query($con, $sql2);
-$sql3 = "SELECT * FROM type WHERE Type_Status = 'on' ";
+$sql3 = "SELECT * FROM type WHERE Type_Status = 'on' $textsql3";
 $query3 = mysqli_query($con, $sql3);
 
 
@@ -190,7 +236,8 @@ if ($date == '' && $date_start == '' && $date_end == '' && $insurance == '' && $
                                             <div class="form-group col-md-4">
                                                 <label>เลือกบริษัทประกันภัย</label><br>
                                                 <select name="insurance" id="insurance" class="form-control">
-                                                    <option $text value="">เลือกบริษัทประกันภัยนที่ต้องการ</option>
+                                                    <?php echo $texts ?>
+
                                                     <?php while ($results = mysqli_fetch_assoc($query1)) : ?>
                                                         <option value="<?= $results["Corp_ID"] ?>"><?= $results["Corp_Name"] ?></option>
                                                     <?php endwhile; ?>
@@ -199,7 +246,7 @@ if ($date == '' && $date_start == '' && $date_end == '' && $insurance == '' && $
                                             <div class="form-group col-md-4">
                                                 <label>เลือกยี่ห้อรถ</label><br>
                                                 <select name="brand" id="brand" class="form-control">
-                                                    <option value="">เลือกยี่ห้อรถที่ต้องการ</option>
+                                                <?php echo $textx ?>
                                                     <?php while ($results = mysqli_fetch_assoc($query2)) : ?>
                                                         <option value="<?= $results["Car_ID"] ?>"><?= $results["Car_Name"] ?></option>
                                                     <?php endwhile; ?>
@@ -209,7 +256,7 @@ if ($date == '' && $date_start == '' && $date_end == '' && $insurance == '' && $
                                             <div class="form-group col-md-4">
                                                 <label>เลือกประเภท</label><br>
                                                 <select name="type" id="type" class="form-control">
-                                                    <option value="">เลือกประเภทประกันที่ต้องการ</option>
+                                                <?php echo $textz ?>
                                                     <?php while ($results = mysqli_fetch_assoc($query3)) : ?>
                                                         <option value="<?= $results["Type_ID"] ?>"><?= $results["Type_Name"] ?></option>
                                                     <?php endwhile; ?>
