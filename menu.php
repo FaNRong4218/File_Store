@@ -36,7 +36,7 @@ $resultp = mysqli_query($con, $sqlp);
       <!-- Brand Logo -->
 
       <h5 class="brand-link">
-        <img src="img/etc/user_ic.png" alt="AdminLTE Logo" class="brand-image img-circle elevation-3">
+        <img src="myImg/etc/user_ic.png" alt="AdminLTE Logo" class="brand-image img-circle elevation-3">
         <?php echo ($_SESSION["name"]); ?> (<?php echo ($_SESSION["type"]); ?>)
       </h5>
 

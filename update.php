@@ -142,10 +142,9 @@ if (isset($_GET['report']) == 1) {
 if (isset($_GET['type']) == 1) {
     $id = $_POST['ids'];
     $Name = $_POST['Name'];
-    $status = $_POST['Status'];
     $detail = $_POST['detail'];
 
-    $sql = "UPDATE type set  Type_Name='$Name', Type_Status='$status',Type_detail='$detail'
+    $sql = "UPDATE type set  Type_Name='$Name',Type_detail='$detail'
         WHERE Type_ID = $id";
 
 $update = mysqli_query($con, $sql);

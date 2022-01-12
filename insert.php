@@ -17,16 +17,16 @@ if (isset($_GET['brand']) == 1) {
   date_default_timezone_set('Asia/Bangkok');
   $numrand = (mt_rand(1000, 9999));
 
-  if($file !=''){
-  $type = strrchr($file, "."); //ตัดชื่อไฟล์เหลือแต่นามสกุล
-  $newname = $nameDate . $numrand. $files . $type; //ประกอบเป็นชื่อใหม่
-  $path_copy = $path . $newname; //กำหนด path ในการเก็บ
-  move_uploaded_file($_FILES['img']['tmp_name'], $path_copy);
+  if ($file != '') {
+    $type = strrchr($file, "."); //ตัดชื่อไฟล์เหลือแต่นามสกุล
+    $newname = $nameDate . $numrand . $files . $type; //ประกอบเป็นชื่อใหม่
+    $path_copy = $path . $newname; //กำหนด path ในการเก็บ
+    move_uploaded_file($_FILES['img']['tmp_name'], $path_copy);
 
-  $sql = "INSERT INTO brand (Car_Name, Car_Status, Car_Img)
+    $sql = "INSERT INTO brand (Car_Name, Car_Status, Car_Img)
         VALUES ('$Name', '$status', '$newname' )";
 
-  $insert = mysqli_query($con, $sql);
+    $insert = mysqli_query($con, $sql);
   }
   if ($insert) {
 
@@ -52,19 +52,19 @@ if (isset($_GET['insurance']) == 1) {
   date_default_timezone_set('Asia/Bangkok');
   $numrand = (mt_rand(1000, 9999));
 
-  if($file !=''){
-  $type = strrchr($file, "."); //ตัดชื่อไฟล์เหลือแต่นามสกุล
-  $newname = $nameDate . $numrand. $files . $type; //ประกอบเป็นชื่อใหม่
-  $path_copy = $path . $newname; //กำหนด path ในการเก็บ
+  if ($file != '') {
+    $type = strrchr($file, "."); //ตัดชื่อไฟล์เหลือแต่นามสกุล
+    $newname = $nameDate . $numrand . $files . $type; //ประกอบเป็นชื่อใหม่
+    $path_copy = $path . $newname; //กำหนด path ในการเก็บ
 
-  echo $path_copy;
-  move_uploaded_file($_FILES['img']['tmp_name'], $path_copy);
+    echo $path_copy;
+    move_uploaded_file($_FILES['img']['tmp_name'], $path_copy);
 
-  $sql = "INSERT INTO insurance (Corp_Name, Corp_Date, Corp_Status, Corp_img) 
+    $sql = "INSERT INTO insurance (Corp_Name, Corp_Date, Corp_Status, Corp_img) 
       VALUES ('$Name', '$date', '$status', '$newname' )";
 
-$insert = mysqli_query($con, $sql);
-}
+    $insert = mysqli_query($con, $sql);
+  }
 
   if ($insert) {
 
@@ -111,7 +111,7 @@ if (isset($_GET['Type']) == 1) {
   $sql = "INSERT INTO type (Type_Name, Type_Status, Type_detail) 
   VALUES ('$Name', '$status', '$detail' )";
 
-$insert = mysqli_query($con, $sql);
+  $insert = mysqli_query($con, $sql);
 
   if ($insert) {
 
@@ -172,7 +172,7 @@ if (isset($_GET['page']) == 1) {
   $sql = "INSERT INTO user_role (page, link, icon)
 VALUES ('$name', '$file', '$icon')";
 
-$insert = mysqli_query($con, $sql) or die;
+  $insert = mysqli_query($con, $sql) or die;
 
   if ($insert) {
     echo '<script> window.location.href = "control.php";alert("Insert success")</script>';

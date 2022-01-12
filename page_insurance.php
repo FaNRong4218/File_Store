@@ -78,7 +78,7 @@ include "menu.php";
                             <tr>
                                 <td>
 
-                                    <img src="myImg/insurance/<?php echo $row["Corp_img"]; ?>" width="80">
+                                    <img src="myImg/insurance/<?php echo $row["Corp_img"]; ?>" width="100px">
 
                                 </td>
                                 <td><?php echo $row["Corp_ID"]; ?></td>
