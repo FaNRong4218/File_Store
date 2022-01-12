@@ -57,10 +57,10 @@ if ($insurance != '') {
     }
     $textsql1 = ' AND Corp_ID !=' . $insurance;
     $texts = '<option value="' . $ins_id . '">' . $ins_name . '</option>' .
-        '<option value="">เลือกบริษัทประกันที่ต้องการ</option>';
+        '<option value="">ไม่เลือกบริษัทประกันภัย</option>';
 } else {
     $textsql1 = '';
-    $texts = '<option value="">เลือกบริษัทประกันที่ต้องการ</option>';
+    $texts = '<option value="">ไม่เลือกบริษัทประกันภัย</option>';
 }
 
 if ($brand != '') {
@@ -72,10 +72,10 @@ if ($brand != '') {
     }
     $textsql2 = ' AND Car_ID !=' . $brand;
     $textx = '<option value="' . $b_id . '">' . $b_name . '</option>' .
-        '<option value="">เลือกยี่ห้อรถที่ต้องการ</option>';
+        '<option value="">ไม่เลือกยี่ห้อรถยนต์</option>';
 } else {
     $textsql2 = '';
-    $textx = '<option value="">เลือกยี่ห้อรถที่ต้องการ</option>';
+    $textx = '<option value="">ไม่เลือกยี่ห้อรถยนต์</option>';
 }
 
 if ($type != '') {
@@ -87,10 +87,10 @@ if ($type != '') {
     }
     $textsql3 = ' AND Type_ID !=' . $type;
     $textz = '<option value="' . $t_id . '">' . $t_name . '</option>' .
-        '<option value="">เลือกประเภทประกันที่ต้องการ</option>';
+        '<option value="">ไม่เลือกประเภทประกันภัย</option>';
 } else {
     $textsql3 = '';
-    $textz = '<option value="">เลือกประเภทประกันที่ต้องการ</option>';
+    $textz = '<option value="">ไม่เลือกประเภทประกันภัย</option>';
 }
 
 //แสดงตัวเลือกที่เหลือ
@@ -103,13 +103,9 @@ $query3 = mysqli_query($con, $sql3);
 
 
 
-// $where1 = '';
-if ($insurance == '' || $brand == '' || $type == '') {
-    $text = 'selected';
-}
+
 if ($date == '' && $date_start == '' && $date_end == '' && $insurance == '' && $brand == '' && $type == '') {
     echo "<script type='text/javascript'>";
-    echo "alert('กรุณาเลือกข้อมูลอย่างใดอย่างหนึ่ง');";
     echo "window.location = 'page_report.php';";
     echo "</script>";
 } else {
@@ -131,14 +127,9 @@ if ($date == '' && $date_start == '' && $date_end == '' && $insurance == '' && $
             echo "</script>";
         }
     }
-    $sqlz = "SELECT Report_ID, insurance.Corp_Name, brand.Car_Name, type.Type_Name, Report_Status,
-                    Date_Now,  Date_Ext, Date_Start,report.Car_ID
-             FROM report 
-             INNER JOIN insurance ON insurance.Corp_ID = report.Corp_ID
-             INNER JOIN brand ON brand.Car_ID = report.Car_ID
-             INNER JOIN type ON  type.Type_ID = report.Type_ID";
-    $queryz = mysqli_query($con, $sqlz);
 
+
+    //ทำเงื่อนไขในการค้นหา
     $conditions = array();
     if (!empty($date)) {
         $conditions[] = "$date BETWEEN '$date_start' AND '$date_end'";

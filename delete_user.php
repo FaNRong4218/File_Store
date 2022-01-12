@@ -12,19 +12,18 @@ $id = $_GET["id"];
 $submit = $_GET["submit"];
 
 
-if ($submit =="DEL" && $id != $_SESSION["id"] ) {
-   $sql = "DELETE FROM user WHERE id='" . $_GET["id"] . "'";
-   mysqli_query($con, $sql);
+if ($submit =="1" && $id != $_SESSION["id"] ) {
+   $sql = "DELETE FROM user WHERE id=$id";
+    mysqli_query($con, $sql);
+    header("location: page_user.php");
+    exit();
+   
+}
+ else if($submit =="1" && $id == $_SESSION["id"] ) {
    echo "<script type='text/javascript'>";
-   echo "alert('ลบผู้ใช้สำเร็จ')";
+   echo "alert('คุณไม่สามารถลบไอดีตัวเองได้ กลับสู่หน้า เข้าสู่ระบบ')";
    echo "window.location = 'page_user.php';";
    echo "</script>";
-}
- else if($submit =="DEL" && $id == $_SESSION["id"] ) {
-    echo "<SCRIPT> //not showing me this
-        alert('คุณไม่สามารถลบไอดีตัวเองได้ กลับสู่หน้า เข้าสู่ระบบ')
-        window.location.replace(' logout.php');
-    </SCRIPT>";
     // header("location:");
    exit();
 }

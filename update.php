@@ -145,7 +145,7 @@ if (isset($_GET['type']) == 1) {
     $status = $_POST['Status'];
     $detail = $_POST['detail'];
 
-    $sql = "UPDATE type set  Type_Name=' $Name', Type_Status='$status',Type_detail='$detail'
+    $sql = "UPDATE type set  Type_Name='$Name', Type_Status='$status',Type_detail='$detail'
         WHERE Type_ID = $id";
 
 $update = mysqli_query($con, $sql);
@@ -161,7 +161,7 @@ $update = mysqli_query($con, $sql);
     }
 }
 if (isset($_GET['user']) == 1) {
-    if ($_SESSION["type"] == "Admin") {
+    if ($_SESSION["type"] == "admin") {
         if ($_POST['id'] == $_SESSION["id"]) {
 
             echo "<script type='text/javascript'>";
@@ -178,7 +178,7 @@ if (isset($_GET['user']) == 1) {
             echo "</script>";
         }
     }
-    if ($_SESSION["type"] == "User") {
+    if ($_SESSION["type"] == "member") {
         if ($_POST['id'] == $_SESSION["id"] || $_POST['type'] == "Admin" || $_POST['type'] == "Stuff" ||  $_SESSION['type'] == $_POST['type']) {
             echo "<script type='text/javascript'>";
             echo "alert('คุณไม่สามารถแก้ไขข้อมูลสถานะของ admin stuff หรือ user คนอื่นได้');";
@@ -194,7 +194,7 @@ if (isset($_GET['user']) == 1) {
             echo "</script>";
         }
     }
-    if ($_SESSION["type"] == "Stuff") {
+    if ($_SESSION["type"] == "employee") {
         if ($_POST['id'] == $_SESSION["id"] || $_POST['type'] == "Admin" || $_SESSION['type'] == $_POST['type']) {
 
             echo "<script type='text/javascript'>";

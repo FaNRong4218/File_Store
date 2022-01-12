@@ -77,7 +77,7 @@ include "menu.php";
                   <a href="page_update.php?id=<?php echo $row["id"]; ?>" title='Update Record'>
                     <button type=button class="btn btn-dark btn-sm"><i class="far fa-edit"></i>
                     </button></a>
-                  <a href="delete_user.php?id=<?php echo $row["id"]; ?>&submit=DEL" onclick="return confirm('ต้องการจะลบผู้ใช้งานนี้หรือไม่ ?')" title='ลบผู้ใช้งาน'>
+                  <a href="delete_user.php?id=<?php echo $row["id"]; ?>&submit=1" onclick="return confirm('ต้องการจะลบผู้ใช้งานนี้หรือไม่ ?')" title='ลบผู้ใช้งาน'>
                     <button type=button class="btn btn-dark btn-sm"> <i class="fas fa-trash-alt"></i></button></a>
                 </td>
               </tr>

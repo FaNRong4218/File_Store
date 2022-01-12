@@ -496,13 +496,13 @@ require_once "connect.php";
                         </div>
                         <input type="submit" class="btn btn-primary" value="ยืนยัน">
                         <?php
-                        if ($_SESSION["type"] == "User") {
+                        if ($_SESSION["type"] == "member") {
+                            $check = "page_dashboard.php";
+                        }
+                        if ($_SESSION["type"] == "admin") {
                             $check = "page_user.php";
                         }
-                        if ($_SESSION["type"] == "Admin") {
-                            $check = "page_user.php";
-                        }
-                        if ($_SESSION["type"] == "Stuff") {
+                        if ($_SESSION["type"] == "employee") {
                             $check = "page_user.php";
                         }
 
