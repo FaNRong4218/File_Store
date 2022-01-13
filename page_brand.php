@@ -65,7 +65,7 @@ include "menu.php";
 
           <?php
           include_once 'connect.php';
-          $sql = "SELECT * FROM brand ;";
+          $sql = "SELECT * FROM brand ORDER BY Car_ID desc";
           $result = mysqli_query($con, $sql);
 
           ?>
@@ -80,6 +80,7 @@ include "menu.php";
                 <tr>
                   <th>รูป logo</th>
                   <th>ลำดับ</th>
+                  <th hidden>Car_ID</th>
                   <th>ชื่อยี่ห้อ</th>
                   <th>สถานะ</th>
                   <th>ฟังก์ชัน</th>
@@ -87,13 +88,20 @@ include "menu.php";
               </thead>
               <tbody>
                 <?php
+                $i=1;
                 while ($row = mysqli_fetch_array($result)) {
                 ?>
                   <tr>
                     <td>
-                      <img src="myImg/brand/<?php echo $row["Car_Img"]; ?>" width="80px">
+                      <?php if($row["Car_Img"] !='none.png'){
+                          $scr = 'myImg/brand/';
+                        }else{
+                          $scr = 'myImg/brand/default_img/';
+                        }?>
+                      <img src="<?php echo $scr; ?><?php echo $row["Car_Img"]; ?>" width="80px">
                     </td>
-                    <td><?php echo $row["Car_ID"]; ?></td>
+                    <td><?php echo $i; ?></td>
+                    <td hidden><?php echo $row["Car_ID"]; ?></td>
                     <td><?php echo $row["Car_Name"]; ?></td>
                     <td> <?php if ($row["Car_Status"] == 'on') {
                             $text = "checked";
@@ -114,6 +122,7 @@ include "menu.php";
                     </td>
                   </tr>
                 <?php
+                $i++;
                 }
                 ?>
               </tbody>

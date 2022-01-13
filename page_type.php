@@ -15,7 +15,7 @@ if (!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true) {
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta http-equiv="x-ua-compatible" content="ie=edge">
 
-  <title>AdminLTE 3 | Type</title>
+  <title>Type</title>
 
 
   <script src="js/jquery.min.js"></script>
@@ -57,7 +57,7 @@ include "menu.php";
           </a>
           <?php
           include_once 'connect.php';
-          $sql = "SELECT * FROM type ;";
+          $sql = "SELECT * FROM type";
           $result = mysqli_query($con, $sql);
 
           ?> <?php
@@ -69,6 +69,7 @@ include "menu.php";
                 <tr>
                   <th>ลำดับ</th>
                   <th>ชื่อประเภทประกัน</th>
+                  <th>รายละเอียด</th>
                   <th>สถานะ</th>
                   <th>ฟังก์ชัน</th>
                 </tr>
@@ -80,6 +81,7 @@ include "menu.php";
                   <tr>
                     <td><?php echo $row["Type_ID"]; ?></td>
                     <td><?php echo $row["Type_Name"]; ?></td>
+                    <td><?php echo $row["Type_detail"]; ?></td>
                     <td> <?php if ($row["Type_Status"] == 'on') {
                             $text = "checked";
                           } else {
@@ -95,12 +97,6 @@ include "menu.php";
                       <a href="page_update.php?Type_ID=<?php echo $row["Type_ID"]; ?>" title='แก้ไขข้อมูล'>
                         <button type=button class="btn btn-warning btn-sm"><i class="far fa-edit"></i>
                           แก้ไข</button></a>
-
-                      <a title='รายละเอียด'>
-                        <button type=button class="btn btn-info btn-sm view" name="view" value="ข้อมูล" id="<?php echo $row["Type_ID"]; ?>"><i class="fas fa-sticky-note"></i>
-                          ข้อมูล</button>
-                        <a>
-
                     </td>
 
                   </tr>
@@ -108,25 +104,6 @@ include "menu.php";
                 }
                 ?>
                 <script>
-                  //Ajax เพื่อ ดึงค่า Type_ID จาก ตาราง
-                  //ฟังชั่น on บันทึกการเป็นแปลงเมื่อคลิ๊ก และกำหนด element ใน class ชื่อ viwe_data เพื่อ
-                  //อิงการเปลี่ยนแปลงเมื่อคลิ๊กจุดนั้น
-                  $(document).on('click', '.view', function() {
-                    var Type_ID = $(this).attr("id"); //กำหนดตัวแปรเพื่อเก็บ ค่า Type_ID 
-                    if (Type_ID != '') {
-                      $.ajax({ //เขียน Ajex เพื่อส่งค่าไปยัง url ที่กำหนด
-                        url: "showType.php", //กำหนด Url
-                        method: "POST",
-                        data: {
-                          Type_ID: Type_ID //data ที่ได้ คือ Type_ID
-                        },
-                        success: function(data) {
-                          $('#Type_detail').html(data); //นำข้อมูลจาก ไฟล์ "showType.php"มา ใส่ใน id ชื่อ Type_detail
-                          $('#dataModal').modal('show'); // แสดง modal โดยมี id ชื่อ dataModal เป็นตัวอ้างอิง
-                        }
-                      });
-                    }
-                  });
                   $(document).on('click', '.change', function() {
                     var Type_ID = $(this).attr("id");
                     if (Type_ID != '') {

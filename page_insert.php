@@ -15,7 +15,7 @@ if (!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true) {
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta http-equiv="x-ua-compatible" content="ie=edge">
 
-  <title>AdminLTE 3 | Insert</title>
+  <title>Insert</title>
 
   <script src="js/jquery.min.js"></script>
   <link rel="stylesheet" href="plugins/fontawesome-free/css/all.min.css">
@@ -84,7 +84,7 @@ if (isset($_GET['brand']) == 1) {
           <div class="form-row">
             <div class="form-group col-md-4">
               <label>ไฟล์ Logo</label><br>
-              <input type="file" name="img" accept="image/*" required OnChange="showPreview(this)">
+              <input type="file" name="img" accept="image/*" OnChange="showPreview(this)">
             </div>
           </div>
           <br>
@@ -151,7 +151,7 @@ if (isset($_GET['brand']) == 1) {
           <div class="form-row">
             <div class="form-group col-md-4">
               <label>ไฟล์ Logo</label><br>
-              <input type="file" name="img" accept="image/*" required OnChange="showPreview(this)">
+              <input type="file" name="img" accept="image/*"  OnChange="showPreview(this)">
             </div>
           </div>
           <br>

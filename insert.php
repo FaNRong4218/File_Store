@@ -8,9 +8,7 @@ if (isset($_GET['brand']) == 1) {
   $status = $_POST['Status'];
   $file = $_FILES['img']['name'];
 
-  $files_v = strrev($file);
-  $files_r = strrchr($files_v, ".");
-  $files = strrev($files_r);
+  $files = pathinfo($file, PATHINFO_FILENAME);
 
   $nameDate = date('Ymd'); //เก็บวันที่
   $path = "myImg/brand/"; //สร้างไฟล์สำหรับเก็บไฟล์ใหม่
@@ -28,6 +26,13 @@ if (isset($_GET['brand']) == 1) {
 
     $insert = mysqli_query($con, $sql);
   }
+  else{
+    $sql = "INSERT INTO brand (Car_Name, Car_Status, Car_Img)
+    VALUES ('$Name', 'off', 'none.png' )";
+
+    $insert = mysqli_query($con, $sql); 
+
+  }
   if ($insert) {
 
     echo "<script type='text/javascript'>";
@@ -43,9 +48,8 @@ if (isset($_GET['insurance']) == 1) {
   $date = $_POST['Date'];
   $status = $_POST['Status'];
   $file = $_FILES['img']['name'];
-  $files_v = strrev($file);
-  $files_r = strrchr($files_v, ".");
-  $files = strrev($files_r);
+  
+  $files = pathinfo($file, PATHINFO_FILENAME);
 
   $nameDate = date('Ymd'); //เก็บวันที่
   $path = "myImg/insurance/"; //สร้างไฟล์สำหรับเก็บไฟล์ใหม่
@@ -64,6 +68,13 @@ if (isset($_GET['insurance']) == 1) {
       VALUES ('$Name', '$date', '$status', '$newname' )";
 
     $insert = mysqli_query($con, $sql);
+  }
+  else{
+    $sql = "INSERT INTO insurance (Corp_Name, Corp_Date, Corp_Status, Corp_img) 
+    VALUES ('$Name', '$date', 'off', 'none.jpg' )";
+
+    $insert = mysqli_query($con, $sql); 
+
   }
 
   if ($insert) {

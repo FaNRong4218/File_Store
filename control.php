@@ -84,13 +84,6 @@ if (isset($_POST['but_update'])) { //ถ้ามีการกดปุ่ม 
 <div class="content-wrapper">
     <!-- Content Header (Page header) -->
     <section class="content-header">
-        <div class="container-fluid">
-            <div class="row mb-2">
-                <div class="col-sm-6">
-                    <h1 style="text-transform: uppercase">ตั้งค่าสิทธิผู้ใช้</h1>
-                </div>
-            </div>
-        </div><!-- /.container-fluid -->
     </section>
 
     <!-- Main content -->
@@ -101,7 +94,7 @@ if (isset($_POST['but_update'])) { //ถ้ามีการกดปุ่ม 
                     <form action="" method="post">
                         <div class="card card-dark">
                             <div class=" card-header">
-                                <h3 class="card-title ">ตั้งค่าสิทธิ</h3>
+                                <h3 class="card-title ">ตั้งค่าสิทธิผู้ใช้</h3>
                             </div>
                             <!-- /.card-header -->
                             <div class="card-body">
@@ -111,9 +104,9 @@ if (isset($_POST['but_update'])) { //ถ้ามีการกดปุ่ม 
                                             <th><input type='checkbox' id='checkAll'> เลือกทั้งหมด</th>
                                             <th>ลำดับ</th>
                                             <th>เพจ</th>
-                                            <th>Admin</th>
-                                            <th>Employee</th>
-                                            <th>Member</th>
+                                            <th>แอดมิน</th>
+                                            <th>พนักงาน</th>
+                                            <th>สมาชิก</th>
                                             <th>ฟังก์ชัน</th>
 
                                         </tr>

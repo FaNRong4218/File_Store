@@ -29,9 +29,7 @@ if (isset($_GET['brand']) == 1) {
             echo "มีบางอย่างผิดพลาด!! กรุณาลองใหม่อีกครั้ง";
         }
     } else {
-        $files_v = strrev($file);
-        $files_r = strrchr($files_v, ".");
-        $files = strrev($files_r);
+        $files = pathinfo($file, PATHINFO_FILENAME);
       
         $nameDate = date('Ymd'); //เก็บวันที่
         $path = "myImg/brand/"; //สร้างไฟล์สำหรับเก็บไฟล์ใหม่
@@ -81,9 +79,7 @@ if (isset($_GET['insurance']) == 1) {
         }
     } else {
         //แต่งชื่อไฟล์
-        $files_v = strrev($file);
-        $files_r = strrchr($files_v, ".");
-        $files = strrev($files_r);
+        $files = pathinfo($file, PATHINFO_FILENAME);
       
         $nameDate = date('Ymd'); //เก็บวันที่
         $path = "myImg/insurance/"; //สร้างไฟล์สำหรับเก็บไฟล์ใหม่

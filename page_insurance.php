@@ -15,7 +15,7 @@ if (!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true) {
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta http-equiv="x-ua-compatible" content="ie=edge">
 
-    <title>AdminLTE 3 | Insurance</title>
+    <title>Insurance</title>
 
     <script src="js/jquery.min.js"></script>
     <link rel="stylesheet" href="plugins/fontawesome-free/css/all.min.css">
@@ -63,7 +63,7 @@ include "menu.php";
                         <button type=button class="btn btn-info float-lg-right">เพิ่มข้อมูล <i class="fas fa-plus-circle"></i></button><br><br></a>
                     <?php
                     include_once 'connect.php';
-                    $sql = "SELECT * FROM insurance ;";
+                    $sql = "SELECT * FROM insurance ORDER BY Corp_ID desc;";
                     $result = mysqli_query($con, $sql);
 
                     ?>
@@ -77,6 +77,7 @@ include "menu.php";
                                 <tr>
                                     <th>รูป Logo</th>
                                     <th>ลำดับ</th>
+                                    <th hidden>Corp_ID</th>
                                     <th>ชื่อประกัน</th>
                                     <th>วันที่สร้าง</th>
                                     <th>สถานะ</th>
@@ -85,15 +86,20 @@ include "menu.php";
                             </thead>
                             <tbody>
                                 <?php
+                                $i = 1;
                                 while ($row = mysqli_fetch_array($result)) {
                                 ?>
                                     <tr>
-                                        <td>
-
-                                            <img src="myImg/insurance/<?php echo $row["Corp_img"]; ?>" width="100px">
+                                        <td><?php if ($row["Corp_img"] != 'none.jpg') {
+                                                $scr = 'myImg/insurance/';
+                                            } else {
+                                                $scr = 'myImg/insurance/default_img/';
+                                            } ?>
+                                            <img src="<?php echo $scr; ?><?php echo $row["Corp_img"]; ?>" width="100px">
 
                                         </td>
-                                        <td><?php echo $row["Corp_ID"]; ?></td>
+                                        <td><?php echo $i; ?></td>
+                                        <td hidden><?php echo $row["Corp_ID"]; ?></td>
                                         <td><?php echo $row["Corp_Name"]; ?></td>
                                         <td><?php echo $row["Corp_Date"]; ?></td>
                                         <td> <?php if ($row["Corp_Status"] == 'on') {
@@ -113,6 +119,7 @@ include "menu.php";
                                         </td>
                                     </tr>
                                 <?php
+                                    $i++;
                                 }
                                 ?>
                             </tbody>

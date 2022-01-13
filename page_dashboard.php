@@ -97,9 +97,9 @@ $result6 = mysqli_query($con, $sql6);
                         <!-- small box -->
                         <div class="small-box bg-info">
                             <div class="inner">
-                                <h3><?php echo $num3 ?> point</h3>
+                                <h3><?php echo $num3 ?></h3>
 
-                                <p>เอกสาร</p>
+                                <p>รายการเอกสาร</p>
                             </div>
                             <div class="icon ">
                                 <i class="fas fa-table"></i>
@@ -112,9 +112,9 @@ $result6 = mysqli_query($con, $sql6);
                         <!-- small box -->
                         <div class="small-box bg-danger">
                             <div class="inner">
-                                <h3><?php echo $num4 ?> point</h3>
+                                <h3><?php echo $num4 ?></h3>
 
-                                <p>บริษัท</p>
+                                <p>จำนวนบริษัท</p>
                             </div>
                             <div class="icon">
                                 <i class="fas fa-building"></i>
@@ -127,9 +127,9 @@ $result6 = mysqli_query($con, $sql6);
                         <!-- small box -->
                         <div class="small-box bg-warning">
                             <div class="inner">
-                                <h3><?php echo $num1 ?> file</h3>
+                                <h3><?php echo $num1 ?> </h3>
 
-                                <p>File</p>
+                                <p>จำนวนไฟล์</p>
                             </div>
                             <div class="icon">
                                 <i class="fas fa-file"></i>
@@ -143,9 +143,9 @@ $result6 = mysqli_query($con, $sql6);
                         <!-- small box -->
                         <div class="small-box bg-success">
                             <div class="inner">
-                                <h3><?php echo $num2 ?> user</h3>
+                                <h3><?php echo $num2 ?></h3>
 
-                                <p>User Registrations</p>
+                                <p>จำนวนผู้ใช้งาน</p>
                             </div>
                             <div class="icon">
                                 <i class="fas fa-user"></i>
