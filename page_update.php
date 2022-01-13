@@ -19,17 +19,18 @@ if (!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true) {
     <script src="js/jquery.min.js"></script>
     <link rel="stylesheet" href="plugins/fontawesome-free/css/all.min.css">
     <link rel="stylesheet" href="dist/css/adminlte.min.css">
-    <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Prompt&display=swap" rel="stylesheet">
     <script src="https://kit.fontawesome.com/2f85583488.js" crossorigin="anonymous"></script>
-    <script type="text/javascript" charset="utf8" src="/DataTables/datatables.js"></script>
 
-    <link rel="stylesheet" type="text/css" href="http://cdn.datatables.net/1.10.12/css/jquery.dataTables.css">
-    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
-    <script type="text/javascript" charset="utf8" src="http://cdn.datatables.net/1.10.12/js/jquery.dataTables.js"></script>
+    <script src="plugins/jquery/jquery.min.js"></script>
+    <script src="plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <link rel="stylesheet" href="dist/css/myCSS.css" type="text/css">
+    <script src="dist/css/myCSS.css"></script>
+
 
     <script type="text/javascript" src="ckeditor/ckeditor.js"></script>
-    <script src="plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
-
     <link rel="stylesheet" href="plugins/bootstrap4-duallistbox/bootstrap-duallistbox.min.css">
     <script src="plugins/bootstrap4-duallistbox/jquery.bootstrap-duallistbox.min.js"></script>
 </head>
@@ -190,6 +191,7 @@ require_once "connect.php";
 <?php if (isset($_GET['Report_ID'])) { ?>
 
     <?php
+date_default_timezone_set("Asia/Bangkok");
     //โชว์ ข้อมูลเดิมที่จะแก้ไข
     $sql4 = "SELECT Report_ID, report.Corp_ID, report.Type_ID, report.Car_ID, insurance.Corp_Name,
                 brand.Car_Name, type.Type_Name, Report_Detail, Date_Now, Date_Ext,
@@ -240,7 +242,7 @@ require_once "connect.php";
     <div class="content-wrapper">
         <div style="margin-left:10%; padding-top :2%;">
             <div class="container my-6">
-                <h2>แก้ไขรายงาน</h2><br>
+                <h2>แก้ไขเอกสารประกัน</h2><br>
                 <form action="update.php?report=1" method="post" enctype="multipart/form-data">
 
                     <div class="form-row">
@@ -325,7 +327,7 @@ require_once "connect.php";
                     <div class="form-row">
                         <div class="form-group col-md-4">
                             <label>วันที่หมดอายุ</label><br>
-                            <input name="date_now" type="date" value=<?php echo  date('Y-m-d') ?> hidden>
+                            <input hidden name="date_now" type="datetime" value=<?php echo date("Y-m-d\TH:i:s"); ?>>
                             <input name="date_ext" type="date" value=<?php echo  $Date_Ext_s ?>>
                         </div>
                     </div>
@@ -360,6 +362,185 @@ require_once "connect.php";
             </div>
         </div>
     </div>
+
+
+<?php } ?>
+
+<?php if (isset($_GET['Report_ID_s'])) { //สำหรับ report ที่มีแถบค้นหา?> 
+
+<?php
+date_default_timezone_set("Asia/Bangkok");
+
+//โชว์ ข้อมูลเดิมที่จะแก้ไข
+$sql4 = "SELECT Report_ID, report.Corp_ID, report.Type_ID, report.Car_ID, insurance.Corp_Name,
+            brand.Car_Name, type.Type_Name, Report_Detail, Date_Now, Date_Ext,
+            Report_Status
+     FROM report 
+     INNER JOIN insurance ON insurance.Corp_ID = report.Corp_ID
+     INNER JOIN brand ON brand.Car_ID = report.Car_ID
+     INNER JOIN type ON  type.Type_ID = report.Type_ID
+     WHERE Report_ID='" . $_GET['Report_ID_s'] . "'";
+
+$query4 = mysqli_query($con, $sql4);
+foreach ($query4 as $value) {
+    $Report_id_s = $value['Report_ID'];
+    $Corp_id_s = $value['Corp_ID'];
+    $Type_id_s = $value['Type_ID'];
+    $Brand_id_s = $value['Car_ID'];
+    $Corp_name_s = $value['Corp_Name'];
+    $Type_name_s = $value['Type_Name'];
+    $Brand_name_s = $value['Car_Name'];
+    $Date_Ext_s = $value['Date_Ext'];
+    $status_s = $value['Report_Status'];
+    $detail_s = $value['Report_Detail'];
+}
+//โชว์ id/ชื่อ บริษัทที่ไม่ได้เลือก
+$sql1 = "SELECT Corp_img, Corp_ID,Corp_Name 
+    FROM insurance 
+    WHERE Corp_Status= 'on' AND Corp_ID != '$Corp_id_s' ";
+$query1 = mysqli_query($con, $sql1);
+
+//โชว์ id/ชื่อ ประเภทที่ไม่ได้เลือก
+$sql2 = "SELECT Type_ID,Type_Name 
+     FROM type 
+     WHERE Type_Status= 'on'AND Type_ID !='$Type_id_s'";
+$query2 = mysqli_query($con, $sql2);
+
+//โชว์ id/ชื่อ รถที่เลือก
+$sql3 = "SELECT Car_ID,Car_Name 
+         FROM brand 
+         WHERE Car_Status= 'on' AND Car_ID IN($Brand_id_s)";
+$query3 = mysqli_query($con, $sql3);
+
+//โชว์ id/ชื่อ รถที่ไม่ได้เลือก
+$sqlc = "SELECT Car_ID,Car_Name 
+     FROM brand 
+     WHERE Car_Status= 'on' AND Car_ID NOT IN($Brand_id_s) AND Car_ID!=1";
+$queryc = mysqli_query($con, $sqlc);
+?>
+<div class="content-wrapper">
+    <div style="margin-left:10%; padding-top :2%;">
+        <div class="container my-6">
+            <h2>แก้ไขเอกสารประกัน</h2><br>
+            <form action="update.php?reports=1" method="post" enctype="multipart/form-data">
+
+                <div class="form-row">
+                    <div class="form-group col-md-4">
+                        <input type="text" name="ids" value="<?php echo $Report_id_s ?>" hidden>
+                        <label>บริษัทประกันภัย</label>
+                        <select name="Corp_ID" id="Corp_ID" class="form-control">
+                            <option value="<?php echo $Corp_id_s ?>">เลือกบริษัทเดิม(<?php echo $Corp_name_s ?>)</option>
+                            <?php while ($result = mysqli_fetch_assoc($query1)) : ?>
+                                <option value="<?= $result["Corp_ID"] ?>"><?= $result["Corp_Name"] ?></option>
+                            <?php endwhile; ?>
+                        </select>
+                    </div>
+                    <div class="form-group col-md-4">
+                        <label>ประเภทประกัน</label>
+                        <select name="Type_ID" id="Type_ID" class="form-control">
+                            <option value="<?php echo  $Type_id_s ?>">เลือกประเภทประกันเดิม (<?php echo $Type_name_s ?>)</option>
+                            <?php while ($result = mysqli_fetch_assoc($query2)) : ?>
+                                <option value="<?= $result["Type_ID"] ?>"><?= $result["Type_Name"] ?></option>
+                            <?php endwhile; ?>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-row">
+
+                    <?php if ($Brand_id_s == 1) { ?>
+                        <div class="form-group col-md-8">
+                            <label>ยี่ห้อรถ</label><br>
+                            <input onclick="check()" checked id="myCheck" type="checkbox" name="Car_ID[]" value=<?php echo $Brand_id_s ?>>ไม่เลือกยี่ห้อรถยนต์
+                        </div>
+                        <div class="form-group col-md-8" id='f1' style="display:none">
+                            <select id="Ck" name="Car_ID[]" class="duallistbox" multiple="multiple">
+                                <?php while ($result = mysqli_fetch_assoc($queryc)) : ?>
+                                    <option id="check" value="<?= $result["Car_ID"] ?>"><?= $result["Car_Name"] ?></option>
+                                <?php endwhile; ?>
+                            </select>
+                        </div>
+
+                    <?php } else { ?>
+                        <div class="form-group col-md-8">
+                            <label>ยี่ห้อรถ</label><br>
+                            <input onclick="check()" id="myCheck" type="checkbox" name="Car_ID[]" value=<?php echo $Brand_id_s ?>>ไม่เลือกยี่ห้อรถยนต์
+                        </div>
+                        <div class="form-group col-md-8">
+                            <select id="Ck" name="Car_ID[]" class="duallistbox" multiple="multiple">
+                                <?php while ($result = mysqli_fetch_assoc($query3)) : ?>
+                                    <option id="check" selected value="<?= $result["Car_ID"] ?>"><?= $result["Car_Name"] ?></option>
+                                <?php endwhile; ?>
+                                <?php while ($result = mysqli_fetch_assoc($queryc)) : ?>
+                                    <option id="check" value="<?= $result["Car_ID"] ?>"><?= $result["Car_Name"] ?></option>
+                                <?php endwhile; ?>
+                            </select>
+                        </div>
+                    <?php } ?>
+                </div>
+
+
+                <script>
+                    $(function() {
+                        $('.duallistbox').bootstrapDualListbox()
+                    });
+
+                    myCheck.onchange = function() {
+                        var text = document.getElementById("f1");
+                        if (this.checked == true) {
+                            document.querySelector("#check").closest('.form-group').style.display = "none";
+                            text.style.display = "none";
+                        }
+                        if (this.checked == false) {
+                            document.querySelector("#check").closest('.form-group').style.display = "";
+                            text.style.display = "";
+                        }
+                    }
+                    $(function() {
+                        $("#myCheck").on("click", function() {
+                            $("#Ck")[0].selectedIndex = -1;
+                            $(".duallistbox").bootstrapDualListbox('refresh', true);
+                        });
+                    });
+                </script>
+
+                <div class="form-row">
+                    <div class="form-group col-md-4">
+                        <label>วันที่หมดอายุ</label><br>
+                        <input hidden name="date_now" type="datetime" value=<?php echo date("Y-m-d\TH:i:s"); ?>>
+                        <input name="date_ext" type="date" value=<?php echo  $Date_Ext_s ?>>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group col-md-8">
+                        <label>รายละเอียดของรายงาน</label><br>
+                        <textarea name="detail" id="detail"><?php echo  $detail_s ?></textarea>
+                        <script>
+                            CKEDITOR.replace('detail');
+
+                            function CKupdate() {
+                                for (instance in CKEDITOR.instances)
+                                    CKEDITOR.instances[instance].updateElement();
+                            }
+                        </script>
+                    </div>
+                </div>
+
+
+
+                <div class="form-row">
+                    <div class="form-group-md-4">
+                        <br><br>
+                        <input type="submit" class="btn btn-primary" value="ยืนยัน"> &nbsp;&nbsp;
+                        <input type="reset" class="btn btn-info" value="รีเซ็ตข้อมูล" onclick="window.location.reload();"> &nbsp;&nbsp;
+                        <input type=button class="btn btn-danger" onclick="window.location='page_report.php'" value=ยกเลิก>
+
+                    </div>
+                </div>
+            </form>
+
+        </div>
+    </div>
+</div>
 
 
 <?php } ?>

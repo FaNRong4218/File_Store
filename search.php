@@ -19,18 +19,24 @@ if (!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true) {
     <link rel="stylesheet" href="plugins/fontawesome-free/css/all.min.css">
     <link rel="stylesheet" href="dist/css/adminlte.min.css">
     <link rel="stylesheet" href="dist/css/MyStyle.css">
-    <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Prompt&display=swap" rel="stylesheet">
     <script src="https://kit.fontawesome.com/2f85583488.js" crossorigin="anonymous"></script>
-    <script type="text/javascript" charset="utf8" src="/DataTables/datatables.js"></script>
-
-    <link rel="stylesheet" type="text/css" href="http://cdn.datatables.net/1.10.12/css/jquery.dataTables.css">
-    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
-    <script type="text/javascript" charset="utf8" src="http://cdn.datatables.net/1.10.12/js/jquery.dataTables.js"></script>
+    <!-- DataTables -->
+    <link rel="stylesheet" href="plugins/datatables-bs4/css/dataTables.bootstrap4.min.css">
+    <link rel="stylesheet" href="plugins/datatables-responsive/css/responsive.bootstrap4.min.css">
+    <script src="plugins/jquery/jquery.min.js"></script>
+    <script src="plugins/datatables/jquery.dataTables.min.js"></script>
+    <script src="plugins/datatables-bs4/js/dataTables.bootstrap4.min.js"></script>
+    <script src="plugins/datatables-responsive/js/dataTables.responsive.min.js"></script>
+    <script src="plugins/datatables-responsive/js/responsive.bootstrap4.min.js"></script>
 
 
     <script src="plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
     <link rel="stylesheet" href="dist/css/myCSS.css">
     <script src="dist/css/myCSS.css"></script>
+
 </head>
 
 <?php
@@ -123,7 +129,7 @@ if ($date == '' && $date_start == '' && $date_end == '' && $insurance == '' && $
         if ($date_start != '' || $date_end != '') {
             echo "<script type='text/javascript'>";
             echo "alert('กรุณาเลือกข้อมูลให้ถูกต้อง');";
-            echo "window.location = 'page_report.php';";
+            echo "window.location = 'page_report_search.php';";
             echo "</script>";
         }
     }
@@ -166,7 +172,7 @@ if ($date == '' && $date_start == '' && $date_end == '' && $insurance == '' && $
         <div class="container my-6">
 
             <div class="card " style="width: 105%;">
-                <h2 class="card-header bg-dark">ค้นหารายงาน</h2>
+                <h2 class="card-header bg-info">ค้นหารายงาน</h2>
                 <div class="card-body">
                     <form action="search.php" method="post">
                         <div class="form-row justify-content-center">
@@ -237,7 +243,7 @@ if ($date == '' && $date_start == '' && $date_end == '' && $insurance == '' && $
                                             <div class="form-group col-md-4">
                                                 <label>เลือกยี่ห้อรถ</label><br>
                                                 <select name="brand" id="brand" class="form-control">
-                                                <?php echo $textx ?>
+                                                    <?php echo $textx ?>
                                                     <?php while ($results = mysqli_fetch_assoc($query2)) : ?>
                                                         <option value="<?= $results["Car_ID"] ?>"><?= $results["Car_Name"] ?></option>
                                                     <?php endwhile; ?>
@@ -247,7 +253,7 @@ if ($date == '' && $date_start == '' && $date_end == '' && $insurance == '' && $
                                             <div class="form-group col-md-4">
                                                 <label>เลือกประเภท</label><br>
                                                 <select name="type" id="type" class="form-control">
-                                                <?php echo $textz ?>
+                                                    <?php echo $textz ?>
                                                     <?php while ($results = mysqli_fetch_assoc($query3)) : ?>
                                                         <option value="<?= $results["Type_ID"] ?>"><?= $results["Type_Name"] ?></option>
                                                     <?php endwhile; ?>
@@ -265,7 +271,7 @@ if ($date == '' && $date_start == '' && $date_end == '' && $insurance == '' && $
                                 <button class="btn btn-success" type="submit" name="submit" id="submit"><i class="fas fa-search" value="submit"></i></a>&nbsp;
                                     ค้นหารายละเอียด
                                 </button>
-                                <button class="btn btn-warning" type="button" name="restart" id="submit" onclick="window.location='page_report.php'"><i class="fas fa-retweet"></i></i>
+                                <button class="btn btn-warning" type="button" name="restart" id="submit" onclick="window.location='page_report_search.php'"><i class="fas fa-retweet"></i></i>
                                     รีเซ็ตการค้นหา
                                 </button>
                             </div>
@@ -280,8 +286,8 @@ if ($date == '' && $date_start == '' && $date_end == '' && $insurance == '' && $
 
 
 
-                    <table id="Table" class="display">
-                        <thead>
+                    <table id="example1" class="table table-striped">
+                        <thead class='bg-dark'>
                             <tr>
                                 <th>ลำดับ</th>
                                 <th>ชื่อบริษัท</th>
@@ -335,21 +341,23 @@ if ($date == '' && $date_start == '' && $date_end == '' && $insurance == '' && $
 
                                     </td>
                                     <td>
-                                        <a href="page_update.php?Report_ID=<?php echo $row["Report_ID"]; ?>" title='แก้ไขข้อมูล'>
-                                            <button type=button class="btn btn-dark btn-sm"><i class="far fa-edit"></i>
-                                            </button></a>
-
-                                        <a title='รายละเอียด'>
-                                            <button type=button class="btn btn-dark btn-sm view" name="view" value="ข้อมูล" id="<?php echo $row["Report_ID"]; ?>">
-                                                <i class="fas fa-sticky-note"></i>
-                                            </button>
-                                            <a>
-
-                                                <a title='ไฟล์'>
-                                                    <button type=button class="btn btn-dark btn-sm file" name="file" value="ไฟล์" id="<?php echo $row["Report_ID"]; ?>">
-                                                        <i class="fas fa-folder"></i>
-                                                    </button>
-                                                    <a>
+                                        <div class='row'>
+                                            <div class="col-3">
+                                                <a href="page_update.php?Report_ID_s=<?php echo $row["Report_ID"]; ?>" title='แก้ไขข้อมูล'>
+                                                    <button type=button class="btn btn-warning btn-sm"><i class="far fa-edit"></i>
+                                                        แก้ไข </button></a>
+                                            </div>
+                                            <div class="col-3">
+                                                <button title='รายละเอียด' type=button class="btn btn-primary btn-sm view" name="view" value="ข้อมูล" id="<?php echo $row["Report_ID"]; ?>">
+                                                    <i class="fas fa-eye"></i>
+                                                    ข้อมูล</button>
+                                            </div>
+                                            <div class="col-3">
+                                                <button title='ไฟล์' type=button class="btn btn-info btn-sm file" name="file" value="ไฟล์" id="<?php echo $row["Report_ID"]; ?>">
+                                                    <i class="fas fa-folder"></i>
+                                                    ไฟล์</button>
+                                            </div>
+                                        </div>
                                     </td>
 
                                 </tr>
@@ -466,7 +474,19 @@ if ($date == '' && $date_start == '' && $date_end == '' && $insurance == '' && $
 
 </html>
 <script>
-    $(document).ready(function() {
-        $('#Table').DataTable();
+    $(function() {
+        $("#example1").DataTable({
+            "responsive": true,
+            "autoWidth": false,
+        });
+        $('#example2').DataTable({
+            "paging": true,
+            "lengthChange": false,
+            "searching": false,
+            "ordering": true,
+            "info": true,
+            "autoWidth": false,
+            "responsive": true,
+        });
     });
 </script>

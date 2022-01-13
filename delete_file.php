@@ -17,5 +17,14 @@ if ($submit=="DEL") {
 } else {
     echo "Error deleting record: " . mysqli_error($con);
 }
+
+if ($submit=="DEL_s") {
+    $sql = "DELETE FROM file WHERE File_ID='" . $_GET["id"] . "'";
+    mysqli_query($con, $sql);
+    header("location: page_report_search.php");
+    exit();
+ } else {
+     echo "Error deleting record: " . mysqli_error($con);
+ }
 mysqli_close($con);
 ?>

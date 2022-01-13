@@ -33,7 +33,9 @@ if (!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true) {
     <!-- summernote -->
     <link rel="stylesheet" href="plugins/summernote/summernote-bs4.css">
     <!-- Google Font: Source Sans Pro -->
-    <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Prompt&display=swap" rel="stylesheet">
     <!-- DataTables -->
     <link rel="stylesheet" href="plugins/datatables-bs4/css/dataTables.bootstrap4.min.css">
     <link rel="stylesheet" href="plugins/datatables-responsive/css/responsive.bootstrap4.min.css">
@@ -41,6 +43,7 @@ if (!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true) {
 
     <link rel="stylesheet" href="dist/css/myCSS.css">
     <script src="dist/css/myCSS.css"></script>
+
 </head>
 <?php
 include "menu.php";
@@ -56,56 +59,31 @@ $sql2 = "SELECT id FROM user ";
 $result2 = mysqli_query($con, $sql2);
 $num2 = mysqli_num_rows($result2);
 
-$sql3 = "SELECT Car_Status FROM brand WHERE Car_Status='on'";
+$sql3 = "SELECT Report_ID FROM report ";
 $result3 = mysqli_query($con, $sql3);
 $num3 = mysqli_num_rows($result3);
 
-$sql4 = "SELECT Car_Status FROM brand WHERE Car_Status='off'";
+$sql4 = "SELECT Corp_ID FROM insurance ";
 $result4 = mysqli_query($con, $sql4);
 $num4 = mysqli_num_rows($result4);
 
-$sql5 = "SELECT Corp_Status FROM insurance WHERE Corp_Status='on'";
-$result5 = mysqli_query($con, $sql5);
-$num5 = mysqli_num_rows($result5);
 
-$sql6 = "SELECT Corp_Status FROM insurance WHERE Corp_Status='off'";
-$result6 = mysqli_query($con, $sql6);
-$num6 = mysqli_num_rows($result6);
-
-$sql7 = "SELECT Type_Status FROM type WHERE Type_Status='on'";
-$result7 = mysqli_query($con, $sql7);
-$num7 = mysqli_num_rows($result7);
-
-$sql8 = "SELECT Type_Status FROM type WHERE Type_Status='off'";
-$result8 = mysqli_query($con, $sql8);
-$num8 = mysqli_num_rows($result8);
-
-$sql9 = "SELECT Report_Status FROM report WHERE Report_Status='on'";
-$result9 = mysqli_query($con, $sql9);
-$num9 = mysqli_num_rows($result9);
-
-$sql10 = "SELECT Report_Status FROM report WHERE Report_Status='off'";
-$result10 = mysqli_query($con, $sql10);
-$num10 = mysqli_num_rows($result10);
-
-$numOn = $num3 + $num5 + $num7 + $num9;
-$numOff = $num4 + $num6 + $num8 + $num10;
-
-$sql11 = "SELECT Report_ID, insurance.Corp_Name, brand.Car_Name, type.Type_Name, Report_Status,Report.Car_ID,
+$sql5 = "SELECT Report_ID, insurance.Corp_Name, brand.Car_Name, type.Type_Name, Report_Status,Report.Car_ID,
         Date_Now,  Date_Ext, Date_Start
 FROM report 
 INNER JOIN insurance ON insurance.Corp_ID = report.Corp_ID
 INNER JOIN brand ON brand.Car_ID = report.Car_ID
 INNER JOIN type ON  type.Type_ID = report.Type_ID
+ORDER BY  Date_Now desc ;
 ";
-$result11 = mysqli_query($con, $sql11);
+$result5 = mysqli_query($con, $sql5);
 
-$sql12 = "SELECT insurance.Corp_Name, COUNT(report.Corp_ID ) as num_corp  FROM report 
+$sql6 = "SELECT insurance.Corp_Name, COUNT(report.Corp_ID ) as num_corp  FROM report 
 INNER JOIN insurance ON  insurance.Corp_ID = report.Corp_ID
 GROUP BY insurance.Corp_Name
 ORDER BY num_corp DESC  LIMIT 0,5
 ";
-$result12 = mysqli_query($con, $sql12);
+$result6 = mysqli_query($con, $sql6);
 
 ?>
 
@@ -117,16 +95,16 @@ $result12 = mysqli_query($con, $sql12);
                 <div class="row">
                     <div class="col-lg-3 col-6">
                         <!-- small box -->
-                        <div class="small-box bg-success">
+                        <div class="small-box bg-info">
                             <div class="inner">
-                                <h3><?php echo $numOn ?> point</h3>
+                                <h3><?php echo $num3 ?> point</h3>
 
-                                <p>Status ON</p>
+                                <p>เอกสาร</p>
                             </div>
                             <div class="icon ">
-                                <i class="fas fa-lightbulb"></i>
+                                <i class="fas fa-table"></i>
                             </div>
-                            <a href="#" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
+
                         </div>
                     </div>
                     <!-- ./col -->
@@ -134,29 +112,14 @@ $result12 = mysqli_query($con, $sql12);
                         <!-- small box -->
                         <div class="small-box bg-danger">
                             <div class="inner">
-                                <h3><?php echo $numOff ?> point</h3>
+                                <h3><?php echo $num4 ?> point</h3>
 
-                                <p>Status OFF</p>
+                                <p>บริษัท</p>
                             </div>
                             <div class="icon">
-                                <i class="fas fa-power-off"></i>
+                                <i class="fas fa-building"></i>
                             </div>
-                            <a href="#" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
-                        </div>
-                    </div>
-                    <!-- ./col -->
-                    <div class="col-lg-3 col-6">
-                        <!-- small box -->
-                        <div class="small-box bg-info">
-                            <div class="inner">
-                                <h3><?php echo $num2 ?> user</h3>
 
-                                <p>User Registrations</p>
-                            </div>
-                            <div class="icon">
-                                <i class="fas fa-user"></i>
-                            </div>
-                            <a href="#" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
                         </div>
                     </div>
                     <!-- ./col -->
@@ -171,20 +134,37 @@ $result12 = mysqli_query($con, $sql12);
                             <div class="icon">
                                 <i class="fas fa-file"></i>
                             </div>
-                            <a href="#" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
+
                         </div>
                     </div>
                     <!-- ./col -->
+                    <!-- ./col -->
+                    <div class="col-lg-3 col-6">
+                        <!-- small box -->
+                        <div class="small-box bg-success">
+                            <div class="inner">
+                                <h3><?php echo $num2 ?> user</h3>
+
+                                <p>User Registrations</p>
+                            </div>
+                            <div class="icon">
+                                <i class="fas fa-user"></i>
+                            </div>
+
+                        </div>
+                    </div>
+
                 </div>
                 <div class="row">
                     <div class="col-lg-8">
                         <div class="card ">
-                            <h2 class="card-header bg-dark">รายงาน</h2>
+                            <h2 class="card-header bg-info">เอกสารล่าสุด</h2>
                             <div class="card-body ">
                                 <table id="example1" class="table table-bordered table-hover" style="width: 100%;">
                                     <thead>
                                         <tr>
                                             <th>ลำดับ</th>
+                                            <th hidden>Report_ID</th>
                                             <th>ชื่อบริษัท</th>
                                             <th>ชื่อยี่ห้อรถ</th>
                                             <th>ประเภทประกัน</th>
@@ -196,8 +176,8 @@ $result12 = mysqli_query($con, $sql12);
                                     </thead>
                                     <tbody>
                                         <?php
-
-                                        while ($row = mysqli_fetch_array($result11)) {
+                                        $i = 1;
+                                        while ($row = mysqli_fetch_array($result5)) {
                                             $car_id = array($row["Car_ID"]);
                                             $car_arr = array($car_id);
                                             $carid = explode(",", $row["Car_ID"]);
@@ -211,7 +191,8 @@ $result12 = mysqli_query($con, $sql12);
                                         ?>
 
                                             <tr>
-                                                <td><?php echo $row["Report_ID"]; ?></td>
+                                                <td><?php echo $i ?></td>
+                                                <td hidden><?php echo $row["Report_ID"]; ?></td>
                                                 <td><?php echo $row["Corp_Name"]; ?></td>
                                                 <td><?php foreach ($resultc as $value) {
                                                         echo $value["Car_Name"] . "  ";
@@ -240,6 +221,7 @@ $result12 = mysqli_query($con, $sql12);
 
                                             </tr>
                                         <?php
+                                            $i++;
                                         }
                                         ?>
                                     </tbody>
@@ -250,7 +232,7 @@ $result12 = mysqli_query($con, $sql12);
                     </div>
                     <div class="col-lg-4">
                         <div class="card ">
-                            <h2 class="card-header bg-dark">5 อันดับบริษัทประกัน ยอดนิยม</h2>
+                            <h2 class="card-header bg-danger">5 อันดับเอกสารยอดนิยม</h2>
                             <div class="card-body ">
                                 <table id="example1" class="table table-bordered table-hover" style="width: 100%;">
                                     <thead>
@@ -263,14 +245,12 @@ $result12 = mysqli_query($con, $sql12);
                                     <tbody>
                                         <?php
                                         $i = 1;
-                                        while ($row = mysqli_fetch_array($result12)) {
+                                        while ($row = mysqli_fetch_array($result6)) {
                                         ?>
-
                                             <tr>
                                                 <td><?php echo $i ?></td>
                                                 <td><?php echo $row["Corp_Name"]; ?></td>
                                                 <td><?php echo $row["num_corp"]; ?></td>
-
                                             </tr>
                                         <?php
                                             $i++;

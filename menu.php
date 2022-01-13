@@ -17,12 +17,18 @@ $resultp = mysqli_query($con, $sqlp);
 
 
 ?>
-
-<body class="hold-transition sidebar-mini layout-fixed">
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Prompt&display=swap');
+body {
+      font-family: 'Prompt', sans-serif;
+      font-size: 14px;
+    }
+</style>
+<body class="hold-transition sidebar-mini layout-fixed ">
   <div class="wrapper">
 
     <!-- Navbar -->
-    <nav class="main-header navbar navbar-expand navbar-white navbar-light">
+    <nav class="main-header navbar navbar-expand navbar-light navbar-light ">
       <!-- Left navbar links -->
       <ul class="navbar-nav">
         <li class="nav-item">
@@ -32,10 +38,10 @@ $resultp = mysqli_query($con, $sqlp);
     <!-- /.navbar -->
 
     <!-- Main Sidebar Container -->
-    <aside class="main-sidebar sidebar-dark-primary elevation-4">
+    <aside class="main-sidebar sidebar-light-primary elevation-4">
       <!-- Brand Logo -->
 
-      <h5 class="brand-link">
+      <h5 class="brand-link bg-info">
         <img src="myImg/etc/user_ic.png" alt="AdminLTE Logo" class="brand-image img-circle elevation-3">
         <?php echo ($_SESSION["name"]); ?> (<?php echo ($_SESSION["type"]); ?>)
       </h5>
@@ -92,7 +98,7 @@ $resultp = mysqli_query($con, $sqlp);
             }
 
             ?>
-            <li class="nav-item">
+            <li class="nav-item ">
               <a href="logout.php" class="nav-link">
                 <i class="fas fa-sign-out-alt"></i>
                 <p>
@@ -104,5 +110,7 @@ $resultp = mysqli_query($con, $sqlp);
           </ul>
         </nav>
       </div>
+      <h5 class="brand-link bg-info">
+      </h5>
     </aside>
   </div>

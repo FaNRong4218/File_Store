@@ -49,7 +49,7 @@ if (isset($_POST["Report_ID"])) {
 
     <div class="form-row">
         <div class="form-group col-md-12">
-            <a href="page_insert.php?id=<?php echo $ids  ?>" title='เพิ่มไฟล์'>
+            <a href="page_insert.php?ids=<?php echo $ids  ?>" title='เพิ่มไฟล์'>
                 <button type=button class="btn btn-info">เพิ่มไฟล์ <i class="fas fa-plus-circle"></i></button><br><br>
             </a>
             <table id="Table" class="table table-striped">
@@ -79,7 +79,7 @@ if (isset($_POST["Report_ID"])) {
                                             </button></a>
                                     </div>
                                     <div class='col-5'>
-                                        <a href="delete_file.php?id=<?php echo $row["File_ID"]; ?>&submit=DEL" onclick="return confirm('ต้องการจะลบไฟล์นี้หรือไม่ ?')" title='ลบไฟล์'>
+                                        <a href="delete_file.php?id=<?php echo $row["File_ID"]; ?>&submit=DEL_s" onclick="return confirm('ต้องการจะลบไฟล์นี้หรือไม่ ?')" title='ลบไฟล์'>
                                             <button type=button class="btn btn-danger btn-sm"><i class="fas fa-trash-alt"></i>
                                             </button></a>
                                     </div>

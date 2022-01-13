@@ -63,7 +63,7 @@ if (isset($_GET['brand']) == 1) {
 if (isset($_GET['insurance']) == 1) {
     $id = $_POST['ids'];
     $Name = $_POST['Name'];
-    $file = $_FILES['img']['name'];
+    $file = $_FILES['img']['name']; //ประกาศตัวแปรเพื่อนเก็บชื่อ+นามสกุลไฟล์
     if ($file == "") {
         $sql = "UPDATE insurance set  Corp_Name='$Name'
         WHERE Corp_ID = $id";
@@ -80,7 +80,7 @@ if (isset($_GET['insurance']) == 1) {
             echo "มีบางอย่างผิดพลาด!! กรุณาลองใหม่อีกครั้ง";
         }
     } else {
-
+        //แต่งชื่อไฟล์
         $files_v = strrev($file);
         $files_r = strrchr($files_v, ".");
         $files = strrev($files_r);
@@ -125,7 +125,7 @@ if (isset($_GET['report']) == 1) {
         $date_now = $_POST['date_now'];
         $date_ext = $_POST['date_ext'];
 
-        $sqls = "UPDATE report SET Corp_ID=' $corp_id', Type_ID=' $type_id', Car_ID='$brand_id',Report_Detail='$detail',
+        $sqls = "UPDATE report SET Corp_ID='$corp_id', Type_ID='$type_id', Car_ID='$brand_id',Report_Detail='$detail',
          Date_Now='$date_now',Date_ext='$date_ext'
          WHERE Report_ID = $id";
         $stmt = mysqli_query($con, $sqls);
@@ -138,6 +138,32 @@ if (isset($_GET['report']) == 1) {
             echo "มีบางอย่างผิดพลาด!! กรุณาลองใหม่อีกครั้ง";
         }
     }
+}
+if (isset($_GET['reports']) == 1) { //สำหรับหน้า report ที่มีหน้าค้นหา
+    
+        $id = $_POST['ids'];
+        $corp_id = $_POST['Corp_ID'];
+        $type_id = $_POST['Type_ID'];
+        for ($i = 0; $i < count($_POST['Car_ID']); $i++) {
+            $brand_id = implode(",", $_POST['Car_ID']);
+          }
+        $detail = $_POST['detail'];
+        $date_now = $_POST['date_now'];
+        $date_ext = $_POST['date_ext'];
+
+        $sqls = "UPDATE report SET Corp_ID='$corp_id', Type_ID='$type_id', Car_ID='$brand_id',Report_Detail='$detail',
+         Date_Now='$date_now',Date_ext='$date_ext'
+         WHERE Report_ID = $id";
+        $stmt = mysqli_query($con, $sqls);
+        if ($stmt) {
+            echo "<script type='text/javascript'>";
+            echo "alert('เพิ่มข้อมูลสำเร็จ');";
+            echo "window.location = 'page_report_search.php';";
+            echo "</script>";
+        } else {
+            echo "มีบางอย่างผิดพลาด!! กรุณาลองใหม่อีกครั้ง";
+        }
+    
 }
 if (isset($_GET['type']) == 1) {
     $id = $_POST['ids'];

@@ -22,14 +22,26 @@ if (!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true) {
   <link rel="stylesheet" href="plugins/fontawesome-free/css/all.min.css">
   <link rel="stylesheet" href="dist/css/adminlte.min.css">
   <link rel="stylesheet" href="dist/css/MyStyle.css">
-  <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700" rel="stylesheet">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Prompt&display=swap" rel="stylesheet">
   <script src="https://kit.fontawesome.com/2f85583488.js" crossorigin="anonymous"></script>
-  <script type="text/javascript" charset="utf8" src="/DataTables/datatables.js"></script>
-  <link rel="stylesheet" type="text/css" href="http://cdn.datatables.net/1.10.12/css/jquery.dataTables.css">
-  <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
-  <script type="text/javascript" charset="utf8" src="http://cdn.datatables.net/1.10.12/js/jquery.dataTables.js"></script>
+  <!-- DataTables -->
+  <link rel="stylesheet" href="plugins/datatables-bs4/css/dataTables.bootstrap4.min.css">
+  <link rel="stylesheet" href="plugins/datatables-responsive/css/responsive.bootstrap4.min.css">
+  <script src="plugins/jquery/jquery.min.js"></script>
+  <script src="plugins/datatables/jquery.dataTables.min.js"></script>
+  <script src="plugins/datatables-bs4/js/dataTables.bootstrap4.min.js"></script>
+  <script src="plugins/datatables-responsive/js/dataTables.responsive.min.js"></script>
+  <script src="plugins/datatables-responsive/js/responsive.bootstrap4.min.js"></script>
 
   <script src="plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
+  <link rel="stylesheet" href="dist/css/myCSS.css" type="text/css">
+  <script src="dist/css/myCSS.css"></script>
+
+  <script src="plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
+  <link rel="stylesheet" href="dist/css/myCSS.css">
+  <script src="dist/css/myCSS.css"></script>
 
 </head>
 <?php
@@ -39,60 +51,78 @@ include "menu.php";
 <div class="content-wrapper">
   <div style="margin-left:4%; padding-top :4%;">
     <div class="container my-6">
-      <?php
-      include_once 'connect.php';
-      $result = mysqli_query($con, "SELECT * FROM user");
-      ?>
-      <?php
-      if (mysqli_num_rows($result) > 0) {
-      ?>
+      <div class="card">
+        <h2 class="card-header bg-success">ผู้ใช้งาน</h2>
+        <div class="card-body ">
+          <?php
+          include_once 'connect.php';
+          $result = mysqli_query($con, "SELECT * FROM user");
+          ?>
+          <?php
+          if (mysqli_num_rows($result) > 0) {
+          ?>
 
-        <table id="Table" class="table table-striped">
-          <thead class="thead-dark">
-            <tr>
-              <th hidden></th>
-              <th>ลำดับ</th>
-              <th>ผู้ใช้</th>
-              <th>ชื่อผู้ใช้</th>
-              <th>อีเมล</th>
-              <th>เบอร์โทรศัพท์</th>
-              <th>สถานะ</th>
-              <th>ฟังก์ชัน</th>
-            </tr>
-          </thead>
-          <tbody>
-            <?php
-            $i = 1;
-            while ($row = mysqli_fetch_array($result)) {
-            ?>
-              <tr>
-                <td><?php echo $i ?></td>
-                <td hidden><?php echo $row["id"]; ?></td>
-                <td><?php echo $row["user"]; ?></td>
-                <td><?php echo $row["name"]; ?></td>
-                <td><?php echo $row["email"]; ?></td>
-                <td><?php echo $row["tel"]; ?></td>
-                <td><?php echo $row["type"]; ?></td>
-                <td>
-                  <a href="page_update.php?id=<?php echo $row["id"]; ?>" title='Update Record'>
-                    <button type=button class="btn btn-dark btn-sm"><i class="far fa-edit"></i>
-                    </button></a>
-                  <a href="delete_user.php?id=<?php echo $row["id"]; ?>&submit=1" onclick="return confirm('ต้องการจะลบผู้ใช้งานนี้หรือไม่ ?')" title='ลบผู้ใช้งาน'>
-                    <button type=button class="btn btn-dark btn-sm"> <i class="fas fa-trash-alt"></i></button></a>
-                </td>
-              </tr>
-            <?php
-              $i++;
-            }
-            ?>
-          </tbody>
-        </table>
+            <table id="example1" class="table table-striped">
+              <thead class="bg-dark">
+                <tr>
+                  <th hidden></th>
+                  <th>ลำดับ</th>
+                  <th>ผู้ใช้</th>
+                  <th>ชื่อผู้ใช้</th>
+                  <th>อีเมล</th>
+                  <th>เบอร์โทรศัพท์</th>
+                  <th>สถานะ</th>
+                  <th>ฟังก์ชัน</th>
+                </tr>
+              </thead>
+              <tbody>
+                <?php
+                $i = 1;
+                while ($row = mysqli_fetch_array($result)) {
+                ?>
+                  <tr>
+                    <td><?php echo $i ?></td>
+                    <td hidden><?php echo $row["id"]; ?></td>
+                    <td><?php echo $row["user"]; ?></td>
+                    <td><?php echo $row["name"]; ?></td>
+                    <td><?php echo $row["email"]; ?></td>
+                    <td><?php echo $row["tel"]; ?></td>
+                    <?php
+                    if ($row["type"] == 'admin') {
+                      $text = 'badge-danger';
+                    }
+                    if ($row["type"] == 'employee') {
+                      $text = 'badge-info';
+                    }
+                    if ($row["type"] == 'member') {
+                      $text = 'badge-success';
+                    }
+                    ?>
+                    <td>
+                      <h5><span class="badge <?php echo $text ?>"><?php echo $row["type"]; ?><span></h5>
+                    </td>
+                    <td>
+                      <a href="page_update.php?id=<?php echo $row["id"]; ?>" title='Update Record'>
+                        <button type=button class="btn btn-warning btn-sm"><i class="far fa-edit">แก้ไข</i>
+                        </button></a>
+                      <a href="delete_user.php?id=<?php echo $row["id"]; ?>&submit=1" onclick="return confirm('ต้องการจะลบผู้ใช้งานนี้หรือไม่ ?')" title='ลบผู้ใช้งาน'>
+                        <button type=button class="btn btn-danger btn-sm"> <i class="fas fa-trash-alt"></i> ลบ</button></a>
+                    </td>
+                  </tr>
+                <?php
+                  $i++;
+                }
+                ?>
+              </tbody>
+            </table>
 
-      <?php
-      } else {
-        echo "No result found";
-      }
-      ?>
+          <?php
+          } else {
+            echo "No result found";
+          }
+          ?>
+        </div>
+      </div>
     </div>
   </div>
 </div>
@@ -110,7 +140,19 @@ include "menu.php";
 
 </html>
 <script>
-  $(document).ready(function() {
-    $('#Table').DataTable();
+  $(function() {
+    $("#example1").DataTable({
+      "responsive": true,
+      "autoWidth": false,
+    });
+    $('#example2').DataTable({
+      "paging": true,
+      "lengthChange": false,
+      "searching": false,
+      "ordering": true,
+      "info": true,
+      "autoWidth": false,
+      "responsive": true,
+    });
   });
 </script>

@@ -39,7 +39,9 @@ scratch. This page gets rid of all links and provides the needed markup only.
     <script src="js/jquery.min.js"></script>
     <link rel="stylesheet" href="plugins/fontawesome-free/css/all.min.css">
     <link rel="stylesheet" href="dist/css/adminlte.min.css">
-    <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Prompt&display=swap" rel="stylesheet">
     <script src="https://kit.fontawesome.com/2f85583488.js" crossorigin="anonymous"></script>
     <script type="text/javascript" charset="utf8" src="/DataTables/datatables.js"></script>
 
@@ -50,7 +52,6 @@ scratch. This page gets rid of all links and provides the needed markup only.
     <script src="plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
     <link rel="stylesheet" href="dist/css/myCSS.css">
     <script src="dist/css/myCSS.css"></script>
-
 </head>
 
 <?php
@@ -86,13 +87,7 @@ if (isset($_POST['but_update'])) { //ถ้ามีการกดปุ่ม 
         <div class="container-fluid">
             <div class="row mb-2">
                 <div class="col-sm-6">
-                    <h1 style="text-transform: uppercase">Control Setting</h1>
-                </div>
-                <div class="col-sm-6">
-                    <ol class="breadcrumb float-sm-right">
-                        <li class="breadcrumb-item"><a href="control.php" style="text-transform: uppercase">Control Setting</a></li>
-                        <li class="breadcrumb-item active" style="text-transform: uppercase">Control Setting</li>
-                    </ol>
+                    <h1 style="text-transform: uppercase">ตั้งค่าสิทธิผู้ใช้</h1>
                 </div>
             </div>
         </div><!-- /.container-fluid -->
@@ -106,20 +101,20 @@ if (isset($_POST['but_update'])) { //ถ้ามีการกดปุ่ม 
                     <form action="" method="post">
                         <div class="card card-dark">
                             <div class=" card-header">
-                                <h3 class="card-title ">Setting Roles</h3>
+                                <h3 class="card-title ">ตั้งค่าสิทธิ</h3>
                             </div>
                             <!-- /.card-header -->
                             <div class="card-body">
                                 <table id="example2" class="table table-bordered table-hover text-md-center">
                                     <thead>
                                         <tr>
-                                            <th><input type='checkbox' id='checkAll'> CheckAll</th>
-                                            <th>No</th>
-                                            <th>Page</th>
+                                            <th><input type='checkbox' id='checkAll'> เลือกทั้งหมด</th>
+                                            <th>ลำดับ</th>
+                                            <th>เพจ</th>
                                             <th>Admin</th>
                                             <th>Employee</th>
                                             <th>Member</th>
-                                            <th>Action</th>
+                                            <th>ฟังก์ชัน</th>
 
                                         </tr>
                                     </thead>
@@ -158,10 +153,10 @@ if (isset($_POST['but_update'])) { //ถ้ามีการกดปุ่ม 
                                             <?php  } ?>
                                         </div>
                                     </tbody>
-                                    <div  class='row'>
-                                        <input type="submit" name="but_update" class="btn btn-warning mb-3 d-block" value="Save Data">&nbsp;
+                                    <div class='row'>
+                                        <input type="submit" name="but_update" class="btn btn-warning mb-3 d-block" value="บันทึกการตั้งค่า">&nbsp;
 
-                                        <a href="page_insert.php?page=1" name="but_update" class="btn btn-success mb-3 d-block"> ADD</a> 
+                                        <a href="page_insert.php?page=1" name="but_update" class="btn btn-success mb-3 d-block">เพิ่มหน้าเพจ</a>
                                     </div>
                                 </table>
                             </div>

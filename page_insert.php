@@ -20,19 +20,20 @@ if (!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true) {
   <script src="js/jquery.min.js"></script>
   <link rel="stylesheet" href="plugins/fontawesome-free/css/all.min.css">
   <link rel="stylesheet" href="dist/css/adminlte.min.css">
-  <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700" rel="stylesheet">
-  <script src="https://kit.fontawesome.com/2f85583488.js" crossorigin="anonymous"></script>
-  <script type="text/javascript" charset="utf8" src="/DataTables/datatables.js"></script>
 
-  <link rel="stylesheet" type="text/css" href="http://cdn.datatables.net/1.10.12/css/jquery.dataTables.css">
-  <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
-  <script type="text/javascript" charset="utf8" src="http://cdn.datatables.net/1.10.12/js/jquery.dataTables.js"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Prompt&display=swap" rel="stylesheet">
+  <script src="plugins/jquery/jquery.min.js"></script>
+  <script src="plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
+  <script src="dist/js/adminlte.min.js"></script>
 
   <script type="text/javascript" src="ckeditor/ckeditor.js"></script>
   <script src="plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
 
   <link rel="stylesheet" href="plugins/bootstrap4-duallistbox/bootstrap-duallistbox.min.css">
   <script src="plugins/bootstrap4-duallistbox/jquery.bootstrap-duallistbox.min.js"></script>
+
 </head>
 
 <?php
@@ -171,6 +172,8 @@ if (isset($_GET['brand']) == 1) {
 <?php if (isset($_GET['Report']) == 1) { ?>
   <?php
   require_once "connect.php";
+  date_default_timezone_set("Asia/Bangkok");
+
   $sql1 = "SELECT Corp_img, Corp_ID,Corp_Name FROM insurance WHERE Corp_Status= 'on';";
   $query1 = mysqli_query($con, $sql1);
 
@@ -183,7 +186,7 @@ if (isset($_GET['brand']) == 1) {
   <div class="content-wrapper">
     <div style="margin-left:10%; padding-top :2%;">
       <div class="container my-6">
-        <h2>เพิ่มข้อมูลรายงานประกัน</h2>
+        <h2>เพิ่มข้อมูลเอกสารประกัน</h2>
         <form action="insert.php?Report=1" method="post" enctype="multipart/form-data">
           <div class="form-row">
             <div class="form-group col-md-4">
@@ -272,8 +275,123 @@ if (isset($_GET['brand']) == 1) {
             <input type="reset" class="btn btn-info" value="รีเซ็ตข้อมูล" onclick="window.location.reload();"> &nbsp;&nbsp;
             <input type=button class="btn btn-danger" onclick="window.location='page_report.php'" value=ยกเลิก>
           </div>
-          <input hidden name="date_start" type="date" value=<?php echo date('Y-m-d') ?>>
-          <input hidden name="date_now" type="date" value=<?php echo  date('Y-m-d') ?>>
+          <input hidden name="date_start" type="datetime" value=<?php echo date("Y-m-d\TH:i:s"); ?>>
+          <input hidden name="date_now" type="datetime" value=<?php echo  date("Y-m-d\TH:i:s"); ?>>
+        </form>
+      </div>
+    </div>
+
+  </div>
+<?php } ?>
+<?php if (isset($_GET['Reports']) == 1) { ?>
+  <?php
+ 
+  date_default_timezone_set("Asia/Bangkok");
+
+  require_once "connect.php";
+  $sql1 = "SELECT Corp_img, Corp_ID,Corp_Name FROM insurance WHERE Corp_Status= 'on';";
+  $query1 = mysqli_query($con, $sql1);
+
+  $sql2 = "SELECT Type_ID,Type_Name FROM type WHERE Type_Status= 'on';";
+  $query2 = mysqli_query($con, $sql2);
+
+  $sql3 = "SELECT Car_ID,Car_Name FROM brand WHERE Car_Status= 'on' AND Car_ID !=1";
+  $query3 = mysqli_query($con, $sql3);
+  ?>
+  <div class="content-wrapper">
+    <div style="margin-left:10%; padding-top :2%;">
+      <div class="container my-6">
+        <h2>เพิ่มข้อมูลเอกสารประกัน</h2>
+        <form action="insert.php?Reports=1" method="post" enctype="multipart/form-data">
+          <div class="form-row">
+            <div class="form-group col-md-4">
+              <label>บริษัทประกัน</label>
+              <select name="Corp_ID" id="Corp_ID" class="form-control" required>
+                <option value="">เลือกบริษัทประกันที่ต้องการ</option>
+                <?php while ($result1 = mysqli_fetch_assoc($query1)) : ?>
+                  <option value="<?= $result1["Corp_ID"] ?>"><?= $result1["Corp_Name"] ?></option>
+                <?php endwhile; ?>
+              </select>
+            </div>
+            <div class="form-group col-md-4">
+              <label>ประเภทประกัน</label>
+              <select name="Type_ID" id="Type_ID" class="form-control" required>
+                <option value="">เลือกประเภทประกันที่ต้องการ</option>
+                <?php while ($result2 = mysqli_fetch_assoc($query2)) : ?>
+                  <option value="<?= $result2["Type_ID"] ?>"><?= $result2["Type_Name"] ?></option>
+                <?php endwhile; ?>
+              </select>
+            </div>
+
+          </div>
+          <div class="form-row">
+            <div class="form-group col-md-8">
+              <label>ยี่ห้อรถ</label><br>
+              <input onclick="check()" id="myCheck" type="checkbox" name="Car_ID[]" value='1'>ไม่เลือกยี่ห้อรถยนต์
+            </div>
+            <div class="form-group col-md-8">
+
+              <select id="Ck" name="Car_ID[]" class="duallistbox" multiple="multiple">
+
+                <?php while ($result2 = mysqli_fetch_assoc($query3)) : ?>
+                  <option id="check" name="Car_ID[]" value="<?= $result2["Car_ID"] ?>"><?= $result2["Car_Name"] ?></option>
+                <?php endwhile; ?>
+                <script>
+                  $(function() {
+                    $('.duallistbox').bootstrapDualListbox()
+                  });
+
+                  myCheck.onclick = function() {
+                    if (this.checked == true) {
+                      document.querySelector("#check").closest('.form-group').style.display = "none";
+                    }
+                    if (this.checked == false) {
+                      document.querySelector("#check").closest('.form-group').style.display = "";
+                    }
+                  }
+                  $(function() {
+                    $("#myCheck").on("click", function() {
+                      $("#Ck")[0].selectedIndex = -1;
+                      $(".duallistbox").bootstrapDualListbox('refresh', true);
+                    });
+                  });
+                </script>
+              </select>
+
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-group col-md-4">
+              <label>วันที่หมดอายุ</label><br>
+              <input name="date_ext" type="date" value='' required>
+            </div>
+            <div class="form-group col-md-4">
+              <label>สถานะ</label><br>
+              <input type="radio" value="on" name="status" required="" checked><label>On</label>&nbsp;&nbsp;
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group col-md-8">
+              <label>รายละเอียดของประกัน</label><br>
+              <textarea name="detail" id="detail"></textarea>
+              <script>
+                CKEDITOR.replace('detail');
+
+                function CKupdate() {
+                  for (instance in CKEDITOR.instances)
+                    CKEDITOR.instances[instance].updateElement();
+                }
+              </script>
+            </div>
+          </div>
+          <div class="form-group">
+            <input type="submit" class="btn btn-primary" value="ยืนยัน"> &nbsp;&nbsp;
+            <input type="reset" class="btn btn-info" value="รีเซ็ตข้อมูล" onclick="window.location.reload();"> &nbsp;&nbsp;
+            <input type=button class="btn btn-danger" onclick="window.location='page_report_search.php'" value=ยกเลิก>
+          </div>
+          <input  name="date_start" type="datetime" value=<?php echo date("Y-m-d\TH:i:s"); ?>>
+          <input  name="date_now" type="datetime" value=<?php echo  date("Y-m-d\TH:i:s"); ?>>
         </form>
       </div>
     </div>
@@ -329,7 +447,7 @@ if (isset($_GET['brand']) == 1) {
 
   </div>
 <?php } ?>
-<?php if (isset($_GET['id'])) {
+<?php if (isset($_GET['id'])) { //หน้าเพิ่มไฟล์ สำหรับหน้าเอกสาร
   $ids = $_GET["id"]; ?>
   <div class="content-wrapper">
     <div style="margin-left:10%; padding-top :2%;">
@@ -339,12 +457,13 @@ if (isset($_GET['brand']) == 1) {
           <div class="form-row">
             <div class="form-group col-md-12">
               <input type="text" name="ids" value="<?php echo $ids ?>" hidden>
+              <input hidden name="date" type="datetime" value=<?php date_default_timezone_set("Asia/Bangkok"); echo date("Y-m-d\TH:i:s"); ?>>
               <input name="btnCreate" type="button" class="btn btn-sm btn-success" value="เพิ่มไฟล์" onClick="JavaScript:fncCreateElement();">
               <input name="btnDelete" type="button" class="btn btn-sm btn-danger" value="ลบไฟล์" onClick="JavaScript:fncDeleteElement();"><br><br>
               <input name="hdnLine" id="hdnLine" type="hidden" value=0>
 
               <div class="card">
-                <div class="card-body bg-dark">
+                <div class="card-body ">
                   <div id="mySpan" name="mySpan">(ไฟล์ต่างๆ) <br>
                   </div>
                   <script language="javascript">
@@ -420,9 +539,106 @@ if (isset($_GET['brand']) == 1) {
       </div>
     </div>
   </div>
+  
 
 <?php } ?>
-<?php if (isset($_GET['page']) ==1) {
+<?php if (isset($_GET['ids'])) { //หน้าเพิ่มไฟล์ สำหรับหน้าค้นหาเอกสาร
+  $ids = $_GET["ids"]; ?>
+  <div class="content-wrapper">
+    <div style="margin-left:10%; padding-top :2%;">
+      <div class="container my-8">
+        <h2>เพิ่มไฟล์</h2>
+        <form action="insert.php?Files=1<?php ?>" method="post" enctype="multipart/form-data">
+          <div class="form-row">
+            <div class="form-group col-md-12">
+              <input type="text" name="ids" value="<?php echo $ids ?>" hidden>
+              <input hidden name="date" type="datetime" value=<?php date_default_timezone_set("Asia/Bangkok"); echo date("Y-m-d\TH:i:s"); ?>>
+              <input name="btnCreate" type="button" class="btn btn-sm btn-success" value="เพิ่มไฟล์" onClick="JavaScript:fncCreateElement();">
+              <input name="btnDelete" type="button" class="btn btn-sm btn-danger" value="ลบไฟล์" onClick="JavaScript:fncDeleteElement();"><br><br>
+              <input name="hdnLine" id="hdnLine" type="hidden" value=0>
+
+              <div class="card">
+                <div class="card-body ">
+                  <div id="mySpan" name="mySpan">(ไฟล์ต่างๆ) <br>
+                  </div>
+                  <script language="javascript">
+                    function fncCreateElement() {
+
+                      var mySpan = document.getElementById('mySpan');
+                      var myLine = document.getElementById('hdnLine');
+                      myLine.value++;
+
+                      var myElement4 = document.createElement('br');
+                      myElement4.setAttribute('name', "br" + myLine.value);
+                      myElement4.setAttribute('id', "br" + myLine.value);
+                      mySpan.appendChild(myElement4);
+
+                      var div = document.createElement('div');
+                      div.id = 'div' + myLine.value;
+                      div.className = 'card-body bg-light';
+                      div.innerHTML = 'ไฟล์ที่ ' + myLine.value;
+
+
+
+                      var myElement4 = document.createElement('br');
+                      myElement4.setAttribute('name', "br" + myLine.value);
+                      myElement4.setAttribute('id', "br" + myLine.value);
+                      div.appendChild(myElement4);
+
+                      var myElement2 = document.createElement('input');
+                      myElement2.setAttribute('type', "file");
+                      myElement2.setAttribute('name', "file[]");
+                      myElement2.setAttribute('id', "file" + myLine.value);
+                      myElement2.setAttribute('required', 'true');
+                      div.appendChild(myElement2);
+
+                      var myElement4 = document.createElement('br');
+                      myElement4.setAttribute('name', "br" + myLine.value);
+                      myElement4.setAttribute('id', "br" + myLine.value);
+                      div.appendChild(myElement4);
+
+                      mySpan.appendChild(div);
+
+
+                    }
+
+                    function fncDeleteElement() {
+
+                      var mySpan = document.getElementById('mySpan');
+                      var myLine = document.getElementById('hdnLine');
+
+                      var deleteSpan = document.getElementById('div' + myLine.value);
+                      mySpan.removeChild(deleteSpan);
+
+                      var deleteBr = document.getElementById("br" + myLine.value);
+                      mySpan.removeChild(deleteBr);
+                      // var deleteFile = document.getElementById("file" + myLine.value);
+                      // mySpan.removeChild(deleteFile);
+                      // var deleteBr = document.getElementById("br" + myLine.value);
+                      // mySpan.removeChild(deleteBr);
+
+
+                      myLine.value--;
+
+                    }
+                  </script>
+                </div>
+              </div>
+              <div class="form-group">
+                <input type="submit" class="btn btn-primary" value="ยืนยัน"> &nbsp;&nbsp;
+                <input type="reset" class="btn btn-info" value="รีเซ็ตข้อมูล" onclick="window.location.reload();"> &nbsp;&nbsp;
+                <input type=button class="btn btn-danger" onclick="window.location='page_report_search.php'" value=ยกเลิก>
+              </div>
+            </div>
+        </form>
+      </div>
+    </div>
+  </div>
+  
+
+<?php } ?>
+
+<?php if (isset($_GET['page']) == 1) {
 ?>
   <div class="content-wrapper">
     <div class="row">
@@ -466,6 +682,7 @@ if (isset($_GET['brand']) == 1) {
       </div>
     </div>
   </div>
+
 <?php } ?>
 </body>
 
