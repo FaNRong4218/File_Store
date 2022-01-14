@@ -122,16 +122,17 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                                 <span class="input-group-text"><i class="fas fa-user"></i></span>
                             </div>
                             <input type="text" name="user" class="form-control" placeholder="username">
-                            <span class="help-block"><?php echo $username_err; ?></span>
 
                         </div>
+                        <span class="help-block bg-danger"><p style="color:red;"><strong><?php echo $username_err; ?></strong></p></span>
                         <div class="input-group form-group ">
                             <div class="input-group-prepend">
                                 <span class="input-group-text"><i class="fas fa-key"></i></span>
                             </div>
                             <input type="password" name="pass" class="form-control" placeholder="password">
-                            <span class="help-block"><?php echo $password_err; ?></span>
+                            
                         </div>
+                        <span class="help-block"><p style="color:red;"><strong><?php echo $password_err; ?></strong></p></span>
                         <div class="row align-items-center remember">
                             <input type="checkbox">Remember Me
                         </div>

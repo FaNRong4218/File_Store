@@ -63,13 +63,12 @@ include "menu.php";
           ?> <?php
 
 
-          if (mysqli_num_rows($result) > 0) {
-          ?> <table id="example1" class="table table-striped">
+              if (mysqli_num_rows($result) > 0) {
+              ?> <table id="example1" class="table table-striped">
               <thead class="thead-dark">
                 <tr>
                   <th>ลำดับ</th>
                   <th>ชื่อประเภทประกัน</th>
-                  <th>รายละเอียด</th>
                   <th>สถานะ</th>
                   <th>ฟังก์ชัน</th>
                 </tr>
@@ -81,7 +80,6 @@ include "menu.php";
                   <tr>
                     <td><?php echo $row["Type_ID"]; ?></td>
                     <td><?php echo $row["Type_Name"]; ?></td>
-                    <td><?php echo $row["Type_detail"]; ?></td>
                     <td> <?php if ($row["Type_Status"] == 'on') {
                             $text = "checked";
                           } else {
@@ -97,6 +95,9 @@ include "menu.php";
                       <a href="page_update.php?Type_ID=<?php echo $row["Type_ID"]; ?>" title='แก้ไขข้อมูล'>
                         <button type=button class="btn btn-warning btn-sm"><i class="far fa-edit"></i>
                           แก้ไข</button></a>
+                      <button title='รายละเอียด' type=button class="btn btn-primary btn-sm view" name="view" value="ข้อมูล" id="<?php echo $row["Type_ID"]; ?>">
+                        <i class="fas fa-eye"></i>
+                        ดู</button>
                     </td>
 
                   </tr>
@@ -104,6 +105,22 @@ include "menu.php";
                 }
                 ?>
                 <script>
+                  $(document).on('click', '.view', function() {
+                    var Type_ID = $(this).attr("id");
+                    if (Type_ID != '') {
+                      $.ajax({
+                        url: "showType.php",
+                        method: "POST",
+                        data: {
+                          Type_ID: Type_ID
+                        },
+                        success: function(data) {
+                          $('#Type_detail').html(data);
+                          $('#dataModal').modal('show');
+                        }
+                      });
+                    }
+                  });
                   $(document).on('click', '.change', function() {
                     var Type_ID = $(this).attr("id");
                     if (Type_ID != '') {
@@ -123,9 +140,9 @@ include "menu.php";
               </tbody>
             </table>
           <?php
-          } else {
-            echo "No result found";
-          }
+              } else {
+                echo "No result found";
+              }
           ?>
           <!-- Modal content-->
           <div id="dataModal" class="modal fade" tabindex="-1" role="dialog">

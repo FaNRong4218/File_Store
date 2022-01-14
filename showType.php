@@ -17,7 +17,7 @@ if (!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true) {
         $name = $value['Type_Name'];
         $detail = $value['Type_detail'];
     }
-    echo 'ชื่อประเภทประกัน: ' .$name ;
+    echo '<strong>ชื่อประเภทประกัน: ' .$name .'</strong>';
     echo '<br><br>';
     echo $detail ;
  }

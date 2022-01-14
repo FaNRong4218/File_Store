@@ -230,7 +230,7 @@ $query3 = mysqli_query($con, $sql3);
                       <div class="col-4">
                           <button title='รายละเอียด' type=button class="btn btn-primary btn-sm view" name="view" value="ข้อมูล" id="<?php echo $row["Report_ID"]; ?>">
                             <i class="fas fa-eye"></i>
-                            ข้อมูล</button>
+                            ดู</button>
                       </div>
                       <div class="col-4">
                      
