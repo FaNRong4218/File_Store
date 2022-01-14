@@ -88,7 +88,7 @@ include "menu.php";
                           ?>
                       <label class="switch">
                         <input type="checkbox" <?php echo $text ?> class="change" name="change" id="<?php echo $row["Type_ID"] ?>">
-                        <span class="slider"></span>
+                        <span class="slider round"></span>
                       </label>
                     </td>
                     <td>

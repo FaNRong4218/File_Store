@@ -216,7 +216,7 @@ $result6 = mysqli_query($con, $sql6);
                                                     ?>
                                                     <label class="switch">
                                                         <input type="checkbox" <?php echo $text ?> <?php echo $text_dis ?> class="change" name="change" id="<?php echo $row["Report_ID"] ?>">
-                                                        <span class="slider"></span>
+                                                        <span class="slider round"></span>
                                                     </label>
 
                                             </tr>

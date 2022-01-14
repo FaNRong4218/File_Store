@@ -125,7 +125,7 @@ $query3 = mysqli_query($con, $sql3);
                     ?>
                     <label class="switch">
                       <input type="checkbox" <?php echo $text ?> <?php echo $text_dis ?> class="change" name="change" id="<?php echo $row["Report_ID"] ?>">
-                      <span class="slider"></span>
+                      <span class="slider round"></span>
                     </label>
 
                   </td>
@@ -139,7 +139,7 @@ $query3 = mysqli_query($con, $sql3);
                       <div class="col-4">
                         <button title='รายละเอียด' type=button class="btn btn-primary btn-sm view" name="view" value="ข้อมูล" id="<?php echo $row["Report_ID"]; ?>">
                           <i class="fas fa-eye"></i>
-                          ข้อมูล</button>
+                          ดู</button>
                       </div>
                       <div class="col-4">
 

@@ -110,7 +110,7 @@ include "menu.php";
                                                 ?>
                                             <label class="switch">
                                                 <input type="checkbox" <?php echo $text ?> class="change" name="change" id="<?php echo $row["Corp_ID"] ?>">
-                                                <span class="slider"></span>
+                                                <span class="slider round"></span>
                                             </label>
                                         </td>
                                         <td><a href="page_update.php?Corp_ID=<?php echo $row["Corp_ID"]; ?>" title='แก้ไขข้อมูล'>
