@@ -133,9 +133,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                             
                         </div>
                         <span class="help-block"><p style="color:red;"><strong><?php echo $password_err; ?></strong></p></span>
-                        <div class="row align-items-center remember">
+                        <!-- <div class="row align-items-center remember">
                             <input type="checkbox">Remember Me
-                        </div>
+                        </div> -->
                         <div class="form-group">
                             <input type="submit" value="Login" class="btn float-right login_btn">
                         </div>
