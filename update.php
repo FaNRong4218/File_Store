@@ -14,7 +14,7 @@ if (isset($_GET['brand']) == 1) {
     $Name = $_POST['Name'];
     $file = $_FILES['img']['name'];
     if ($file == "") {
-        $sql = "UPDATE brand set  Car_Name=' $Name''
+        $sql = "UPDATE brand set  Car_Name='$Name''
         WHERE Car_ID = $id";
 
         $stmt = mysqli_query($con, $sql);

@@ -332,4 +332,19 @@ $result6 = mysqli_query($con, $sql6);
             "responsive": true,
         });
     });
+    $(document).on('click', '.change', function() {
+              var Report_ID = $(this).attr("id");
+              if (Report_ID != '') {
+                $.ajax({
+                  url: "Change_status.php",
+                  method: "POST",
+                  data: {
+                    Report_ID: Report_ID
+                  },
+                  success: function(data) {
+                    console.log(data);
+                  }
+                });
+              }
+            });
 </script>

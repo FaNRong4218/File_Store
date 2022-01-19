@@ -31,6 +31,7 @@ if (!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true) {
 
 
     <script type="text/javascript" src="ckeditor/ckeditor.js"></script>
+    
     <link rel="stylesheet" href="plugins/bootstrap4-duallistbox/bootstrap-duallistbox.min.css">
     <script src="plugins/bootstrap4-duallistbox/jquery.bootstrap-duallistbox.min.js"></script>
 </head>
@@ -543,7 +544,7 @@ require_once "connect.php";
                             <br><br>
                             <input type="submit" class="btn btn-primary" value="ยืนยัน"> &nbsp;&nbsp;
                             <input type="reset" class="btn btn-info" value="รีเซ็ตข้อมูล" onclick="window.location.reload();"> &nbsp;&nbsp;
-                            <input type=button class="btn btn-danger" onclick="window.location='page_report.php'" value=ยกเลิก>
+                            <input type=button class="btn btn-danger" onclick="window.location='page_report_search.php'" value=ยกเลิก>
 
                         </div>
                     </div>
