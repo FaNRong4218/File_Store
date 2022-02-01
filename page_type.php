@@ -125,7 +125,7 @@ include "menu.php";
                     var Type_ID = $(this).attr("id");
                     if (Type_ID != '') {
                       $.ajax({
-                        url: "Change_status.php",
+                        url: "change_status.php",
                         method: "POST",
                         data: {
                           Type_ID: Type_ID

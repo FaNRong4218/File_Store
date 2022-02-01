@@ -141,11 +141,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                         </div>
                     </form>
                 </div>
-                <div class="card-footer">
+                <!-- <div class="card-footer">
                     <div class="d-flex justify-content-center links">
-                        Don't have an account?<a href="register.php">Sign Up</a>
+                      <a href="#">ลืมรหัสผ่าน?</a>
                     </div>
-                </div>
+                </div> -->
             </div>
         </div>
     </div>

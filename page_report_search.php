@@ -37,8 +37,8 @@ if (!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true) {
 
   <script src="plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
   <link rel="stylesheet" href="dist/css/myCSS.css" type="text/css">
-  <script src="dist/css/myCSS.css"></script>
-  
+
+
 
 </head>
 <?php
@@ -146,12 +146,12 @@ $query3 = mysqli_query($con, $sql3);
       </div>
       <div class="card" style="width: 105%;">
         <div class="card-body">
-          <a href="page_insert.php?Reports=1" title='Insert Data'>
-            <button type=button class="btn btn-info float-lg-right">เพิ่มข้อมูล <i class="fas fa-plus-circle"></i></button><br><br></a>
+          <!-- <a href="page_insert.php?Reports=1" title='Insert Data'>
+            <button type=button class="btn btn-info float-lg-right">เพิ่มข้อมูล <i class="fas fa-plus-circle"></i></button><br><br></a> -->
           <?php
           include_once 'connect.php';
-          $sql = "SELECT Report_ID, insurance.Corp_Name, brand.Car_Name, type.Type_Name, Report_Status,Report.Car_ID,
-                  Date_Now,  Date_Ext, Date_Start
+          $sql = "SELECT Report_ID, insurance.Corp_Name, brand.Car_Name, type.Type_Name, Report_Status, report.Car_ID,
+          Date_Now,  Date_Ext, Date_Start
           FROM report 
           INNER JOIN insurance ON insurance.Corp_ID = report.Corp_ID
           INNER JOIN brand ON brand.Car_ID = report.Car_ID
@@ -228,15 +228,15 @@ $query3 = mysqli_query($con, $sql3);
                             แก้ไข</button></a>
                       </div>
                       <div class="col-4">
-                          <button title='รายละเอียด' type=button class="btn btn-primary btn-sm view" name="view" value="ข้อมูล" id="<?php echo $row["Report_ID"]; ?>">
-                            <i class="fas fa-eye"></i>
-                            ดู</button>
+                        <button title='รายละเอียด' type=button class="btn btn-primary btn-sm view" name="view" value="ข้อมูล" id="<?php echo $row["Report_ID"]; ?>">
+                          <i class="fas fa-eye"></i>
+                          ดู</button>
                       </div>
                       <div class="col-4">
-                     
-                          <button title='ไฟล์' type=button class="btn btn-info btn-sm file" name="file" value="ไฟล์" id="<?php echo $row["Report_ID"]; ?>">
-                            <i class="fas fa-folder"></i>
-                            ไฟล์</button>
+
+                        <button title='ไฟล์' type=button class="btn btn-info btn-sm file" name="file" value="ไฟล์" id="<?php echo $row["Report_ID"]; ?>">
+                          <i class="fas fa-folder"></i>
+                          ไฟล์</button>
                       </div>
                     </div>
                   </td>
@@ -286,7 +286,7 @@ $query3 = mysqli_query($con, $sql3);
               var Report_ID = $(this).attr("id");
               if (Report_ID != '') {
                 $.ajax({
-                  url: "Change_status.php",
+                  url: "change_status.php",
                   method: "POST",
                   data: {
                     Report_ID: Report_ID
@@ -319,8 +319,8 @@ $query3 = mysqli_query($con, $sql3);
 
         </div>
       </div>
-      <div id="dataModal2" class="modal fade" tabindex="-1" role="dialog">
-        <div class="modal-dialog modal-dialog-centered" role="document">
+      <div id="dataModal2" class="modal fade bd-example-modal-lg" tabindex="-1" role="dialog">
+        <div class="modal-dialog modal-lg" role="document">
 
           <!-- Modal content-->
           <div class="modal-content">

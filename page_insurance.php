@@ -135,7 +135,7 @@ include "menu.php";
                             var Corp_ID = $(this).attr("id");
                             if (Corp_ID != '') {
                                 $.ajax({
-                                    url: "Change_status.php",
+                                    url: "change_status.php",
                                     method: "POST",
                                     data: {
                                         Corp_ID: Corp_ID

@@ -38,7 +38,6 @@ if (!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true) {
 
   <script src="plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
   <link rel="stylesheet" href="dist/css/myCSS.css" type="text/css">
-  <script src="dist/css/myCSS.css"></script>
 
 
   <style>
@@ -139,7 +138,7 @@ include "menu.php";
             var Car_ID = $(this).attr("id");
             if (Car_ID != '') {
               $.ajax({
-                url: "Change_status.php",
+                url: "change_status.php",
                 method: "POST",
                 data: {
                   Car_ID: Car_ID

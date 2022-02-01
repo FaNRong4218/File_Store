@@ -20,22 +20,26 @@ if (isset($_POST["Report_ID"])) {
 
 <head>
     <title>Show file</title>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <script src="js/jquery.min.js"></script>
     <link rel="stylesheet" href="plugins/fontawesome-free/css/all.min.css">
     <link rel="stylesheet" href="dist/css/adminlte.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Prompt:wght@500&display=swap" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Prompt&display=swap" rel="stylesheet">
     <script src="https://kit.fontawesome.com/2f85583488.js" crossorigin="anonymous"></script>
-    <script type="text/javascript" charset="utf8" src="/DataTables/datatables.js"></script>
+    <!-- DataTables -->
+    <link rel="stylesheet" href="plugins/datatables-bs4/css/dataTables.bootstrap4.min.css">
+    <link rel="stylesheet" href="plugins/datatables-responsive/css/responsive.bootstrap4.min.css">
 
-    <link rel="stylesheet" type="text/css" href="http://cdn.datatables.net/1.10.12/css/jquery.dataTables.css">
-    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
-    <script type="text/javascript" charset="utf8" src="http://cdn.datatables.net/1.10.12/js/jquery.dataTables.js"></script>
+    <link rel="stylesheet" href="dist/css/myCSS.css" type="text/css">
 
+    <script src="plugins/jquery/jquery.min.js"></script>
+
+    <script src="plugins/datatables/jquery.dataTables.min.js"></script>
+    <script src="plugins/datatables-bs4/js/dataTables.bootstrap4.min.js"></script>
+    <script src="plugins/datatables-responsive/js/dataTables.responsive.min.js"></script>
+    <script src="plugins/datatables-responsive/js/responsive.bootstrap4.min.js"></script>
     <script src="plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
-    <link rel="stylesheet" href="dist/css/myCSS.css">
-    <script src="dist/css/myCSS.css"></script>
+    <script src="dist/js/adminlte.min.js"></script>
     <style>
         body {
             font-family: 'Prompt', sans-serif;
@@ -52,7 +56,8 @@ if (isset($_POST["Report_ID"])) {
             <a href="page_insert.php?ids=<?php echo $ids  ?>" title='เพิ่มไฟล์'>
                 <button type=button class="btn btn-info">เพิ่มไฟล์ <i class="fas fa-plus-circle"></i></button><br><br>
             </a>
-            <table id="Table" class="table table-striped">
+            <div class="control_tb" style ='overflow-y:scroll;'>
+            <table class="table table-striped">
                 <thead class="thead-dark">
                     <tr>
                         <th>ลำดับ</th>
@@ -92,7 +97,7 @@ if (isset($_POST["Report_ID"])) {
                     ?>
                 </tbody>
             </table>
-
+                </div> 
             <?php
             ?>
 
@@ -102,3 +107,20 @@ if (isset($_POST["Report_ID"])) {
 </body>
 
 </html>
+<!-- <script>
+    $(function() {
+        $("#example1").DataTable({
+            "responsive": true,
+            "autoWidth": false,
+        });
+        $('#example2').DataTable({
+            "paging": true,
+            "lengthChange": false,
+            "searching": false,
+            "ordering": true,
+            "info": true,
+            "autoWidth": false,
+            "responsive": true,
+        });
+    });
+</script> -->

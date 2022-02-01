@@ -18,12 +18,14 @@ $resultp = mysqli_query($con, $sqlp);
 
 ?>
 <style>
-@import url('https://fonts.googleapis.com/css2?family=Prompt&display=swap');
-body {
-      font-family: 'Prompt', sans-serif;
-      font-size: 14px;
-    }
+  @import url('https://fonts.googleapis.com/css2?family=Prompt&display=swap');
+
+  body {
+    font-family: 'Prompt', sans-serif;
+    font-size: 14px;
+  }
 </style>
+
 <body class="hold-transition sidebar-mini layout-fixed ">
   <div class="wrapper">
 
@@ -40,11 +42,12 @@ body {
     <!-- Main Sidebar Container -->
     <aside class="main-sidebar sidebar-light-primary elevation-4">
       <!-- Brand Logo -->
-
-      <h5 class="brand-link bg-info">
-        <img src="myImg/etc/user_ic.png" alt="AdminLTE Logo" class="brand-image img-circle elevation-3">
-        <?php echo ($_SESSION["name"]); ?> (<?php echo ($_SESSION["type"]); ?>)
-      </h5>
+        <h5 class="brand-link bg-info">
+          <a href='profile.php' title='โปรไฟล์'>
+          <img src="myImg/etc/user_ic.png" alt="AdminLTE Logo" class="brand-image img-circle elevation-3">
+          <?php echo ($row["name"]); ?> (<?php echo ($row["type"]); ?>)
+          </a>
+        </h5>
 
       <!-- Sidebar -->
       <div class="sidebar">

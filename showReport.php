@@ -10,8 +10,8 @@ if (!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true) {
 if (isset($_POST["Report_ID"])) {
   include_once 'connect.php';
   $id = $_POST['Report_ID'];
-  $sql = "SELECT Report_ID,insurance.Corp_Img,brand.Car_Img,Report.Car_ID, 
-             type.Type_Name,Report_Detail,Date_Start,Date_Now, Date_Start,Date_Ext
+  $sql = "SELECT Report_ID, insurance.Corp_Name,insurance.Corp_Img, brand.Car_Name, type.Type_Name, Report_Status, report.Car_ID,
+  Date_Now,  Date_Ext, Date_Start
            FROM report 
            INNER JOIN insurance ON insurance.Corp_ID = report.Corp_ID
            INNER JOIN brand ON brand.Car_ID = report.Car_ID
@@ -43,20 +43,26 @@ if (isset($_POST["Report_ID"])) {
   <title>Show Report</title>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <script src="js/jquery.min.js"></script>
+
   <link rel="stylesheet" href="plugins/fontawesome-free/css/all.min.css">
-  <link rel="stylesheet" href="dist/css/adminlte.min.css">
-  <link href="https://fonts.googleapis.com/css2?family=Prompt:wght@500&display=swap" rel="stylesheet">
-  <script src="https://kit.fontawesome.com/2f85583488.js" crossorigin="anonymous"></script>
-  <script type="text/javascript" charset="utf8" src="/DataTables/datatables.js"></script>
+    <link rel="stylesheet" href="dist/css/adminlte.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Prompt&display=swap" rel="stylesheet">
+    <script src="https://kit.fontawesome.com/2f85583488.js" crossorigin="anonymous"></script>
+    <!-- DataTables -->
+    <link rel="stylesheet" href="plugins/datatables-bs4/css/dataTables.bootstrap4.min.css">
+    <link rel="stylesheet" href="plugins/datatables-responsive/css/responsive.bootstrap4.min.css">
+    <link rel="stylesheet" href="dist/css/myCSS.css">
 
-  <link rel="stylesheet" type="text/css" href="http://cdn.datatables.net/1.10.12/css/jquery.dataTables.css">
-  <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
-  <script type="text/javascript" charset="utf8" src="http://cdn.datatables.net/1.10.12/js/jquery.dataTables.js"></script>
-
-  <script src="plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
-  <link rel="stylesheet" href="dist/css/myCSS.css">
-  <script src="dist/css/myCSS.css"></script>
+    <script src="js/jquery.min.js"></script>
+    <script src="plugins/jquery/jquery.min.js"></script>
+    <script src="plugins/datatables/jquery.dataTables.min.js"></script>
+    <script src="plugins/datatables-bs4/js/dataTables.bootstrap4.min.js"></script>
+    <script src="plugins/datatables-responsive/js/dataTables.responsive.min.js"></script>
+    <script src="plugins/datatables-responsive/js/responsive.bootstrap4.min.js"></script>
+    <script src="plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <script src="dist/css/myCSS.css"></script>
   <style>
     body {
       font-family: 'Prompt', sans-serif;
@@ -71,8 +77,8 @@ if (isset($_POST["Report_ID"])) {
     <div class="container my-6">
       <div class="row">
         <div class="col-md-4">
-          <label> บริษัทประกันภัย</label>
-          <img src="myImg/insurance/<?php echo  $insurance_img ?>" width="60%"><br>
+          <label> บริษัทประกันภัย</label><br>
+          <img src="myImg/insurance/<?php echo  $insurance_img ?>" width="40%"><br>
         </div>
       </div><br>
       <div class="row">
@@ -83,7 +89,7 @@ if (isset($_POST["Report_ID"])) {
       <div class="row">
         <?php while ($result = mysqli_fetch_array($resultc)) { ?>
           <div class="col-md-4">
-            <img src="myImg/brand/<?php echo $result['Car_Img'] ?>" width="60%">
+            <img src="myImg/brand/<?php echo $result['Car_Img'] ?>" width="40%">
           </div>
         <?php } ?>
       </div>

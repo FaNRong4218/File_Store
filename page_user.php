@@ -1,5 +1,4 @@
 <?php
-
 session_start();
 if (!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true) {
   header("location: login.php");
@@ -51,6 +50,9 @@ include "menu.php";
       <div class="card">
         <h2 class="card-header bg-success">ผู้ใช้งาน</h2>
         <div class="card-body ">
+        <a href="register.php" title='Insert Data'>
+            <button type=button class="btn btn-info ">เพิ่มผู้ใช้งาน <i class="fas fa-plus-circle"></i></button><br><br>
+          </a>
           <?php
           include_once 'connect.php';
           $result = mysqli_query($con, "SELECT * FROM user");

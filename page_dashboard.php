@@ -43,7 +43,6 @@ if (!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true) {
 
     <link rel="stylesheet" href="dist/css/myCSS.css">
     <script src="dist/css/myCSS.css"></script>
-
 </head>
 <?php
 include "menu.php";
@@ -68,8 +67,8 @@ $result4 = mysqli_query($con, $sql4);
 $num4 = mysqli_num_rows($result4);
 
 
-$sql5 = "SELECT Report_ID, insurance.Corp_Name, brand.Car_Name, type.Type_Name, Report_Status,Report.Car_ID,
-        Date_Now,  Date_Ext, Date_Start
+$sql5 = "SELECT Report_ID, insurance.Corp_Name, brand.Car_Name, type.Type_Name, Report_Status, report.Car_ID,
+Date_Now,  Date_Ext, Date_Start
 FROM report 
 INNER JOIN insurance ON insurance.Corp_ID = report.Corp_ID
 INNER JOIN brand ON brand.Car_ID = report.Car_ID
@@ -164,7 +163,6 @@ $result6 = mysqli_query($con, $sql6);
                                     <thead>
                                         <tr>
                                             <th>ลำดับ</th>
-                                            <th hidden>Report_ID</th>
                                             <th>ชื่อบริษัท</th>
                                             <th>ชื่อยี่ห้อรถ</th>
                                             <th>ประเภทประกัน</th>
@@ -192,7 +190,6 @@ $result6 = mysqli_query($con, $sql6);
 
                                             <tr>
                                                 <td><?php echo $i ?></td>
-                                                <td hidden><?php echo $row["Report_ID"]; ?></td>
                                                 <td><?php echo $row["Corp_Name"]; ?></td>
                                                 <td><?php foreach ($resultc as $value) {
                                                         echo $value["Car_Name"] . "  ";
@@ -270,7 +267,6 @@ $result6 = mysqli_query($con, $sql6);
     </div>
 </div>
 </div>
-
 <script src="plugins/jquery/jquery.min.js"></script>
 <!-- jQuery UI 1.11.4 -->
 <script src="plugins/jquery-ui/jquery-ui.min.js"></script>
@@ -333,18 +329,18 @@ $result6 = mysqli_query($con, $sql6);
         });
     });
     $(document).on('click', '.change', function() {
-              var Report_ID = $(this).attr("id");
-              if (Report_ID != '') {
-                $.ajax({
-                  url: "Change_status.php",
-                  method: "POST",
-                  data: {
+        var Report_ID = $(this).attr("id");
+        if (Report_ID != '') {
+            $.ajax({
+                url: "change_status.php",
+                method: "POST",
+                data: {
                     Report_ID: Report_ID
-                  },
-                  success: function(data) {
+                },
+                success: function(data) {
                     console.log(data);
-                  }
-                });
-              }
+                }
             });
+        }
+    });
 </script>

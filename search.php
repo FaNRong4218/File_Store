@@ -15,7 +15,6 @@ if (!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true) {
 
     <title>search</title>
 
-    <script src="js/jquery.min.js"></script>
     <link rel="stylesheet" href="plugins/fontawesome-free/css/all.min.css">
     <link rel="stylesheet" href="dist/css/adminlte.min.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -25,15 +24,15 @@ if (!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true) {
     <!-- DataTables -->
     <link rel="stylesheet" href="plugins/datatables-bs4/css/dataTables.bootstrap4.min.css">
     <link rel="stylesheet" href="plugins/datatables-responsive/css/responsive.bootstrap4.min.css">
+    <link rel="stylesheet" href="dist/css/myCSS.css">
+
+    <script src="js/jquery.min.js"></script>
     <script src="plugins/jquery/jquery.min.js"></script>
     <script src="plugins/datatables/jquery.dataTables.min.js"></script>
     <script src="plugins/datatables-bs4/js/dataTables.bootstrap4.min.js"></script>
     <script src="plugins/datatables-responsive/js/dataTables.responsive.min.js"></script>
     <script src="plugins/datatables-responsive/js/responsive.bootstrap4.min.js"></script>
-
-
     <script src="plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
-    <link rel="stylesheet" href="dist/css/myCSS.css">
     <script src="dist/css/myCSS.css"></script>
 
 </head>
@@ -111,7 +110,7 @@ $query3 = mysqli_query($con, $sql3);
 
 if ($date == '' && $date_start == '' && $date_end == '' && $insurance == '' && $brand == '' && $type == '') {
     echo "<script type='text/javascript'>";
-    echo "window.location = 'page_report.php';";
+    echo "window.location = 'page_report_search.php';";
     echo "</script>";
 } else {
 
@@ -119,7 +118,7 @@ if ($date == '' && $date_start == '' && $date_end == '' && $insurance == '' && $
         if ($date_start == '' || $date_end == '') {
             echo "<script type='text/javascript'>";
             echo "alert('กรุณาเลือกข้อมูลให้ถูกต้อง');";
-            echo "window.location = 'page_report.php';";
+            echo "window.location = 'page_report_search.php';";
             echo "</script>";
         } else {
             // $where1 = "$date BETWEEN '$date_start' AND '$date_end'";
@@ -164,6 +163,7 @@ if ($date == '' && $date_start == '' && $date_end == '' && $insurance == '' && $
     }
 
     $result = mysqli_query($con, $sql);
+    
 }
 ?>
 <div class="content-wrapper">
@@ -280,8 +280,8 @@ if ($date == '' && $date_start == '' && $date_end == '' && $insurance == '' && $
             </div>
             <div class="card" style="width: 105%;">
                 <div class="card-body">
-                    <a href="insert_report.php" title='Insert Data'>
-                        <button type='button' class="btn btn-info float-lg-right">เพิ่มข้อมูล <i class="fas fa-plus-circle"></i></button><br><br></a>
+                    <!-- <a href="insert_report.php" title='Insert Data'>
+                        <button type='button' class="btn btn-info float-lg-right">เพิ่มข้อมูล <i class="fas fa-plus-circle"></i></button><br><br></a> -->
 
 
 
@@ -406,7 +406,7 @@ if ($date == '' && $date_start == '' && $date_end == '' && $insurance == '' && $
                             var Report_ID = $(this).attr("id");
                             if (Report_ID != '') {
                                 $.ajax({
-                                    url: "Change_status.php",
+                                    url: "change_status.php",
                                     method: "POST",
                                     data: {
                                         Report_ID: Report_ID
@@ -422,8 +422,8 @@ if ($date == '' && $date_start == '' && $date_end == '' && $insurance == '' && $
             </div>
 
             <!-- Modal content-->
-            <div id="dataModal1" class="modal fade" tabindex="-1" role="dialog">
-                <div class="modal-dialog modal-dialog-centered" role="document">
+            <div id="dataModal1" class="modal fade" >
+                <div class="modal-dialog">
 
                     <!-- Modal content-->
                     <div class="modal-content">
@@ -439,8 +439,8 @@ if ($date == '' && $date_start == '' && $date_end == '' && $insurance == '' && $
 
                 </div>
             </div>
-            <div id="dataModal2" class="modal fade" tabindex="-1" role="dialog">
-                <div class="modal-dialog modal-dialog-centered" role="document">
+            <div id="dataModal2" class="modal fade">
+                <div class="modal-dialog modal-lg">
 
                     <!-- Modal content-->
                     <div class="modal-content">
@@ -463,12 +463,6 @@ if ($date == '' && $date_start == '' && $date_end == '' && $insurance == '' && $
 
 
 
-<!-- jQuery -->
-<!-- <script src="plugins/jquery/jquery.min.js"></script> -->
-<!-- Bootstrap 4 -->
-<script src="plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
-<!-- AdminLTE App -->
-<script src="dist/js/adminlte.min.js"></script>
 </body>
 
 </html>

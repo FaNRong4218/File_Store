@@ -1,4 +1,11 @@
 <?php
+session_start();
+if (!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true) {
+    header("location: login.php");
+    exit;
+}
+?>
+<?php
 require_once "connect.php";
 
 $username = $password = $confirm_password = "";
@@ -76,7 +83,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
             if (mysqli_stmt_execute($stmt)) {
 
-                header("location: login.php");
+                header("location: page_user.php");
             } else {
                 echo "มีบางอย่างผิดพลาด!! กรุณาลองใหม่อีกครั้ง";
             }
@@ -97,7 +104,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta http-equiv="x-ua-compatible" content="ie=edge">
-    <title>Sign Up</title>
+
+    <title>Registion</title>
     <script src="js/jquery.min.js"></script>
     <link rel="stylesheet" href="plugins/fontawesome-free/css/all.min.css">
     <link rel="stylesheet" href="dist/css/adminlte.min.css">
@@ -105,25 +113,32 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Prompt&display=swap" rel="stylesheet">
     <script src="https://kit.fontawesome.com/2f85583488.js" crossorigin="anonymous"></script>
-    <script type="text/javascript" charset="utf8" src="/DataTables/datatables.js"></script>
+    <!-- DataTables -->
+    <link rel="stylesheet" href="plugins/datatables-bs4/css/dataTables.bootstrap4.min.css">
+    <link rel="stylesheet" href="plugins/datatables-responsive/css/responsive.bootstrap4.min.css">
+    <script src="plugins/jquery/jquery.min.js"></script>
+    <script src="plugins/datatables/jquery.dataTables.min.js"></script>
+    <script src="plugins/datatables-bs4/js/dataTables.bootstrap4.min.js"></script>
+    <script src="plugins/datatables-responsive/js/dataTables.responsive.min.js"></script>
+    <script src="plugins/datatables-responsive/js/responsive.bootstrap4.min.js"></script>
 
-    <link rel="stylesheet" type="text/css" href="http://cdn.datatables.net/1.10.12/css/jquery.dataTables.css">
-    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
-    <script type="text/javascript" charset="utf8" src="http://cdn.datatables.net/1.10.12/js/jquery.dataTables.js"></script>
-    <link rel="stylesheet" href="dist/css/myCSS.css">
+    <script src="plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <link rel="stylesheet" href="dist/css/myCSS.css" type="text/css">
     <script src="dist/css/myCSS.css"></script>
-    <style>
-     body{
-         background-color: black;
-     }
-    </style>
+
 </head>
+
+
 
 <body>
 
-    <div class="container">
-        <div class=" justify-content-center  h-100">
-            <div class="card bg-light">
+    <?php
+    include "menu.php";
+    ?>
+
+    <div class="content-wrapper">
+        <div style="margin-left:10%; padding-top :2%;">
+            <div class="container my-6">
                 <div class="card-body">
                     <h2>สมัครสมาชิก</h2>
                     <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="post">
@@ -152,8 +167,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                                     <span class="help-block"><?php echo $confirm_password_err; ?></span>
                                 </div>
                             </div>
-                           
-                           
+
+
                             <div class="form-row">
                                 <div class="form-group col-md-4">
                                     <label>อีเมล</label>
@@ -168,18 +183,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                                 <div class="form-group col-md-4">
                                     <label>ประเภท</label><br>
                                     <label class="radio-inline"><input type="radio" value="member" name="type" checked>Member</label>
-
                                 </div>
                             </div>
                             <div class="form-row">
                                 <div class="form-group col-md-4">
                                     <input type="submit" class="btn btn-primary" value="ยืนยัน">
                                     <input type="reset" class="btn btn-default" value="รีเซ็ต">
-                                </div>
-                            </div>
-                            <div class="form-row">
-                                <div class="form-group col-md-4">
-                                    <p>คุณมีรหัสแล้วหรือไม่? <a href="login.php">เข้าสู่ระบบที่นี่</a>.</p>
                                 </div>
                             </div>
                         </div>

@@ -31,7 +31,7 @@ if (!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true) {
 
 
     <script type="text/javascript" src="ckeditor/ckeditor.js"></script>
-    
+
     <link rel="stylesheet" href="plugins/bootstrap4-duallistbox/bootstrap-duallistbox.min.css">
     <script src="plugins/bootstrap4-duallistbox/jquery.bootstrap-duallistbox.min.js"></script>
 </head>
@@ -57,7 +57,7 @@ require_once "connect.php";
     <div class="content-wrapper">
         <div style="margin-left:10%; padding-top :2%;">
             <div class="container my-6">
-                <h2>แก้ไข ยี่ห้อของรถยนต์</h2>
+                <h2>แก้ไขยี่ห้อของรถยนต์</h2>
                 <form action="update.php?brand=1" method="post" enctype="multipart/form-data">
                     <div class="form-row">
                         <input type="number" class="form-control" name="ids" value="<?php echo $id_s ?>" hidden require>
@@ -75,6 +75,9 @@ require_once "connect.php";
                                 $scr = 'myImg/brand/default_img/';
                             } ?>
                             <img src="<?php echo $scr; ?><?php echo $file_s ?>" width="40%"> &nbsp;&nbsp;
+                            <div class="form-row">
+                               <input type="text" name="imgs" value="<?php echo $file_s ?>" accept="image/*" required disabled>
+                            </div>
                         </div>
                         <div class="form-group col-md-4">
 
@@ -94,17 +97,20 @@ require_once "connect.php";
                             </script>
                             <label>ไฟล์ Logo(สำหรับแก้ไข)</label><br>
                             <img id="imgAvatar" width="40%">
+                            <div class="form-row">
+                                <input type="file" name="img" accept="image/* " OnChange="showPreview(this)">
+                            </div>
                         </div>
                     </div>
 
-                    <div class="form-row">
+                    <!-- <div class="form-row">
                         <div class="form-group col-md-4">
                             <input type="text" name="imgs" value="<?php echo $file_s ?>" accept="image/*" required disabled>
                         </div>
                         <div class="form-group col-md-4">
                             <input type="file" name="img" accept="image/* " OnChange="showPreview(this)">
                         </div>
-                    </div>
+                    </div> -->
                     <br>
                     <div class="form-row">
                         <div class="form-group col-md-4">
@@ -135,7 +141,7 @@ require_once "connect.php";
     <div class="content-wrapper">
         <div style="margin-left:10%; padding-top :2%;">
             <div class="container my-6">
-                <h2>เพิ่มข้อมูลบริษัทประกัน</h2>
+                <h2>แก้ไขข้อมูลบริษัทประกัน</h2>
                 <form action="update.php?insurance=1" method="post" enctype="multipart/form-data">
                     <div class="form-row">
                         <input type="number" class="form-control" name="ids" value="<?php echo $id_s ?>" hidden require>
@@ -145,8 +151,6 @@ require_once "connect.php";
                         </div>
                     </div>
                     <div class="form-row">
-                    </div>
-                    <div class="form-row">
                         <div class="form-group col-md-4">
                             <label>ไฟล์ Logo(เดิม)</label><br>
                             <?php if ($file_s != 'none.jpg') {
@@ -154,10 +158,12 @@ require_once "connect.php";
                             } else {
                                 $scr = 'myImg/insurance/default_img/';
                             } ?>
-                            <img src="<?php echo $scr; ?><?php echo $file_s; ?>" width="40%"> &nbsp;&nbsp;
+                            <img src="<?php echo $scr; ?><?php echo $file_s; ?>" width="40%"><br>
+                            <div class="form-row">
+                               <input type="text" name="imgs" value="<?php echo $file_s ?>" accept="image/*" required disabled>
+                            </div>
                         </div>
                         <div class="form-group col-md-4">
-
                             <script language="JavaScript">
                                 function showPreview(ele) { //ฟังก์โชว์ภาพก่อน กด submit 
                                     $('#imgAvatar').attr('src', ele.value);
@@ -174,28 +180,30 @@ require_once "connect.php";
                             </script>
                             <label>ไฟล์ Logo(สำหรับแก้ไข)</label><br>
                             <img id="imgAvatar" width="40%">
+                            <div class="form-row">
+                                <input type="file" name="img" accept="image/* " OnChange="showPreview(this)">
+                            </div>
                         </div>
                     </div>
+                    <!-- <div class="form-row">
+                        <div class="form-group col-md-4">
+                            <input type="text" name="imgs" value="<?php echo $file_s ?>" accept="image/*" required disabled>
+                        </div>
+                        <div class="form-group col-md-4">
+                            <input type="file" name="img" accept="image/* " OnChange="showPreview(this)">
+                        </div>
+                    </div> -->
+                    <br>
+                    <div class="form-row">
+                        <div class="form-group col-md-4">
+                            <input type="submit" class="btn btn-primary" value="ยืนยัน"> &nbsp;&nbsp;
+                            <input type="reset" class="btn btn-info" value="รีเซ็ตข้อมูล" onclick="window.location.reload();"> &nbsp;&nbsp;
+                            <input type=button class="btn btn-danger" onclick="window.location='page_insurance.php'" value=ยกเลิก>
+                        </div>
+                    </div>
+                </form>
             </div>
-            <div class="form-row">
-                <div class="form-group col-md-4">
-                    <input type="text" name="imgs" value="<?php echo $file_s ?>" accept="image/*" required disabled>
-                </div>
-                <div class="form-group col-md-4">
-                    <input type="file" name="img" accept="image/* " OnChange="showPreview(this)">
-                </div>
-            </div>
-            <br>
-            <div class="form-row">
-                <div class="form-group col-md-4">
-                    <input type="submit" class="btn btn-primary" value="ยืนยัน"> &nbsp;&nbsp;
-                    <input type="reset" class="btn btn-info" value="รีเซ็ตข้อมูล" onclick="window.location.reload();"> &nbsp;&nbsp;
-                    <input type=button class="btn btn-danger" onclick="window.location='page_insurance.php'" value=ยกเลิก>
-                </div>
-            </div>
-            </form>
         </div>
-    </div>
 
     </div>
 <?php } ?>
@@ -767,6 +775,110 @@ require_once "connect.php";
         </div>
     </div>
 <?php } ?>
+
+<?php if (isset($_GET['profile'])) { ?>
+    <?php
+    $id = $_SESSION['id'];
+    $sql = "SELECT * FROM user WHERE id= $id ";
+    $result = mysqli_query($con, $sql);
+    $row = mysqli_fetch_assoc($result);
+
+
+    // $sqlp = "SELECT * FROM member_role  ";
+    // $resultp = mysqli_query($con, $sqlp);
+
+    ?>
+
+    <!-- Content Wrapper. Contains page content -->
+    <div class="content-wrapper">
+        <!-- Content Header (Page header) -->
+        <section class="content-header">
+            <div class="container-fluid">
+                <div class="row mb-2">
+                    <!-- <div class="col-sm-6">
+                        <h1 style="text-transform: uppercase">แก้ไขสมาชิก</h1>
+                    </div> -->
+
+                </div>
+            </div><!-- /.container-fluid -->
+        </section>
+
+        <!-- Main content -->
+        <section class="content">
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="offset-sm-3 col-md-6">
+                        <div class="card card-dark">
+                            <div class="card-header ">
+                                <h3 class="card-title">แก้ไขสมาชิก</li>
+                            </div>
+                            <div class="card-body">
+                                <div class="tab-content">
+                                    <div class="active tab-pane" id="activity">
+                                        <!-- Post -->
+                                        <form class="form-horizontal" action="update.php?profile=<?php echo $row['id'] ?>" method="post">
+                                            <div class="tab-pane" id="settings">
+                                                <div class="form-group row">
+                                                    <label for="inputName" class="col-sm-2 col-form-label"> ชื่อ</label>
+                                                    <div class="col-sm-10">
+                                                        <input type="text" class="form-control" name="name" id="name" value="<?php echo $row['name']; ?>">
+                                                    </div>
+                                                </div>
+
+                                                <div class="form-group row">
+                                                    <label for="inputPhone" class="col-sm-2 col-form-label">เบอร์โทร</label>
+                                                    <div class="col-sm-10">
+                                                        <input type="tel" maxlength="10" pattern="\d*" class="form-control" name="tel" id="tel" value="<?php echo $row['tel']; ?>">
+                                                    </div>
+                                                </div>
+                                                <div class="form-group row">
+                                                    <label for="inputEmail" class="col-sm-2 col-form-label">อีเมล</label>
+                                                    <div class="col-sm-10">
+                                                        <input type="text" class="form-control" name="email" id="email" value="<?php echo $row['email']; ?>">
+                                                    </div>
+                                                </div>
+                                                <div class="form-group row">
+                                                    <div class="offset-5 col-6">
+                                                        <button type="submit" name="submit" class="btn btn-danger">บันทึก</button>
+                                                    </div>
+                                                </div>
+                                        </form>
+                                    </div><!-- /.card-body -->
+                                </div>
+                                <!-- /.card -->
+                            </div>
+                            <!-- /.col -->
+                        </div>
+                        <!-- /.row -->
+                    </div><!-- /.container-fluid -->
+        </section>
+        <!-- /.content -->
+    </div>
+    <!-- /.content-wrapper -->
+
+    <!-- Control Sidebar -->
+
+    <!-- <script>
+        $('.custom-file-input').on('change', function() { //selecter class custom และ ดักจับ event(change)
+            var fileName = $(this).val().split('\\').pop(); //ดึงค่าข้อมูลของตัว path และแยกข้อมูลด้วย split และใช้ pop ในการแยกข้อมูลด้านหลังสุดของ array
+            $(this).siblings('.custom-file-label').html(fileName) //siblings(เลือกทุกอย่างยกเว้นตัวเอง แต่จะเลือกตัวlabel) html(แสดงในส่วนของข้อความออกมา)
+            if (this.files[0]) { //ถ้ามีการรับค่าจาก array ของ file
+                var reader = new FileReader() //สร้างฟังก์ชันขึ้นใหม่
+                $('.figure').addClass('d-block') //selecter ไปที่ class figure , add class 'd-block' เพื่อโชว์รูปภาพ
+                reader.onload = function(e) { //เรียกค่าข้อมูลของ file
+                    $('#imageUpload').attr('src', e.target.result).width(240) //selecter id ของ img และเซ็ต attr ของข้อมูล
+                    $('#imageUpload2').attr('src', e.target.result).width(100) //selecter id ของ img และเซ็ต attr ของข้อมูล
+
+                }
+                reader.readAsDataURL(this.files[0]) //อ่านค่าของ array file
+            }
+        })
+    </script> -->
+
+    </body>
+
+</html>
+<?php  } ?>
 </body>
 
 </html>

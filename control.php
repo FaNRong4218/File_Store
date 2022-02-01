@@ -101,7 +101,7 @@ if (isset($_POST['but_update'])) { //ถ้ามีการกดปุ่ม 
                                 <table id="example2" class="table table-bordered table-hover text-md-center">
                                     <thead>
                                         <tr>
-                                            <th><input type='checkbox' id='checkAll'> เลือกทั้งหมด</th>
+                                            <th hidden><input type='checkbox' checked id='checkAll'> เลือกทั้งหมด</th>
                                             <th>ลำดับ</th>
                                             <th>เพจ</th>
                                             <th>แอดมิน</th>
@@ -123,7 +123,7 @@ if (isset($_POST['but_update'])) { //ถ้ามีการกดปุ่ม 
                                             ?>
 
                                                 <tr>
-                                                    <td><input type='checkbox' name='update[]' value='<?= $idr ?>'></td>
+                                                    <td hidden><input type='checkbox ' checked name='update[]'value='<?= $idr ?>'></td>
                                                     <td><?php echo $order++; ?></td>
                                                     <td><label for="page"><?php echo $rowc['page']; ?></label></td>
                                                     <?php

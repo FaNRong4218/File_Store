@@ -156,7 +156,7 @@ if (isset($_GET['Type']) == 1) {
 
     echo "<script type='text/javascript'>";
     echo "alert('เพิ่มข้อมูลสำเร็จ');";
-    echo "window.location = 'page_insurance.php';";
+    echo "window.location = 'page_type.php';";
     echo "</script>";
   } else {
     echo "มีบางอย่างผิดพลาด!! กรุณาลองใหม่อีกครั้ง";
@@ -182,9 +182,7 @@ if (isset($_GET['File']) == 1) {//เพิ่มไฟล์สำหรับ�
     for ($i = 0; $i < count($_FILES["file"]["name"]); $i++) {
       if ($_FILES["file"]["name"][$i] != "") {
         $file[$i] = $_FILES["file"]["name"][$i];
-        $files_v[$i] = strrev($file[$i]);
-        $files_r[$i] = strrchr($files_v[$i], ".");
-        $files[$i] = strrev($files_r[$i]);
+        $files[$i] = pathinfo($file[$i], PATHINFO_FILENAME);
 
         $type[$i] = strrchr($_FILES['file']['name'][$i], "."); //ตัดชื่อไฟล์เหลือแต่นามสกุล
         $newname[$i] = $nameDate . $numrand. $files[$i] . $type[$i]; //ประกอบเป็นชื่อใหม่
@@ -227,9 +225,7 @@ if (isset($_GET['Files']) == 1) { //เพิ่มไฟล์สำหรั�
     for ($i = 0; $i < count($_FILES["file"]["name"]); $i++) {
       if ($_FILES["file"]["name"][$i] != "") {
         $file[$i] = $_FILES["file"]["name"][$i];
-        $files_v[$i] = strrev($file[$i]);
-        $files_r[$i] = strrchr($files_v[$i], ".");
-        $files[$i] = strrev($files_r[$i]);
+        $files[$i] = pathinfo($file[$i], PATHINFO_FILENAME);
 
         $type[$i] = strrchr($_FILES['file']['name'][$i], "."); //ตัดชื่อไฟล์เหลือแต่นามสกุล
         $newname[$i] = $nameDate . $numrand. $files[$i] . $type[$i]; //ประกอบเป็นชื่อใหม่

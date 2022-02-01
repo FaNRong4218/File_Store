@@ -20,20 +20,21 @@ if (!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true) {
   <script src="js/jquery.min.js"></script>
   <link rel="stylesheet" href="plugins/fontawesome-free/css/all.min.css">
   <link rel="stylesheet" href="dist/css/adminlte.min.css">
-
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Prompt&display=swap" rel="stylesheet">
+  <script src="https://kit.fontawesome.com/2f85583488.js" crossorigin="anonymous"></script>
+
   <script src="plugins/jquery/jquery.min.js"></script>
   <script src="plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
-  <script src="dist/js/adminlte.min.js"></script>
+  <link rel="stylesheet" href="dist/css/myCSS.css" type="text/css">
+  <script src="dist/css/myCSS.css"></script>
+
 
   <script type="text/javascript" src="ckeditor/ckeditor.js"></script>
-  <script src="plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
 
   <link rel="stylesheet" href="plugins/bootstrap4-duallistbox/bootstrap-duallistbox.min.css">
   <script src="plugins/bootstrap4-duallistbox/jquery.bootstrap-duallistbox.min.js"></script>
-
 </head>
 
 <?php
@@ -151,7 +152,7 @@ if (isset($_GET['brand']) == 1) {
           <div class="form-row">
             <div class="form-group col-md-4">
               <label>ไฟล์ Logo</label><br>
-              <input type="file" name="img" accept="image/*"  OnChange="showPreview(this)">
+              <input type="file" name="img" accept="image/*" OnChange="showPreview(this)">
             </div>
           </div>
           <br>
@@ -218,20 +219,23 @@ if (isset($_GET['brand']) == 1) {
 
               <select id="Ck" name="Car_ID[]" class="duallistbox" multiple="multiple">
 
-                <?php while ($result2 = mysqli_fetch_assoc($query3)) : ?>
-                  <option id="check" name="Car_ID[]" value="<?= $result2["Car_ID"] ?>"><?= $result2["Car_Name"] ?></option>
+                <?php while ($result = mysqli_fetch_assoc($query3)) : ?>
+                  <option id="check" name="Car_ID[]" value="<?= $result["Car_ID"] ?>"><?= $result["Car_Name"] ?></option>
                 <?php endwhile; ?>
                 <script>
                   $(function() {
                     $('.duallistbox').bootstrapDualListbox()
                   });
 
-                  myCheck.onclick = function() {
+                  myCheck.onchange = function() {
+                    var text = document.getElementById("f1");
                     if (this.checked == true) {
                       document.querySelector("#check").closest('.form-group').style.display = "none";
+                      text.style.display = "none";
                     }
                     if (this.checked == false) {
                       document.querySelector("#check").closest('.form-group').style.display = "";
+                      text.style.display = "";
                     }
                   }
                   $(function() {
@@ -285,7 +289,7 @@ if (isset($_GET['brand']) == 1) {
 <?php } ?>
 <?php if (isset($_GET['Reports']) == 1) { ?>
   <?php
- 
+
   date_default_timezone_set("Asia/Bangkok");
 
   require_once "connect.php";
@@ -390,8 +394,8 @@ if (isset($_GET['brand']) == 1) {
             <input type="reset" class="btn btn-info" value="รีเซ็ตข้อมูล" onclick="window.location.reload();"> &nbsp;&nbsp;
             <input type=button class="btn btn-danger" onclick="window.location='page_report_search.php'" value=ยกเลิก>
           </div>
-          <input  name="date_start" type="datetime" value=<?php echo date("Y-m-d\TH:i:s"); ?>>
-          <input  name="date_now" type="datetime" value=<?php echo  date("Y-m-d\TH:i:s"); ?>>
+          <input name="date_start" type="datetime" value=<?php echo date("Y-m-d\TH:i:s"); ?>>
+          <input name="date_now" type="datetime" value=<?php echo  date("Y-m-d\TH:i:s"); ?>>
         </form>
       </div>
     </div>
@@ -457,7 +461,8 @@ if (isset($_GET['brand']) == 1) {
           <div class="form-row">
             <div class="form-group col-md-12">
               <input type="text" name="ids" value="<?php echo $ids ?>" hidden>
-              <input hidden name="date" type="datetime" value=<?php date_default_timezone_set("Asia/Bangkok"); echo date("Y-m-d\TH:i:s"); ?>>
+              <input hidden name="date" type="datetime" value=<?php date_default_timezone_set("Asia/Bangkok");
+                                                              echo date("Y-m-d\TH:i:s"); ?>>
               <input name="btnCreate" type="button" class="btn btn-sm btn-success" value="เพิ่มไฟล์" onClick="JavaScript:fncCreateElement();">
               <input name="btnDelete" type="button" class="btn btn-sm btn-danger" value="ลบไฟล์" onClick="JavaScript:fncDeleteElement();"><br><br>
               <input name="hdnLine" id="hdnLine" type="hidden" value=0>
@@ -539,7 +544,7 @@ if (isset($_GET['brand']) == 1) {
       </div>
     </div>
   </div>
-  
+
 
 <?php } ?>
 <?php if (isset($_GET['ids'])) { //หน้าเพิ่มไฟล์ สำหรับหน้าค้นหาเอกสาร
@@ -552,7 +557,8 @@ if (isset($_GET['brand']) == 1) {
           <div class="form-row">
             <div class="form-group col-md-12">
               <input type="text" name="ids" value="<?php echo $ids ?>" hidden>
-              <input hidden name="date" type="datetime" value=<?php date_default_timezone_set("Asia/Bangkok"); echo date("Y-m-d\TH:i:s"); ?>>
+              <input hidden name="date" type="datetime" value=<?php date_default_timezone_set("Asia/Bangkok");
+                                                              echo date("Y-m-d\TH:i:s"); ?>>
               <input name="btnCreate" type="button" class="btn btn-sm btn-success" value="เพิ่มไฟล์" onClick="JavaScript:fncCreateElement();">
               <input name="btnDelete" type="button" class="btn btn-sm btn-danger" value="ลบไฟล์" onClick="JavaScript:fncDeleteElement();"><br><br>
               <input name="hdnLine" id="hdnLine" type="hidden" value=0>
@@ -634,7 +640,7 @@ if (isset($_GET['brand']) == 1) {
       </div>
     </div>
   </div>
-  
+
 
 <?php } ?>
 
