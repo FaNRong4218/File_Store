@@ -45,7 +45,7 @@ $resultp = mysqli_query($con, $sqlp);
         <h5 class="brand-link bg-info">
           <a href='profile.php' title='โปรไฟล์'>
           <img src="myImg/etc/user_ic.png" alt="AdminLTE Logo" class="brand-image img-circle elevation-3">
-          <?php echo ($row["name"]); ?> (<?php echo ($row["type"]); ?>)
+          <?php echo ($row["name"]); ?>
           </a>
         </h5>
 

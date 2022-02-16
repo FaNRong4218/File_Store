@@ -13,9 +13,9 @@ if (isset($_POST["Report_ID"])) {
   $sql = "SELECT Report_ID, insurance.Corp_Name,insurance.Corp_Img, brand.Car_Name, type.Type_Name, Report_Status, report.Car_ID,
   Date_Now,  Date_Ext, Date_Start
            FROM report 
-           INNER JOIN insurance ON insurance.Corp_ID = report.Corp_ID
-           INNER JOIN brand ON brand.Car_ID = report.Car_ID
-           INNER JOIN type ON  type.Type_ID = report.Type_ID
+           LEFT JOIN insurance ON insurance.Corp_ID = report.Corp_ID
+           LEFT JOIN brand ON brand.Car_ID = report.Car_ID
+           LEFT JOIN type ON  type.Type_ID = report.Type_ID
            WHERE Report_ID='$id';";
   $result = mysqli_query($con, $sql);
 

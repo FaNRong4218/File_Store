@@ -84,7 +84,7 @@ if (isset($_POST["Report_ID"])) {
                                                 </button></a>
                                         </div>
                                         <div class='col-5'>
-                                            <a href="delete_file.php?id=<?php echo $row["File_ID"]; ?>&submit=DEL" onclick="return confirm('ต้องการจะลบไฟล์นี้หรือไม่ ?')" title='ลบไฟล์'>
+                                            <a href="delete.php?id=<?php echo $row["File_ID"]; ?>&submit=4" onclick="return confirm('ต้องการจะลบไฟล์นี้หรือไม่ ?')" title='ลบไฟล์'>
                                                 <button type=button class="btn btn-danger btn-sm"><i class="fas fa-trash-alt"></i>
                                                 </button></a>
                                         </div>

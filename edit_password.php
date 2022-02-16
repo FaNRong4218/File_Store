@@ -14,7 +14,7 @@ if (!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true) {
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta http-equiv="x-ua-compatible" content="ie=edge">
 
-    <title>Reset-my-password</title>
+    <title>Reset-user-password</title>
 
     <link rel="stylesheet" href="plugins/fontawesome-free/css/all.min.css">
     <link rel="stylesheet" href="dist/css/adminlte.min.css">
@@ -43,14 +43,11 @@ if (!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true) {
 <?php
 require_once "menu.php";
 require_once "connect.php";
-
-
-
 ?>
 <?php
 $new_password = $confirm_password = "";
 $new_password_err = $confirm_password_err = "";
-
+$ids =  $_GET["id"];
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
@@ -76,18 +73,20 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $sql = "UPDATE user SET pass = ? WHERE id = ?";
 
         if ($stmt = mysqli_prepare($con, $sql)) {
-   
+
             mysqli_stmt_bind_param($stmt, "si", $param_password, $param_id);
 
             $param_password = password_hash($new_password, PASSWORD_DEFAULT);
-            $param_id = $_SESSION["id"];
-
+            $param_id = $_POST["ids"];
 
             if (mysqli_stmt_execute($stmt)) {
 
-                header("location: login.php");
-                exit();
-                session_destroy();
+                echo "<script type='text/javascript'>";
+                echo "alert('แก้ไขรหัสผ่านสำเร็จ');";
+                echo "window.location = 'page_user.php';";
+                echo "</script>";
+            } else {
+                echo "มีบางอย่างผิดพลาด!! กรุณาลองใหม่อีกครั้ง";
             }
         }
     }
@@ -100,12 +99,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             <!-- general form elements -->
             <div class="card card-success">
                 <div class="card-header">
-                    <h3 class="card-title">รีเซ็ตพาสเวิร์ด</h3>
+                    <h3 class="card-title">เปลี่ยนพาสเวิร์ดของผู้ใช้ : <?php echo $_GET["name"]; ?></h3>
                 </div>
                 <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="post">
                     <div class="card-body">
                         <div class="form-group">
-
+                        <input hidden type="text" name="ids" class="form-control" value="<?php echo  $_GET["id"]; ?>">
                             <label for="exampleInputEmail1">พาสเวิร์ดใหม่</label>
                             <input type="password" name="new_password" class="form-control" value="<?php echo $new_password; ?>">
                             <span style='color: red;' class="help-block"><?php echo $new_password_err; ?></span>

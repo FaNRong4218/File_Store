@@ -1,4 +1,9 @@
 <?php
+session_start();
+if (!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true) {
+  header("location: login.php");
+  exit;
+}
 require_once "connect.php";
 ?>
 <?php
@@ -25,13 +30,11 @@ if (isset($_GET['brand']) == 1) {
         VALUES ('$Name', '$status', '$newname' )";
 
     $insert = mysqli_query($con, $sql);
-  }
-  else{
+  } else {
     $sql = "INSERT INTO brand (Car_Name, Car_Status, Car_Img)
     VALUES ('$Name', 'off', 'none.png' )";
 
-    $insert = mysqli_query($con, $sql); 
-
+    $insert = mysqli_query($con, $sql);
   }
   if ($insert) {
 
@@ -48,7 +51,7 @@ if (isset($_GET['insurance']) == 1) {
   $date = $_POST['Date'];
   $status = $_POST['Status'];
   $file = $_FILES['img']['name'];
-  
+
   $files = pathinfo($file, PATHINFO_FILENAME);
 
   $nameDate = date('Ymd'); //เก็บวันที่
@@ -68,13 +71,11 @@ if (isset($_GET['insurance']) == 1) {
       VALUES ('$Name', '$date', '$status', '$newname' )";
 
     $insert = mysqli_query($con, $sql);
-  }
-  else{
+  } else {
     $sql = "INSERT INTO insurance (Corp_Name, Corp_Date, Corp_Status, Corp_img) 
     VALUES ('$Name', '$date', 'off', 'none.jpg' )";
 
-    $insert = mysqli_query($con, $sql); 
-
+    $insert = mysqli_query($con, $sql);
   }
 
   if ($insert) {
@@ -90,30 +91,38 @@ if (isset($_GET['insurance']) == 1) {
 if (isset($_GET['Report']) == 1) { //สำหรับ report ที่มีแถบค้นหา
   $Corp_ID = $_POST['Corp_ID'];
   $Type_ID = $_POST['Type_ID'];
-  for ($i = 0; $i < count($_POST['Car_ID']); $i++) {
-    $Car_ID = implode(",", $_POST['Car_ID']);
-  }
   $detail = $_POST['detail'];
   $date_start = $_POST['date_start'];
   $date_now = $_POST['date_now'];
   $date_ext = $_POST['date_ext'];
   $status = $_POST['status'];
-
-  $sql1 = "INSERT INTO report (Corp_ID, Type_ID, Car_ID, Report_detail, Date_Start, Date_Now, Date_Ext, Report_Status ) 
-    VALUES ('$Corp_ID', '$Type_ID', '$Car_ID','$detail','$date_start','$date_now','$date_ext','$status' )";
-
-
-  $insert = mysqli_query($con, $sql1);
-
-  if ($insert) {
+  $user_id = $_SESSION['id'];
+  
+  if ($_POST['Car_ID'] == '') {
     echo "<script type='text/javascript'>";
-    echo "alert('เพิ่มข้อมูลสำเร็จ');";
+    echo "alert('กรุณาเลือกยี่ห้อรถ');";
     echo "window.location = 'page_report.php';";
     echo "</script>";
   } else {
-    echo "มีบางอย่างผิดพลาด!! กรุณาลองใหม่อีกครั้ง";
+    for ($i = 0; $i < count($_POST['Car_ID']); $i++) {
+      $Car_ID = implode(",", $_POST['Car_ID']);
+    }
+    $sql1 = "INSERT INTO report (User_ID,Corp_ID, Type_ID, Car_ID, Report_detail, Date_Start, Date_Now, Date_Ext, Report_Status ) 
+    VALUES ('$user_id','$Corp_ID', '$Type_ID', '$Car_ID','$detail','$date_start','$date_now','$date_ext','$status' )";
+
+
+    $insert = mysqli_query($con, $sql1);
+
+    if ($insert) {
+      echo "<script type='text/javascript'>";
+      echo "alert('เพิ่มข้อมูลสำเร็จ');";
+      echo "window.location = 'page_report.php';";
+      echo "</script>";
+    } else {
+      echo "มีบางอย่างผิดพลาด!! กรุณาลองใหม่อีกครั้ง";
+    }
+    mysqli_close($con);
   }
-  mysqli_close($con);
 }
 if (isset($_GET['Reports']) == 1) {
   $Corp_ID = $_POST['Corp_ID'];
@@ -162,7 +171,7 @@ if (isset($_GET['Type']) == 1) {
     echo "มีบางอย่างผิดพลาด!! กรุณาลองใหม่อีกครั้ง";
   }
 }
-if (isset($_GET['File']) == 1) {//เพิ่มไฟล์สำหรับหน้าเอกสาร
+if (isset($_GET['File']) == 1) { //เพิ่มไฟล์สำหรับหน้าเอกสาร
 
   $id = $_POST['ids'];
   $date = $_POST['date'];
@@ -185,7 +194,7 @@ if (isset($_GET['File']) == 1) {//เพิ่มไฟล์สำหรับ�
         $files[$i] = pathinfo($file[$i], PATHINFO_FILENAME);
 
         $type[$i] = strrchr($_FILES['file']['name'][$i], "."); //ตัดชื่อไฟล์เหลือแต่นามสกุล
-        $newname[$i] = $nameDate . $numrand. $files[$i] . $type[$i]; //ประกอบเป็นชื่อใหม่
+        $newname[$i] = $nameDate . $numrand . $files[$i] . $type[$i]; //ประกอบเป็นชื่อใหม่
         $path_copy[$i] = $path . $newname[$i]; //กำหนด path ในการเก็บ
         move_uploaded_file($_FILES['file']['tmp_name'][$i], $path_copy[$i]);
         $sql = "INSERT INTO file (File_Name,File_Date,Report_ID) 
@@ -228,7 +237,7 @@ if (isset($_GET['Files']) == 1) { //เพิ่มไฟล์สำหรั�
         $files[$i] = pathinfo($file[$i], PATHINFO_FILENAME);
 
         $type[$i] = strrchr($_FILES['file']['name'][$i], "."); //ตัดชื่อไฟล์เหลือแต่นามสกุล
-        $newname[$i] = $nameDate . $numrand. $files[$i] . $type[$i]; //ประกอบเป็นชื่อใหม่
+        $newname[$i] = $nameDate . $numrand . $files[$i] . $type[$i]; //ประกอบเป็นชื่อใหม่
         $path_copy[$i] = $path . $newname[$i]; //กำหนด path ในการเก็บ
         move_uploaded_file($_FILES['file']['tmp_name'][$i], $path_copy[$i]);
         $sql = "INSERT INTO file (File_Name,File_Date,Report_ID) 

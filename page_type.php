@@ -53,7 +53,7 @@ include "menu.php";
         <h2 class="card-header bg-primary">ประเภทประกันภัย</h2>
         <div class="card-body ">
           <a href="page_insert.php?Type=1" title='Insert Data'>
-            <button type=button class="btn btn-info float-lg-right">เพิ่มข้อมูล <i class="fas fa-plus-circle"></i></button><br><br>
+            <button type=button class="btn btn-info rounded-pill">เพิ่มข้อมูล <i class="fas fa-plus-circle"></i></button><br><br>
           </a>
           <?php
           include_once 'connect.php';
@@ -92,12 +92,24 @@ include "menu.php";
                       </label>
                     </td>
                     <td>
-                      <a href="page_update.php?Type_ID=<?php echo $row["Type_ID"]; ?>" title='แก้ไขข้อมูล'>
-                        <button type=button class="btn btn-warning btn-sm"><i class="far fa-edit"></i>
-                          แก้ไข</button></a>
-                      <button title='รายละเอียด' type=button class="btn btn-primary btn-sm view" name="view" value="ข้อมูล" id="<?php echo $row["Type_ID"]; ?>">
+
+                        <div class='row'>
+                    <div class='col-auto col-sm-auto'>
+                      <a type=button class="btn btn-warning btn-sm rounded-pill" href="page_update.php?Type_ID=<?php echo $row["Type_ID"]; ?>" title='แก้ไขข้อมูล'>
+                        <i class="far fa-edit"></i>
+                        แก้ไข</a>
+                    </div>
+                    <div class='col-auto col-sm-auto'>
+                      <button title='รายละเอียด' type=button class="btn btn-primary btn-sm rounded-pill view " name="view" value="ข้อมูล" id="<?php echo $row["Type_ID"]; ?>">
                         <i class="fas fa-eye"></i>
                         ดู</button>
+                    </div>
+                    <div class='col-auto col-sm-auto'>
+                      <a type=button class="btn btn-danger btn-sm rounded-pill" href="delete.php?Type_ID=<?php echo $row["Type_ID"]; ?>&submit=8" onclick="return confirm('ต้องการจะลบเอกสารนี้หรือไม่ ?')" title='แก้ไขข้อมูล'>
+                        <i class="far fa-edit"></i>
+                        ลบ</a>
+                    </div>
+                  </div>
                     </td>
 
                   </tr>

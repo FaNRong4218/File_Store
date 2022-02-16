@@ -106,25 +106,28 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <meta http-equiv="x-ua-compatible" content="ie=edge">
 
     <title>Registion</title>
-    <script src="js/jquery.min.js"></script>
     <link rel="stylesheet" href="plugins/fontawesome-free/css/all.min.css">
     <link rel="stylesheet" href="dist/css/adminlte.min.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Prompt&display=swap" rel="stylesheet">
-    <script src="https://kit.fontawesome.com/2f85583488.js" crossorigin="anonymous"></script>
-    <!-- DataTables -->
+    <link rel="stylesheet" href="dist/css/myCSS.css" type="text/css">
     <link rel="stylesheet" href="plugins/datatables-bs4/css/dataTables.bootstrap4.min.css">
     <link rel="stylesheet" href="plugins/datatables-responsive/css/responsive.bootstrap4.min.css">
+    <link rel="stylesheet" href="plugins/bootstrap4-duallistbox/bootstrap-duallistbox.min.css">
     <script src="plugins/jquery/jquery.min.js"></script>
     <script src="plugins/datatables/jquery.dataTables.min.js"></script>
     <script src="plugins/datatables-bs4/js/dataTables.bootstrap4.min.js"></script>
     <script src="plugins/datatables-responsive/js/dataTables.responsive.min.js"></script>
     <script src="plugins/datatables-responsive/js/responsive.bootstrap4.min.js"></script>
-
+    <script src="js/jquery.min.js"></script>
     <script src="plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
-    <link rel="stylesheet" href="dist/css/myCSS.css" type="text/css">
     <script src="dist/css/myCSS.css"></script>
+    <script src="dist/js/adminlte.min.js"></script>
+    <script type="text/javascript" src="ckeditor/ckeditor.js"></script>
+    <script src="plugins/bootstrap4-duallistbox/jquery.bootstrap-duallistbox.min.js"></script>
+    <script src="https://kit.fontawesome.com/2f85583488.js" crossorigin="anonymous"></script>
+    <script type="text/javascript" charset="utf8" src="/DataTables/datatables.js"></script>
 
 </head>
 
@@ -133,7 +136,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 <body>
 
     <?php
-    include "menu.php";
+    include_once "menu.php";
     ?>
 
     <div class="content-wrapper">

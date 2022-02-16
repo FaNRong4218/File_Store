@@ -13,39 +13,35 @@ if (!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true) {
 <head>
     <meta charset="utf-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title>AdminLTE 3 | Dashboard</title>
-    <!-- Tell the browser to be responsive to screen width -->
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <!-- Font Awesome -->
+    <title>Dashboard</title>
     <link rel="stylesheet" href="plugins/fontawesome-free/css/all.min.css">
-    <!-- Ionicons -->
-    <link rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
-    <!-- Tempusdominus Bbootstrap 4 -->
-    <link rel="stylesheet" href="plugins/tempusdominus-bootstrap-4/css/tempusdominus-bootstrap-4.min.css">
-    <!-- iCheck -->
-    <link rel="stylesheet" href="plugins/icheck-bootstrap/icheck-bootstrap.min.css">
-    <!-- JQVMap -->
-    <link rel="stylesheet" href="plugins/jqvmap/jqvmap.min.css">
-    <!-- Theme style -->
     <link rel="stylesheet" href="dist/css/adminlte.min.css">
-    <!-- overlayScrollbars -->
-    <link rel="stylesheet" href="plugins/overlayScrollbars/css/OverlayScrollbars.min.css">
-    <!-- summernote -->
-    <link rel="stylesheet" href="plugins/summernote/summernote-bs4.css">
-    <!-- Google Font: Source Sans Pro -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Prompt&display=swap" rel="stylesheet">
-    <!-- DataTables -->
+    <script src="https://kit.fontawesome.com/2f85583488.js" crossorigin="anonymous"></script>
+    <script type="text/javascript" charset="utf8" src="/DataTables/datatables.js"></script>
+    <link rel="stylesheet" href="dist/css/myCSS.css" type="text/css">
     <link rel="stylesheet" href="plugins/datatables-bs4/css/dataTables.bootstrap4.min.css">
     <link rel="stylesheet" href="plugins/datatables-responsive/css/responsive.bootstrap4.min.css">
-
-
-    <link rel="stylesheet" href="dist/css/myCSS.css">
+    <link rel="stylesheet" href="plugins/bootstrap4-duallistbox/bootstrap-duallistbox.min.css">
+    <script src="plugins/jquery/jquery.min.js"></script>
+    <script src="plugins/datatables/jquery.dataTables.min.js"></script>
+    <script src="plugins/datatables-bs4/js/dataTables.bootstrap4.min.js"></script>
+    <script src="plugins/datatables-responsive/js/dataTables.responsive.min.js"></script>
+    <script src="plugins/datatables-responsive/js/responsive.bootstrap4.min.js"></script>
+    <script src="js/jquery.min.js"></script>
+    <script src="plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
     <script src="dist/css/myCSS.css"></script>
+    <script src="dist/js/adminlte.min.js"></script>
+    <script type="text/javascript" src="ckeditor/ckeditor.js"></script>
+    <script src="plugins/bootstrap4-duallistbox/jquery.bootstrap-duallistbox.min.js"></script>
+
 </head>
 <?php
-include "menu.php";
+include_once "menu.php";
+include_once 'connect.php';
 ?>
 
 
@@ -67,14 +63,26 @@ $result4 = mysqli_query($con, $sql4);
 $num4 = mysqli_num_rows($result4);
 
 
+$type = $_SESSION['type'];
+$ids = $_SESSION['id'];
+if ($type == 'employee') {
+    $where = "WHERE user.type != 'admin'";
+} else if ($type == 'member') {
+    $where = "WHERE user.type = 'member' AND user.id = '$ids' ";
+} else {
+    $where = "";
+}
+
 $sql5 = "SELECT Report_ID, insurance.Corp_Name, brand.Car_Name, type.Type_Name, Report_Status, report.Car_ID,
 Date_Now,  Date_Ext, Date_Start
 FROM report 
-INNER JOIN insurance ON insurance.Corp_ID = report.Corp_ID
-INNER JOIN brand ON brand.Car_ID = report.Car_ID
-INNER JOIN type ON  type.Type_ID = report.Type_ID
-ORDER BY  Date_Now desc ;
-";
+LEFT JOIN user ON  user.id = report.User_ID
+LEFT JOIN insurance ON insurance.Corp_ID = report.Corp_ID
+LEFT JOIN brand ON brand.Car_ID = report.Car_ID
+LEFT JOIN type ON  type.Type_ID = report.Type_ID
+$where
+ORDER BY  report.Date_Now DESC ;";
+
 $result5 = mysqli_query($con, $sql5);
 
 $sql6 = "SELECT insurance.Corp_Name, COUNT(report.Corp_ID ) as num_corp  FROM report 
@@ -176,6 +184,7 @@ $result6 = mysqli_query($con, $sql6);
                                         <?php
                                         $i = 1;
                                         while ($row = mysqli_fetch_array($result5)) {
+                                            
                                             $car_id = array($row["Car_ID"]);
                                             $car_arr = array($car_id);
                                             $carid = explode(",", $row["Car_ID"]);
@@ -191,19 +200,22 @@ $result6 = mysqli_query($con, $sql6);
                                             <tr>
                                                 <td><?php echo $i ?></td>
                                                 <td><?php echo $row["Corp_Name"]; ?></td>
-                                                <td><?php foreach ($resultc as $value) {
-                                                        echo $value["Car_Name"] . "  ";
+                                                <td><?php
+                                                    foreach ($resultc as $value) {
+                                                            echo $value["Car_Name"] . "  ";
                                                     } ?></td>
                                                 <td><?php echo $row["Type_Name"]; ?></td>
                                                 <td><?php echo $row["Date_Start"]; ?></td>
                                                 <td><?php echo $row["Date_Now"]; ?></td>
                                                 <td><?php echo $row["Date_Ext"]; ?></td>
                                                 <td>
-                                                    <?php if ($_SESSION['type'] == 'member') {
-                                                        $text_dis = "disabled";
-                                                    } else {
-                                                        $text_dis = "";
-                                                    }
+                                                    <?php
+                                                    //member ไม่สามารถเปลี่ยน สเตตัส ได้ 
+                                                    // if ($_SESSION['type'] == 'member') {
+                                                    //     $text_dis = "disabled";
+                                                    // } else {
+                                                    //     $text_dis = "";
+                                                    // }
                                                     ?>
                                                     <?php if ($row["Report_Status"] == 'on') {
                                                         $text = "checked";
@@ -212,7 +224,8 @@ $result6 = mysqli_query($con, $sql6);
                                                     }
                                                     ?>
                                                     <label class="switch">
-                                                        <input type="checkbox" <?php echo $text ?> <?php echo $text_dis ?> class="change" name="change" id="<?php echo $row["Report_ID"] ?>">
+                                                        <input type="checkbox" <?php echo $text ?> <?php //สำหรับ member //echo $text_dis 
+                                                                                                    ?> class="change" name="change" id="<?php echo $row["Report_ID"] ?>">
                                                         <span class="slider round"></span>
                                                     </label>
 
@@ -267,47 +280,6 @@ $result6 = mysqli_query($con, $sql6);
     </div>
 </div>
 </div>
-<script src="plugins/jquery/jquery.min.js"></script>
-<!-- jQuery UI 1.11.4 -->
-<script src="plugins/jquery-ui/jquery-ui.min.js"></script>
-<!-- Resolve conflict in jQuery UI tooltip with Bootstrap tooltip -->
-<script>
-    $.widget.bridge("uibutton", $.ui.button);
-</script>
-<!-- Bootstrap 4 -->
-<script src="plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
-<!-- ChartJS -->
-<script src="plugins/chart.js/Chart.min.js"></script>
-<!-- Sparkline -->
-<script src="plugins/sparklines/sparkline.js"></script>
-<!-- JQVMap -->
-<script src="plugins/jqvmap/jquery.vmap.min.js"></script>
-<script src="plugins/jqvmap/maps/jquery.vmap.usa.js"></script>
-<!-- jQuery Knob Chart -->
-<script src="plugins/jquery-knob/jquery.knob.min.js"></script>
-<!-- daterangepicker -->
-<script src="plugins/moment/moment.min.js"></script>
-<script src="plugins/daterangepicker/daterangepicker.js"></script>
-<!-- Tempusdominus Bootstrap 4 -->
-<script src="plugins/tempusdominus-bootstrap-4/js/tempusdominus-bootstrap-4.min.js"></script>
-<!-- Summernote -->
-<script src="plugins/summernote/summernote-bs4.min.js"></script>
-<!-- overlayScrollbars -->
-<script src="plugins/overlayScrollbars/js/jquery.overlayScrollbars.min.js"></script>
-<!-- AdminLTE App -->
-<script src="dist/js/adminlte.js"></script>
-<!-- AdminLTE dashboard demo (This is only for demo purposes) -->
-<script src="dist/js/pages/dashboard.js"></script>
-<!-- AdminLTE for demo purposes -->
-<script src="dist/js/demo.js"></script>
-
-<!-- DataTables -->
-<script src="plugins/datatables/jquery.dataTables.min.js"></script>
-<script src="plugins/datatables-bs4/js/dataTables.bootstrap4.min.js"></script>
-<script src="plugins/datatables-responsive/js/dataTables.responsive.min.js"></script>
-<script src="plugins/datatables-responsive/js/responsive.bootstrap4.min.js"></script>
-
-
 </body>
 
 </html>

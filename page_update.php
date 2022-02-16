@@ -16,23 +16,27 @@ if (!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true) {
 
     <title>Update</title>
 
-    <script src="js/jquery.min.js"></script>
     <link rel="stylesheet" href="plugins/fontawesome-free/css/all.min.css">
     <link rel="stylesheet" href="dist/css/adminlte.min.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Prompt&display=swap" rel="stylesheet">
     <script src="https://kit.fontawesome.com/2f85583488.js" crossorigin="anonymous"></script>
-
-    <script src="plugins/jquery/jquery.min.js"></script>
-    <script src="plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <script type="text/javascript" charset="utf8" src="/DataTables/datatables.js"></script>
     <link rel="stylesheet" href="dist/css/myCSS.css" type="text/css">
-    <script src="dist/css/myCSS.css"></script>
-
-
-    <script type="text/javascript" src="ckeditor/ckeditor.js"></script>
-
+    <link rel="stylesheet" href="plugins/datatables-bs4/css/dataTables.bootstrap4.min.css">
+    <link rel="stylesheet" href="plugins/datatables-responsive/css/responsive.bootstrap4.min.css">
     <link rel="stylesheet" href="plugins/bootstrap4-duallistbox/bootstrap-duallistbox.min.css">
+    <script src="plugins/jquery/jquery.min.js"></script>
+    <script src="plugins/datatables/jquery.dataTables.min.js"></script>
+    <script src="plugins/datatables-bs4/js/dataTables.bootstrap4.min.js"></script>
+    <script src="plugins/datatables-responsive/js/dataTables.responsive.min.js"></script>
+    <script src="plugins/datatables-responsive/js/responsive.bootstrap4.min.js"></script>
+    <script src="js/jquery.min.js"></script>
+    <script src="plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <script src="dist/css/myCSS.css"></script>
+    <script src="dist/js/adminlte.min.js"></script>
+    <script type="text/javascript" src="ckeditor/ckeditor.js"></script>
     <script src="plugins/bootstrap4-duallistbox/jquery.bootstrap-duallistbox.min.js"></script>
 </head>
 
@@ -74,9 +78,9 @@ require_once "connect.php";
                             } else {
                                 $scr = 'myImg/brand/default_img/';
                             } ?>
-                            <img src="<?php echo $scr; ?><?php echo $file_s ?>" width="40%"> &nbsp;&nbsp;
+                            <img src="<?php echo $scr; ?><?php echo $file_s ?>" width="200px" height="200px"><br><br>
                             <div class="form-row">
-                               <input type="text" name="imgs" value="<?php echo $file_s ?>" accept="image/*" required disabled>
+                                <input type="text" name="imgs" value="<?php echo $file_s ?>" accept="image/*" required disabled>
                             </div>
                         </div>
                         <div class="form-group col-md-4">
@@ -96,7 +100,7 @@ require_once "connect.php";
                                 }
                             </script>
                             <label>ไฟล์ Logo(สำหรับแก้ไข)</label><br>
-                            <img id="imgAvatar" width="40%">
+                            <img id="imgAvatar" width="200px" height="200px"><br><br>
                             <div class="form-row">
                                 <input type="file" name="img" accept="image/* " OnChange="showPreview(this)">
                             </div>
@@ -158,9 +162,9 @@ require_once "connect.php";
                             } else {
                                 $scr = 'myImg/insurance/default_img/';
                             } ?>
-                            <img src="<?php echo $scr; ?><?php echo $file_s; ?>" width="40%"><br>
+                            <img src="<?php echo $scr; ?><?php echo $file_s; ?>" width="200px" height="200px"><br><br>
                             <div class="form-row">
-                               <input type="text" name="imgs" value="<?php echo $file_s ?>" accept="image/*" required disabled>
+                                <input type="text" name="imgs" value="<?php echo $file_s ?>" accept="image/*" required disabled>
                             </div>
                         </div>
                         <div class="form-group col-md-4">
@@ -179,8 +183,8 @@ require_once "connect.php";
                                 }
                             </script>
                             <label>ไฟล์ Logo(สำหรับแก้ไข)</label><br>
-                            <img id="imgAvatar" width="40%">
-                            <div class="form-row">
+                            <img id="imgAvatar" width="200px" height="200px"><br><br>
+                            <div class="form-row"><br><br>
                                 <input type="file" name="img" accept="image/* " OnChange="showPreview(this)">
                             </div>
                         </div>
@@ -216,9 +220,9 @@ require_once "connect.php";
                 brand.Car_Name, type.Type_Name, Report_Detail, Date_Now, Date_Ext,
                 Report_Status
          FROM report 
-         INNER JOIN insurance ON insurance.Corp_ID = report.Corp_ID
-         INNER JOIN brand ON brand.Car_ID = report.Car_ID
-         INNER JOIN type ON  type.Type_ID = report.Type_ID
+         LEFT JOIN insurance ON insurance.Corp_ID = report.Corp_ID
+         LEFT JOIN brand ON brand.Car_ID = report.Car_ID
+         LEFT JOIN type ON  type.Type_ID = report.Type_ID
          WHERE Report_ID='" . $_GET['Report_ID'] . "'";
 
     $query4 = mysqli_query($con, $sql4);
@@ -396,9 +400,9 @@ require_once "connect.php";
             brand.Car_Name, type.Type_Name, Report_Detail, Date_Now, Date_Ext,
             Report_Status
      FROM report 
-     INNER JOIN insurance ON insurance.Corp_ID = report.Corp_ID
-     INNER JOIN brand ON brand.Car_ID = report.Car_ID
-     INNER JOIN type ON  type.Type_ID = report.Type_ID
+     LEFT JOIN insurance ON insurance.Corp_ID = report.Corp_ID
+     LEFT JOIN brand ON brand.Car_ID = report.Car_ID
+     LEFT JOIN type ON  type.Type_ID = report.Type_ID
      WHERE Report_ID='" . $_GET['Report_ID_s'] . "'";
 
     $query4 = mysqli_query($con, $sql4);

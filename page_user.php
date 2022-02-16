@@ -17,26 +17,31 @@ if (!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true) {
   <title>User</title>
 
 
-  <script src="js/jquery.min.js"></script>
   <link rel="stylesheet" href="plugins/fontawesome-free/css/all.min.css">
   <link rel="stylesheet" href="dist/css/adminlte.min.css">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Prompt&display=swap" rel="stylesheet">
-  <script src="https://kit.fontawesome.com/2f85583488.js" crossorigin="anonymous"></script>
-  <!-- DataTables -->
+  <link rel="stylesheet" href="dist/css/myCSS.css" type="text/css">
   <link rel="stylesheet" href="plugins/datatables-bs4/css/dataTables.bootstrap4.min.css">
   <link rel="stylesheet" href="plugins/datatables-responsive/css/responsive.bootstrap4.min.css">
+  <link rel="stylesheet" href="plugins/bootstrap4-duallistbox/bootstrap-duallistbox.min.css">
   <script src="plugins/jquery/jquery.min.js"></script>
   <script src="plugins/datatables/jquery.dataTables.min.js"></script>
   <script src="plugins/datatables-bs4/js/dataTables.bootstrap4.min.js"></script>
   <script src="plugins/datatables-responsive/js/dataTables.responsive.min.js"></script>
   <script src="plugins/datatables-responsive/js/responsive.bootstrap4.min.js"></script>
-
+  <script src="js/jquery.min.js"></script>
   <script src="plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
+  <script src="dist/css/myCSS.css"></script>
+  <script src="dist/js/adminlte.min.js"></script>
+  <script type="text/javascript" src="ckeditor/ckeditor.js"></script>
+  <script src="plugins/bootstrap4-duallistbox/jquery.bootstrap-duallistbox.min.js"></script>
+  <script src="https://kit.fontawesome.com/2f85583488.js" crossorigin="anonymous"></script>
+  <script type="text/javascript" charset="utf8" src="/DataTables/datatables.js"></script>
 
 
-  
+
 
 
 </head>
@@ -50,8 +55,8 @@ include "menu.php";
       <div class="card">
         <h2 class="card-header bg-success">ผู้ใช้งาน</h2>
         <div class="card-body ">
-        <a href="register.php" title='Insert Data'>
-            <button type=button class="btn btn-info ">เพิ่มผู้ใช้งาน <i class="fas fa-plus-circle"></i></button><br><br>
+          <a href="register.php" title='Insert Data'>
+            <button type=button class="btn btn-info  rounded-pill">เพิ่มผู้ใช้งาน <i class="fas fa-plus-circle"></i></button><br><br>
           </a>
           <?php
           include_once 'connect.php';
@@ -65,7 +70,7 @@ include "menu.php";
               <thead class="bg-dark">
                 <tr>
                   <th hidden></th>
-                  <th>ลำดับ</th>
+                  <th>No</th>
                   <th>ผู้ใช้</th>
                   <th>ชื่อผู้ใช้</th>
                   <th>อีเมล</th>
@@ -101,11 +106,22 @@ include "menu.php";
                       <h5><span class="badge <?php echo $text; ?>"><?php echo $row["type"]; ?><span></h5>
                     </td>
                     <td>
-                      <a href="page_update.php?id=<?php echo $row["id"]; ?>" title='Update Record'>
-                        <button type=button class="btn btn-warning btn-sm"><i class="far fa-edit">แก้ไข</i>
-                        </button></a>
-                      <a href="delete_user.php?id=<?php echo $row["id"]; ?>&submit=1" onclick="return confirm('ต้องการจะลบผู้ใช้งานนี้หรือไม่ ?')" title='ลบผู้ใช้งาน'>
-                        <button type=button class="btn btn-danger btn-sm"> <i class="fas fa-trash-alt"></i> ลบ</button></a>
+                      <div class='row'>
+                        <div class='col-md-auto'>
+                          <a href="page_update.php?id=<?php echo $row["id"]; ?>" title='Update Record'>
+                            <button type=button class="btn btn-warning rounded-pill btn-sm"><i class="far fa-edit">แก้ไข</i>
+                            </button></a>
+                        </div>
+                        <div class='col-md-auto'>
+                          <a href="delete.php?id=<?php echo $row["id"]; ?>&submit=1" onclick="return confirm('ต้องการจะลบผู้ใช้งานนี้หรือไม่ ?')" title='ลบผู้ใช้งาน'>
+                            <button type=button class="btn btn-danger rounded-pill btn-sm"> <i class="fas fa-trash-alt"></i> ลบ</button></a>
+                        </div>
+                        <div class='col-md-auto'>
+                          <a href="edit_password.php?id=<?php echo $row["id"]; ?>&name=<?php echo $row["user"]; ?>" title='Update Record'>
+                            <button type=button class="btn btn-info rounded-pill btn-sm"><i class="far fa-edit">รีเซ็ตพาสเวิร์ด</i>
+                            </button></a>
+                        </div>
+                      </div>
                     </td>
                   </tr>
                 <?php

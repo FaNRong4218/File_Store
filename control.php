@@ -23,20 +23,14 @@ $order = 1;
 ?>
 
 <!DOCTYPE html>
-<!--
-This is a starter template page. Use this page to start your new project from
-scratch. This page gets rid of all links and provides the needed markup only.
--->
 <html lang="en">
 
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta http-equiv="x-ua-compatible" content="ie=edge">
-
     <title>Setting</title>
 
-    <script src="js/jquery.min.js"></script>
     <link rel="stylesheet" href="plugins/fontawesome-free/css/all.min.css">
     <link rel="stylesheet" href="dist/css/adminlte.min.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -44,14 +38,18 @@ scratch. This page gets rid of all links and provides the needed markup only.
     <link href="https://fonts.googleapis.com/css2?family=Prompt&display=swap" rel="stylesheet">
     <script src="https://kit.fontawesome.com/2f85583488.js" crossorigin="anonymous"></script>
     <script type="text/javascript" charset="utf8" src="/DataTables/datatables.js"></script>
-
-    <link rel="stylesheet" type="text/css" href="http://cdn.datatables.net/1.10.12/css/jquery.dataTables.css">
-    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
-    <script type="text/javascript" charset="utf8" src="http://cdn.datatables.net/1.10.12/js/jquery.dataTables.js"></script>
-
+    <link rel="stylesheet" href="dist/css/myCSS.css" type="text/css">
+    <link rel="stylesheet" href="plugins/datatables-bs4/css/dataTables.bootstrap4.min.css">
+    <link rel="stylesheet" href="plugins/datatables-responsive/css/responsive.bootstrap4.min.css">
+    <script src="plugins/jquery/jquery.min.js"></script>
+    <script src="plugins/datatables/jquery.dataTables.min.js"></script>
+    <script src="plugins/datatables-bs4/js/dataTables.bootstrap4.min.js"></script>
+    <script src="plugins/datatables-responsive/js/dataTables.responsive.min.js"></script>
+    <script src="plugins/datatables-responsive/js/responsive.bootstrap4.min.js"></script>
+    <script src="js/jquery.min.js"></script>
     <script src="plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
-    <link rel="stylesheet" href="dist/css/myCSS.css">
     <script src="dist/css/myCSS.css"></script>
+    <script src="dist/js/adminlte.min.js"></script>
 </head>
 
 <?php
@@ -82,98 +80,76 @@ if (isset($_POST['but_update'])) { //ถ้ามีการกดปุ่ม 
 
 <!-- Content Wrapper. Contains page content -->
 <div class="content-wrapper">
-    <!-- Content Header (Page header) -->
-    <section class="content-header">
-    </section>
+    <div class="row">
+        <div class="offset-1 col-10">
+            <form action="" method="post">
+                <div class="card card-dark">
+                    <div class=" card-header">
+                        <h3 class="card-title ">ตั้งค่าสิทธิผู้ใช้</h3>
+                    </div>
+                    <!-- /.card-header -->
+                    <div class="card-body">
+                        <table id="example2" class="table table-bordered table-hover text-md-center">
+                            <thead>
+                                <tr>
+                                    <th hidden><input type='checkbox' checked id='checkAll'> เลือกทั้งหมด</th>
+                                    <th>ลำดับ</th>
+                                    <th>เพจ</th>
+                                    <th>แอดมิน</th>
+                                    <th>พนักงาน</th>
+                                    <th>สมาชิก</th>
+                                    <th>ฟังก์ชัน</th>
 
-    <!-- Main content -->
-    <section class="content">
-        <div class="container-fluid ">
-            <div class="row">
-                <div class="offset-1 col-10">
-                    <form action="" method="post">
-                        <div class="card card-dark">
-                            <div class=" card-header">
-                                <h3 class="card-title ">ตั้งค่าสิทธิผู้ใช้</h3>
-                            </div>
-                            <!-- /.card-header -->
-                            <div class="card-body">
-                                <table id="example2" class="table table-bordered table-hover text-md-center">
-                                    <thead>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <div class="form-group">
+                                    <?php
+                                    $sqlc = "SELECT * FROM user_role ";
+                                    $resultc = mysqli_query($con, $sqlc);
+                                    while ($rowc = mysqli_fetch_assoc($resultc)) {
+                                        $idr = $rowc['id'];
+                                        $role_arr = array("admin$idr", "employee$idr", "member$idr");
+
+                                    ?>
+
                                         <tr>
-                                            <th hidden><input type='checkbox' checked id='checkAll'> เลือกทั้งหมด</th>
-                                            <th>ลำดับ</th>
-                                            <th>เพจ</th>
-                                            <th>แอดมิน</th>
-                                            <th>พนักงาน</th>
-                                            <th>สมาชิก</th>
-                                            <th>ฟังก์ชัน</th>
-
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <div class="form-group">
+                                            <td hidden><input type='checkbox ' checked name='update[]' value='<?= $idr ?>'></td>
+                                            <td><?php echo $order++; ?></td>
+                                            <td><label for="page"><?php echo $rowc['page']; ?></label></td>
                                             <?php
-                                            $sqlc = "SELECT * FROM user_role ";
-                                            $resultc = mysqli_query($con, $sqlc);
-                                            while ($rowc = mysqli_fetch_assoc($resultc)) {
-                                                $idr = $rowc['id'];
-                                                $role_arr = array("admin$idr", "employee$idr", "member$idr");
-
+                                            $role = explode(",", $rowc['role']); //array
+                                            foreach ($role_arr as $value) {
+                                                if (in_array($value, $role)) {
+                                                    echo " <td><input  type='checkbox' name='role[]' value='$value' checked></td>";
+                                                    echo " <input type='hidden' name='role[]' value='0'>";
+                                                } else {
+                                                    echo " <td><input  type='checkbox' name='role[]' value='$value' ></td>";
+                                                }
+                                            }
                                             ?>
+                                            <td><a href="page_update.php?page_id=<?php echo  $idr ?>"><i class="far fa-edit"></a></i>&nbsp;&nbsp;
+                                                &nbsp;
+                                                <a href="tab_delete.php?id=<?php echo  $idr ?>" onclick="return confirm('Are you sure to delete ?')"><i class="far fa-trash-alt"></i>
+                                                </a>
+                                            </td>
+                                        </tr>
+                                    <?php  } ?>
+                                </div>
+                            </tbody>
+                            <div class='row'>
+                                <input type="submit" name="but_update" class="btn btn-warning mb-3 d-block" value="บันทึกการตั้งค่า">&nbsp;
 
-                                                <tr>
-                                                    <td hidden><input type='checkbox ' checked name='update[]'value='<?= $idr ?>'></td>
-                                                    <td><?php echo $order++; ?></td>
-                                                    <td><label for="page"><?php echo $rowc['page']; ?></label></td>
-                                                    <?php
-                                                    $role = explode(",", $rowc['role']); //array
-                                                    foreach ($role_arr as $value) {
-                                                        if (in_array($value, $role)) {
-                                                            echo " <td><input  type='checkbox' name='role[]' value='$value' checked></td>";
-                                                            echo " <input type='hidden' name='role[]' value='0'>";
-                                                        } else {
-                                                            echo " <td><input  type='checkbox' name='role[]' value='$value' ></td>";
-                                                        }
-                                                    }
-                                                    ?>
-                                                    <td><a href="page_update.php?page_id=<?php echo  $idr ?>"><i class="far fa-edit"></a></i>&nbsp;&nbsp;
-                                                        &nbsp;
-                                                        <a href="tab_delete.php?id=<?php echo  $idr ?>" onclick="return confirm('Are you sure to delete ?')"><i class="far fa-trash-alt"></i>
-                                                        </a>
-                                                    </td>
-                                                </tr>
-                                            <?php  } ?>
-                                        </div>
-                                    </tbody>
-                                    <div class='row'>
-                                        <input type="submit" name="but_update" class="btn btn-warning mb-3 d-block" value="บันทึกการตั้งค่า">&nbsp;
-
-                                        <a href="page_insert.php?page=1" name="but_update" class="btn btn-success mb-3 d-block">เพิ่มหน้าเพจ</a>
-                                    </div>
-                                </table>
+                                <a href="page_insert.php?page=1" name="but_update" class="btn btn-success mb-3 d-block">เพิ่มหน้าเพจ</a>
                             </div>
-                        </div>
-                    </form>
+                        </table>
+                    </div>
                 </div>
-                <!-- /.card-body -->
-            </div>
-            <!-- /.content -->
+            </form>
         </div>
-        <!-- /.content-wrapper -->
-    </section>
-
-    <!-- Control Sidebar -->
-    <aside class="control-sidebar control-sidebar-dark">
-        <!-- Control sidebar content goes here -->
-        <div class="p-3">
-            <h5>Title</h5>
-            <p>Sidebar content</p>
-        </div>
-    </aside>
-    <!-- /.control-sidebar -->
-
-    <!-- Main Footer -->
+        <!-- /.card-body -->
+    </div>
+    <!-- /.content -->
 </div>
 
 
