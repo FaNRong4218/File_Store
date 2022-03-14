@@ -128,8 +128,12 @@ include_once 'connect.php';
                   <img src="<?php echo $scr; ?><?php echo $row["Corp_img"]; ?>" width="70px"> <br>
                    <?php echo $row["Corp_Name"]; ?>
                 </td>
-                <td><?php foreach ($resultc as $value) {
-                      echo $value["Car_Name"] . "  ";
+                <td><?php if ($row["Car_ID"] != '') {
+                      foreach ($resultc as $value) {
+                        echo $value["Car_Name"] . "  ";
+                      }
+                    } else {
+                      echo '';
                     } ?>
                 </td>
                 <td><?php echo $row["Type_Name"]; ?></td>

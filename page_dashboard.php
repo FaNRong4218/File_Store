@@ -184,7 +184,7 @@ $result6 = mysqli_query($con, $sql6);
                                         <?php
                                         $i = 1;
                                         while ($row = mysqli_fetch_array($result5)) {
-                                            
+
                                             $car_id = array($row["Car_ID"]);
                                             $car_arr = array($car_id);
                                             $carid = explode(",", $row["Car_ID"]);
@@ -200,9 +200,12 @@ $result6 = mysqli_query($con, $sql6);
                                             <tr>
                                                 <td><?php echo $i ?></td>
                                                 <td><?php echo $row["Corp_Name"]; ?></td>
-                                                <td><?php
-                                                    foreach ($resultc as $value) {
+                                                <td><?php if ($row["Car_ID"] != '') {
+                                                        foreach ($resultc as $value) {
                                                             echo $value["Car_Name"] . "  ";
+                                                        }
+                                                    } else {
+                                                        echo '';
                                                     } ?></td>
                                                 <td><?php echo $row["Type_Name"]; ?></td>
                                                 <td><?php echo $row["Date_Start"]; ?></td>
@@ -225,7 +228,7 @@ $result6 = mysqli_query($con, $sql6);
                                                     ?>
                                                     <label class="switch">
                                                         <input type="checkbox" <?php echo $text ?> <?php //สำหรับ member //echo $text_dis 
-                                                                                                    ?> class="change" name="change" id="<?php echo $row["Report_ID"] ?>">
+                                                                                                    ?> class="change" disabled name="change" id="<?php echo $row["Report_ID"] ?>">
                                                         <span class="slider round"></span>
                                                     </label>
 

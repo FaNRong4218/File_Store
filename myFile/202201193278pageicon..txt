@@ -1,0 +1,63 @@
+profile.php
+far fa-address-card nav-icon
+โปรไฟล์
+
+far fas fa-cog nav-icon 
+ข้อมูลพนักงาน
+
+author.php
+far fa-circle nav-icon
+พนักงาน
+
+control.php
+far fa-circle nav-icon
+แก้ไขสถานะ
+
+far fas fa-users nav-icon
+ข้อมูลสมาชิก
+
+member.php
+far fa-circle nav-icon
+สมาชิก
+
+mempack.php
+far fa-circle nav-icon
+แพคเกจสมาชิก
+
+fas fa-dollar-sign nav-icon
+ข้อมูลการตลาด
+
+saletype.php
+far fa-circle nav-icon
+ชนิดการขาย
+
+order.php
+far fa-circle nav-icon
+สั่งซื้อ
+
+sale.php
+far fa-circle nav-icon
+การขาย
+
+packtype.php
+fas fa-gift nav-icon
+โปรโมชั่นโฆษณา
+
+far fas fa-taxi nav-icon
+ข้อมูลรถ
+
+car.php
+far fa-circle nav-icon
+รถแท๊กซี่
+
+brand.php
+far fa-circle nav-icon
+ยี่ห้อ
+
+model.php
+far fa-circle nav-icon
+รุ่น
+
+year.php
+far fa-circle nav-icon
+ช่วงปี
